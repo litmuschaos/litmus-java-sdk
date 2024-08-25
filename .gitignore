@@ -224,7 +224,7 @@ buildNumber.properties
 ### Gradle ###
 .gradle
 **/build/
-!src/**/build/
+!litmus-auth-client/src/**/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
