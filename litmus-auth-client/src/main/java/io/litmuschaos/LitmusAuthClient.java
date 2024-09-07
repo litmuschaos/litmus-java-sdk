@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-// TODO - logging
 public class LitmusAuthClient implements AutoCloseable{
 
     private String token;
