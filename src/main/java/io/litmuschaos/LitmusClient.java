@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class LitmusAuthClient implements AutoCloseable{
+public class LitmusClient implements AutoCloseable {
 
     private String token;
 
     private final LitmusHttpClient httpClient = new LitmusHttpClient();
 
-    public LitmusAuthClient(String host, String username, String password) throws IOException {
+    public LitmusClient(String host, String username, String password) throws IOException {
         LoginResponse credential = this.authenticate(host, username, password);
         this.token = credential.getAccessToken();
     }

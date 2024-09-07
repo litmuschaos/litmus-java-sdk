@@ -1,4 +1,4 @@
-import io.litmuschaos.LitmusAuthClient;
+import io.litmuschaos.LitmusClient;
 import io.litmuschaos.response.LoginResponse;
 import okhttp3.Response;
 
@@ -13,7 +13,7 @@ public class AuthTest {
 
     public static void main(String[] args) throws IOException {
 
-        LitmusAuthClient authClient = new LitmusAuthClient(hostUrl, username, password);
+        LitmusClient authClient = new LitmusClient(hostUrl, username, password);
 
         System.out.println("### capabilities test");
         Response response = authClient.capabilities(hostUrl);
