@@ -1,4 +1,4 @@
-package io.litmuschaos.auth.http;
+package io.litmuschaos.http;
 
 import com.google.gson.Gson;
 import okhttp3.*;

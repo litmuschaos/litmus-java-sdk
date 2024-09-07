@@ -1,5 +1,5 @@
 import io.litmuschaos.LitmusAuthClient;
-import io.litmuschaos.auth.response.LoginResponse;
+import io.litmuschaos.response.LoginResponse;
 import okhttp3.Response;
 
 import java.io.IOException;

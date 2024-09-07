@@ -1,4 +1,4 @@
-package io.litmuschaos.auth.response;
+package io.litmuschaos.response;
 
 public class CommonResponse {
 

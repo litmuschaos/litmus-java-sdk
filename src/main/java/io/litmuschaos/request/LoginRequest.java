@@ -1,4 +1,4 @@
-package io.litmuschaos.auth.request;
+package io.litmuschaos.request;
 
 public class LoginRequest {
 

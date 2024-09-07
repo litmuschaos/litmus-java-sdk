@@ -1,9 +1,9 @@
 package io.litmuschaos;
 
 import com.google.gson.GsonBuilder;
-import io.litmuschaos.auth.http.LitmusHttpClient;
-import io.litmuschaos.auth.request.LoginRequest;
-import io.litmuschaos.auth.response.LoginResponse;
+import io.litmuschaos.http.LitmusHttpClient;
+import io.litmuschaos.request.LoginRequest;
+import io.litmuschaos.response.LoginResponse;
 import okhttp3.Response;
 
 import java.io.IOException;
