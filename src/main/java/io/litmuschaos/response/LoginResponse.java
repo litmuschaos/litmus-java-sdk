@@ -35,4 +35,15 @@ public class LoginResponse {
     public String getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                "accessToken='" + accessToken + '\'' +
+                ", expiresIn='" + expiresIn + '\'' +
+                ", projectID='" + projectID + '\'' +
+                ", projectRole='" + projectRole + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

@@ -30,22 +30,21 @@ public class LitmusClient implements AutoCloseable {
     // TODO - @Suyeon Jung : host, port config to LitmusAuthConfig class
     public LoginResponse authenticate(String host, String username, String password) throws IOException {
         LoginRequest request = new LoginRequest(username, password);
-        Response response = httpClient.post(host + "/login", request);
-        LoginResponse loginResponse = new GsonBuilder().create().fromJson(response.body().string(), LoginResponse.class);
-        this.token = loginResponse.getAccessToken();
-        return loginResponse;
+        LoginResponse response = httpClient.post(host + "/login", request, LoginResponse.class);
+        this.token = response.getAccessToken();
+        return response;
     }
 
     // TODO - define Response dto
-    public Response createProject(String host, String projectName) throws IOException {
+    public String createProject(String host, String projectName) throws IOException {
         Map<String, String> request = new HashMap<>();
         request.put("projectName", projectName);
-        return httpClient.post(host + "/create_project", token,  request);
+        return httpClient.post(host + "/create_project", token,  request, String.class);
     }
 
     // TODO - define Response dto
-    public Response capabilities(String host) throws IOException {
-        return httpClient.get(host + "/capabilities");
+    public String capabilities(String host) throws IOException {
+        return httpClient.get(host + "/capabilities", String.class);
     }
 
 }
