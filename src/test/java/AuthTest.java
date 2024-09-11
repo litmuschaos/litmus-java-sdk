@@ -1,6 +1,4 @@
 import io.litmuschaos.LitmusClient;
-import io.litmuschaos.response.LoginResponse;
-import okhttp3.Response;
 
 import java.io.IOException;
 
@@ -16,17 +14,17 @@ public class AuthTest {
         LitmusClient authClient = new LitmusClient(hostUrl, username, password);
 
         System.out.println("### capabilities test");
-        Response response = authClient.capabilities(hostUrl);
-        System.out.println(response.body().string());
+        var capabilities = authClient.capabilities(hostUrl);
+        System.out.println(capabilities);
 
-        System.out.println("### craeteProject test");
-        response = authClient.createProject(
+        System.out.println("### createProject test");
+        var project = authClient.createProject(
                 hostUrl,
-                "TEST_Project_1");
-        System.out.println(response.body().string());
+                "TEST_Project_5");
+        System.out.println(project);
 
-        LoginResponse loginResponse = authClient.authenticate(hostUrl, username, password);
+        var auth = authClient.authenticate(hostUrl, username, password);
         System.out.println("### refresh token test");
-        System.out.println("access Token :: " + loginResponse.getAccessToken());
+        System.out.println("access Token :: " + auth.getAccessToken());
     }
 }
