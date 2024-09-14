@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import io.litmuschaos.response.ApiErrorResponse;
 import okhttp3.Response;
 
-public class ApiException {
+public class ApiException extends RuntimeException {
     private final int statusCode;
     private final ApiErrorResponse errorResponse;
 
