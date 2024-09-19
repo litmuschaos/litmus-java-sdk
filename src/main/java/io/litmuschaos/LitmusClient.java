@@ -18,8 +18,7 @@ public class LitmusClient implements AutoCloseable {
 
     public LitmusClient(String host, String username, String password) throws IOException {
         this.httpClient = new LitmusHttpClient(host);
-        LoginResponse credential = this.authenticate(username, password);
-        this.token = credential.getAccessToken();
+        this.authenticate(username, password);
     }
 
     @Override
