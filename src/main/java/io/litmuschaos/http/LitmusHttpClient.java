@@ -1,46 +1,23 @@
 package io.litmuschaos.http;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import io.litmuschaos.exception.ApiException;
+import io.litmuschaos.util.HttpResponseHandler;
 import okhttp3.*;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 public class LitmusHttpClient implements AutoCloseable{
 
     private final OkHttpClient okHttpClient;
-
-    private final Gson gson;
-
+    private final HttpResponseHandler httpResponseHandler;
     private final String host;
 
     public LitmusHttpClient(String host) {
         this.okHttpClient = new OkHttpClient();
+        this.httpResponseHandler = new HttpResponseHandler();
         this.host = host;
-        this.gson = new GsonBuilder().create();
-    }
-
-    private <T> T handleResponse(Response response, Class<T> responseType) throws ApiException, IOException {
-        if (!response.isSuccessful()) {
-            throw new ApiException(response);
-        }
-        if (response.body() == null) {
-            return gson.fromJson("", responseType);
-        }
-        return gson.fromJson(response.body().string(), responseType);
-    }
-
-    private <T> T handleResponse(Response response, Type responseType) throws ApiException, IOException {
-        if (!response.isSuccessful()) {
-            throw new ApiException(response);
-        }
-        if (response.body() == null) {
-            return gson.fromJson("", responseType);
-        }
-        return gson.fromJson(response.body().string(), responseType);
     }
 
     public <T> T get(String url, Class<T> responseType) throws IOException, ApiException {
@@ -49,7 +26,7 @@ public class LitmusHttpClient implements AutoCloseable{
                 .get()
                 .build();
         try (Response response = okHttpClient.newCall(request).execute()) {
-            return handleResponse(response, responseType);
+            return httpResponseHandler.handleResponse(response, responseType);
         }
     }
 
@@ -59,7 +36,7 @@ public class LitmusHttpClient implements AutoCloseable{
                 .get()
                 .build();
         try (Response response = okHttpClient.newCall(request).execute()) {
-            return handleResponse(response, typeToken.getType());
+            return httpResponseHandler.handleResponse(response, typeToken.getType());
         }
     }
 
@@ -70,7 +47,7 @@ public class LitmusHttpClient implements AutoCloseable{
                 .post(body)
                 .build();
         try (Response response = okHttpClient.newCall(request).execute()) {
-            return handleResponse(response, responseType);
+            return httpResponseHandler.handleResponse(response, responseType);
         }
     }
 
@@ -82,7 +59,7 @@ public class LitmusHttpClient implements AutoCloseable{
                 .header("Authorization", "Bearer " + token)
                 .build();
         try (Response response = okHttpClient.newCall(request).execute()) {
-            return handleResponse(response, responseType);
+            return httpResponseHandler.handleResponse(response, responseType);
         }
     }
 
@@ -94,16 +71,8 @@ public class LitmusHttpClient implements AutoCloseable{
                 .header("Authorization", "Bearer " + token)
                 .build();
         try (Response response = okHttpClient.newCall(request).execute()) {
-            return handleResponse(response, responseType);
+            return httpResponseHandler.handleResponse(response, responseType);
         }
-    }
-
-    private <T> T transform(Request request, Class<T> returnType) throws IOException {
-        Response response = okHttpClient.newCall(request).execute();
-        if (returnType.equals(String.class)) {
-            return returnType.cast(response.body().string());
-        }
-        return new Gson().fromJson(response.body().string(), returnType);
     }
 
     private String toJson(Object object) {
