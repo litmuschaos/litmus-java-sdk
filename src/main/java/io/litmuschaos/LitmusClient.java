@@ -13,7 +13,6 @@ import java.util.Map;
 public class LitmusClient implements AutoCloseable {
 
     private String token;
-
     private final LitmusHttpClient httpClient;
 
     public LitmusClient(String host, String username, String password) throws IOException {
@@ -34,7 +33,6 @@ public class LitmusClient implements AutoCloseable {
         return response;
     }
 
-    // TODO - define Response dto
     public String createProject(String projectName) throws IOException {
         Map<String, String> request = new HashMap<>();
         request.put("projectName", projectName);

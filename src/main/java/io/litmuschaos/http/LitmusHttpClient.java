@@ -25,9 +25,8 @@ public class LitmusHttpClient implements AutoCloseable{
                 .url(host + url)
                 .get()
                 .build();
-        try (Response response = okHttpClient.newCall(request).execute()) {
-            return httpResponseHandler.handleResponse(response, responseType);
-        }
+        Response response = okHttpClient.newCall(request).execute();
+        return httpResponseHandler.handleResponse(response, responseType);
     }
 
     public <T> T get(String url, TypeToken<T> typeToken) throws IOException {
@@ -35,9 +34,8 @@ public class LitmusHttpClient implements AutoCloseable{
                 .url(host + url)
                 .get()
                 .build();
-        try (Response response = okHttpClient.newCall(request).execute()) {
-            return httpResponseHandler.handleResponse(response, typeToken.getType());
-        }
+        Response response = okHttpClient.newCall(request).execute();
+        return httpResponseHandler.handleResponse(response, typeToken.getType());
     }
 
     public <T> T post(String url, Object object, Class<T> responseType) throws IOException, ApiException {
@@ -46,9 +44,8 @@ public class LitmusHttpClient implements AutoCloseable{
                 .url(host + url)
                 .post(body)
                 .build();
-        try (Response response = okHttpClient.newCall(request).execute()) {
-            return httpResponseHandler.handleResponse(response, responseType);
-        }
+        Response response = okHttpClient.newCall(request).execute();
+        return httpResponseHandler.handleResponse(response, responseType);
     }
 
     public <T> T post(String url, String token, Object object, Class<T> responseType) throws IOException, ApiException {
@@ -58,9 +55,8 @@ public class LitmusHttpClient implements AutoCloseable{
                 .post(body)
                 .header("Authorization", "Bearer " + token)
                 .build();
-        try (Response response = okHttpClient.newCall(request).execute()) {
-            return httpResponseHandler.handleResponse(response, responseType);
-        }
+        Response response = okHttpClient.newCall(request).execute();
+        return httpResponseHandler.handleResponse(response, responseType);
     }
 
     public <T> T post(String url, String token, Class<T> responseType) throws IOException, ApiException {
@@ -70,9 +66,8 @@ public class LitmusHttpClient implements AutoCloseable{
                 .post(body)
                 .header("Authorization", "Bearer " + token)
                 .build();
-        try (Response response = okHttpClient.newCall(request).execute()) {
-            return httpResponseHandler.handleResponse(response, responseType);
-        }
+        Response response = okHttpClient.newCall(request).execute();
+        return httpResponseHandler.handleResponse(response, responseType);
     }
 
     private String toJson(Object object) {
