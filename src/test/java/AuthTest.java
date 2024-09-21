@@ -14,16 +14,14 @@ public class AuthTest {
         LitmusClient authClient = new LitmusClient(hostUrl, username, password);
 
         System.out.println("### capabilities test");
-        var capabilities = authClient.capabilities(hostUrl);
+        var capabilities = authClient.capabilities();
         System.out.println(capabilities);
 
-        System.out.println("### createProject test");
-        var project = authClient.createProject(
-                hostUrl,
-                "TEST_Project_5");
-        System.out.println(project);
+//        System.out.println("### createProject test");
+//        var project = authClient.createProject("TEST_Project_5");
+//        System.out.println(project);
 
-        var auth = authClient.authenticate(hostUrl, username, password);
+        var auth = authClient.authenticate(username, password);
         System.out.println("### refresh token test");
         System.out.println("access Token :: " + auth.getAccessToken());
     }
