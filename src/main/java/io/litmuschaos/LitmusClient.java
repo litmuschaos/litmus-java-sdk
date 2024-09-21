@@ -21,10 +21,9 @@ public class LitmusClient implements AutoCloseable {
         LoginResponse credential = this.authenticate(host, username, password);
         this.token = credential.getAccessToken();
     }
-
     @Override
     public void close() throws Exception {
-        // TODO
+        this.httpClient.close();
     }
 
     // TODO - @Suyeon Jung : host, port config to LitmusAuthConfig class

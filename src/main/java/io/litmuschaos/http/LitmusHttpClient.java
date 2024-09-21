@@ -52,6 +52,10 @@ public class LitmusHttpClient implements AutoCloseable{
 
     @Override
     public void close() throws Exception {
-        // TODO
+        this.okHttpClient.dispatcher().executorService().shutdown();
+        this.okHttpClient.connectionPool().evictAll();
+        if (this.okHttpClient.cache() != null) {
+            this.okHttpClient.cache().close();
+        }
     }
 }
