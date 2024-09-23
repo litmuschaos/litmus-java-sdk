@@ -22,7 +22,7 @@ public class AuthTest {
         System.out.println(capabilities);
 
         System.out.println("### createProject test");
-        var project = authClient.createProject("TEST_Project_10");
+        var project = authClient.createProject("TEST_Project_1sdfddddfdfdffdffds2");
         System.out.println(project);
 
         var auth = authClient.authenticate(username, password);
@@ -35,7 +35,7 @@ public class AuthTest {
 
         System.out.println("### updateProjectName test");
         var projectName = authClient.updateProjectName(
-                "db8d1fc2-c8f4-413f-a833-56c1978be3c3", "new");
+                "db8d1fc2-c8f4-413f-a833-56c1978be3c3", "dfdfdfdf");
         System.out.println(projectName);
 
         System.out.println("### getProject test");
@@ -49,7 +49,7 @@ public class AuthTest {
 
         System.out.println("### leaveProject test");
         var LeaveProject = authClient.leaveProject(
-                "db8d1fc2-c8f4-413f-a833-56c1978be3c3", "79c3506c-273e-4018-a062-ff2cc4fbb248");
+                "db8d1fc2-c8f4-413f-a833-56c1978be3c3", "79c3506fgfgc-273e-4018-a062-ff2cc4fbb248");
         System.out.println(LeaveProject);
 
         System.out.println("### getProjectRole test");
