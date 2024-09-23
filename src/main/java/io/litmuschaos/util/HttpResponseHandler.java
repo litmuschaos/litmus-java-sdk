@@ -2,7 +2,11 @@ package io.litmuschaos.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.litmuschaos.exception.ApiException;
+import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
@@ -37,10 +41,22 @@ public class HttpResponseHandler {
     }
 
     private <T> T transform(String response, Class<T> responseType) {
-        return gson.fromJson(response, responseType);
+        JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
+        JsonElement dataElement = jsonObject.get("data");
+
+        if (dataElement != null) {
+            return new Gson().fromJson(dataElement, responseType);
+        }
+
+        if (responseType.equals(String.class)) {
+            return responseType.cast(response);
+        }
+
+        return new Gson().fromJson(response, responseType);
     }
 
     private <T> T transform(String response, Type responseType) {
         return gson.fromJson(response, responseType);
     }
+
 }

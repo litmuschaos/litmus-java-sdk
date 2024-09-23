@@ -29,10 +29,21 @@ public class LitmusHttpClient implements AutoCloseable{
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
-    public <T> T get(String url, TypeToken<T> typeToken) throws IOException {
+    public <T> T get(String url, String token, Class<T> responseType) throws IOException, ApiException {
         Request request = new Request.Builder()
                 .url(host + url)
                 .get()
+                .header("Authorization", "Bearer " + token)
+                .build();
+        Response response = okHttpClient.newCall(request).execute();
+        return httpResponseHandler.handleResponse(response, responseType);
+    }
+
+    public <T> T get(String url, String token, TypeToken<T> typeToken) throws IOException {
+        Request request = new Request.Builder()
+                .url(host + url)
+                .get()
+                .header("Authorization", "Bearer " + token)
                 .build();
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, typeToken.getType());
