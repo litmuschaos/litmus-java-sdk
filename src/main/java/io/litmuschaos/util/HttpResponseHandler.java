@@ -29,8 +29,8 @@ public class HttpResponseHandler {
         return transform(response.body().string(), responseType);
     }
 
-    private <T> T transform(String responseBody, Type responseType) {
-        return gson.fromJson(responseBody, responseType);
+    private <T> T transform(String response, Type responseType) {
+        return gson.fromJson(response, responseType);
     }
 
 }
