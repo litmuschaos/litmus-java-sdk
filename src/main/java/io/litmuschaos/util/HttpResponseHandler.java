@@ -30,16 +30,6 @@ public class HttpResponseHandler {
     }
 
     private <T> T transform(String responseBody, Type responseType) {
-        JsonElement jsonElement = JsonParser.parseString(responseBody);
-
-        if (jsonElement.isJsonObject()) {
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            if (jsonObject.has("data")) {
-                JsonElement dataElement = jsonObject.get("data");
-                return gson.fromJson(dataElement.toString(), responseType);
-            }
-        }
-
         return gson.fromJson(responseBody, responseType);
     }
 
