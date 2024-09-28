@@ -2,7 +2,7 @@ package io.litmuschaos.response;
 
 import java.util.List;
 
-public class ProjectsStatusResponse {
+public class ProjectsStatsResponse {
     private String name;
     private String projectID;
     private Members members;

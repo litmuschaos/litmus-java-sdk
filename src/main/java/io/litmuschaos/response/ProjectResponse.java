@@ -36,88 +36,44 @@ public class ProjectResponse {
         return updatedAt;
     }
 
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public long getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
     }
 
     public CreatedBy getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(CreatedBy createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public UpdatedBy getUpdatedBy() {
         return updatedBy;
-    }
-
-    public void setUpdatedBy(UpdatedBy updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     public boolean isRemoved() {
         return isRemoved;
     }
 
-    public void setRemoved(boolean removed) {
-        isRemoved = removed;
-    }
-
     public String getProjectID() {
         return projectID;
-    }
-
-    public void setProjectID(String projectID) {
-        this.projectID = projectID;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<ProjectMember> getMembers() {
         return members;
-    }
-
-    public void setMembers(List<ProjectMember> members) {
-        this.members = members;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Override
