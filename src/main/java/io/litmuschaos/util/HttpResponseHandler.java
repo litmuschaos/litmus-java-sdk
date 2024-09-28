@@ -28,7 +28,7 @@ public class HttpResponseHandler {
         }
         return transform(response.body().string(), responseType);
     }
-
+  
     private <T> T transform(String responseBody, Type responseType) {
         JsonElement jsonElement = JsonParser.parseString(responseBody);
 
@@ -41,5 +41,7 @@ public class HttpResponseHandler {
         }
 
         return gson.fromJson(responseBody, responseType);
+
     }
+
 }
