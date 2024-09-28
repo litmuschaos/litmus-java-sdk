@@ -28,9 +28,20 @@ public class HttpResponseHandler {
         }
         return transform(response.body().string(), responseType);
     }
+  
+    private <T> T transform(String responseBody, Type responseType) {
+        JsonElement jsonElement = JsonParser.parseString(responseBody);
 
-    private <T> T transform(String response, Type responseType) {
-        return gson.fromJson(response, responseType);
+        if (jsonElement.isJsonObject()) {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            if (jsonObject.has("data")) {
+                JsonElement dataElement = jsonObject.get("data");
+                return gson.fromJson(dataElement.toString(), responseType);
+            }
+        }
+
+        return gson.fromJson(responseBody, responseType);
+
     }
 
 }
