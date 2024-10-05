@@ -30,11 +30,10 @@ public class HttpResponseHandler {
     }
 
     private void handleErrorResponse(Response response) throws LitmusApiException, IOException {
-        String body = "";
-        if(response.body() != null) {
-            body = response.body().string();
+        String errorMessage = "";
+        if(response.body() != null && !response.body().string().isEmpty()) {
+            errorMessage = parseErrorDescription(response.body().string());
         }
-        String errorMessage = parseErrorDescription(body);
         switch (response.code()) {
             case 400:
                 throw new BadRequestException(errorMessage);
