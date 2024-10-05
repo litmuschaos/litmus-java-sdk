@@ -50,15 +50,11 @@ public class HttpResponseHandler {
     }
 
     private String parseErrorDescription(String errorBody) {
-        try {
-            JsonObject jsonObject = gson.fromJson(errorBody, JsonObject.class);
-            if (jsonObject.has("errorDescription")) {
-                return jsonObject.get("errorDescription").getAsString();
-            }
-                return "";
-        } catch (JsonParseException e) {
-            return "Failed to parse error response: " + errorBody;
+        JsonObject jsonObject = gson.fromJson(errorBody, JsonObject.class);
+        if (jsonObject.has("errorDescription")) {
+            return jsonObject.get("errorDescription").getAsString();
         }
+        return "";
     }
 
     private <T> T transform(String response, Type responseType) {
