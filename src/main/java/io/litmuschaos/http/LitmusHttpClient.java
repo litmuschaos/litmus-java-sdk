@@ -2,8 +2,7 @@ package io.litmuschaos.http;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import io.litmuschaos.exception.ApiException;
-import io.litmuschaos.util.HttpResponseHandler;
+import io.litmuschaos.exception.LitmusApiException;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class LitmusHttpClient implements AutoCloseable{
         this.host = host;
     }
 
-    public <T> T get(String url, Class<T> responseType) throws IOException, ApiException {
+    public <T> T get(String url, Class<T> responseType) throws IOException, LitmusApiException {
         Request request = new Request.Builder()
                 .url(host + url)
                 .get()
@@ -29,7 +28,7 @@ public class LitmusHttpClient implements AutoCloseable{
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
-    public <T> T get(String url, TypeToken<T> typeToken) throws IOException {
+    public <T> T get(String url, TypeToken<T> typeToken) throws IOException, LitmusApiException {
         Request request = new Request.Builder()
                 .url(host + url)
                 .get()
@@ -38,7 +37,7 @@ public class LitmusHttpClient implements AutoCloseable{
         return httpResponseHandler.handleResponse(response, typeToken.getType());
     }
 
-    public <T> T post(String url, Object object, Class<T> responseType) throws IOException, ApiException {
+    public <T> T post(String url, Object object, Class<T> responseType) throws IOException, LitmusApiException {
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson(object));
         Request request = new Request.Builder()
                 .url(host + url)
@@ -48,7 +47,7 @@ public class LitmusHttpClient implements AutoCloseable{
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
-    public <T> T post(String url, String token, Object object, Class<T> responseType) throws IOException, ApiException {
+    public <T> T post(String url, String token, Object object, Class<T> responseType) throws IOException, LitmusApiException {
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson(object));
         Request request = new Request.Builder()
                 .url(host + url)
@@ -59,7 +58,7 @@ public class LitmusHttpClient implements AutoCloseable{
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
-    public <T> T post(String url, String token, Class<T> responseType) throws IOException, ApiException {
+    public <T> T post(String url, String token, Class<T> responseType) throws IOException, LitmusApiException {
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), "");
         Request request = new Request.Builder()
                 .url(host + url)

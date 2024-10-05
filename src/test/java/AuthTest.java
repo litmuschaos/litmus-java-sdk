@@ -1,7 +1,14 @@
 import io.litmuschaos.LitmusClient;
+import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.exception.detailed.UnauthorizedException;
+import io.litmuschaos.response.CapabilityResponse;
+import io.litmuschaos.response.LoginResponse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static org.assertj.core.api.Assertions.*;
 
 public class AuthTest {
 
@@ -9,20 +16,39 @@ public class AuthTest {
     private static final String username = "admin";
     private static final String password = "Litmus1234!";
 
-    public static void main(String[] args) throws IOException {
+    private LitmusClient authClient;
 
-        LitmusClient authClient = new LitmusClient(hostUrl, username, password);
+    @BeforeEach
+    public void setup() throws IOException, LitmusApiException {
+        this.authClient = new LitmusClient(hostUrl, username, password);
+    }
 
-        System.out.println("### capabilities test");
-        var capabilities = authClient.capabilities();
-        System.out.println(capabilities);
+    @Test
+    public void testCapabilityAPI() throws IOException, LitmusApiException {
 
-//        System.out.println("### createProject test");
-//        var project = authClient.createProject("TEST_Project_5");
-//        System.out.println(project);
+        assertThat(authClient.capabilities())
+                .isNotNull()
+                .isInstanceOf(CapabilityResponse.class);
 
         var auth = authClient.authenticate(username, password);
         System.out.println("### refresh token test");
         System.out.println("access Token :: " + auth.getAccessToken());
+    }
+
+    @Test
+    public void testAuthenticationAPI() throws IOException, LitmusApiException {
+        assertThat(authClient.authenticate(username, password))
+                .isNotNull()
+                .isInstanceOf(LoginResponse.class);
+    }
+
+    @Test
+    public void testAuthenticationAPIFail() {
+        // Given
+        String wrongPassword = "litmus1234";
+
+        // When & Then
+        assertThatThrownBy(() -> authClient.authenticate(username, wrongPassword))
+                .isInstanceOf(UnauthorizedException.class);
     }
 }
