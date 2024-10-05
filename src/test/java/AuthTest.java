@@ -28,11 +28,8 @@ public class AuthTest {
 
         assertThat(authClient.capabilities())
                 .isNotNull()
-                .isInstanceOf(CapabilityResponse.class);
-
-        var auth = authClient.authenticate(username, password);
-        System.out.println("### refresh token test");
-        System.out.println("access Token :: " + auth.getAccessToken());
+                .isInstanceOf(CapabilityResponse.class)
+                .hasFieldOrProperty("Dex");
     }
 
     @Test
