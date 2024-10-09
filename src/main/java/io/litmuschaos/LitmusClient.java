@@ -4,6 +4,7 @@ import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.http.LitmusHttpClient;
 import io.litmuschaos.request.LoginRequest;
 import io.litmuschaos.response.CapabilityResponse;
+import io.litmuschaos.response.ListProjectsResponse;
 import io.litmuschaos.response.LoginResponse;
 
 import java.io.IOException;
@@ -41,5 +42,14 @@ public class LitmusClient implements AutoCloseable {
 
     public CapabilityResponse capabilities() throws IOException, LitmusApiException {
         return httpClient.get("/capabilities", CapabilityResponse.class);
+    }
+
+    public ListProjectsResponse listProjects(int page, int limit, String sortField, boolean createdByMe) throws IOException, LitmusApiException {
+        Map<String, String> requestParam = new HashMap<>();
+        requestParam.put("page", String.valueOf(page));
+        requestParam.put("limit", String.valueOf(limit));
+        requestParam.put("sortField", sortField);
+        requestParam.put("createdByMe", String.valueOf(createdByMe));
+        return httpClient.get("/list_projects", token, requestParam, ListProjectsResponse.class);
     }
 }

@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import io.litmuschaos.exception.LitmusApiException;
 import okhttp3.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class LitmusHttpClient implements AutoCloseable{
 
@@ -20,21 +22,48 @@ public class LitmusHttpClient implements AutoCloseable{
     }
 
     public <T> T get(String url, Class<T> responseType) throws IOException, LitmusApiException {
-        Request request = new Request.Builder()
-                .url(host + url)
-                .get()
-                .build();
+        return get(url, null, null, responseType);
+    }
+
+    public <T> T get(String url, String token, Class<T> responseType) throws IOException, LitmusApiException {
+        return get(url, token, null, responseType);
+    }
+
+    public <T> T get(String url, String token, Map<String, String> requestParamMap, Class<T> responseType) throws IOException, LitmusApiException {
+        Request request = buildRequest(url, token, requestParamMap);
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
     public <T> T get(String url, TypeToken<T> typeToken) throws IOException, LitmusApiException {
-        Request request = new Request.Builder()
-                .url(host + url)
-                .get()
-                .build();
+        return get(url, null, null, typeToken);
+    }
+
+    public <T> T get(String url, String token, Map<String, String> requestParamMap, TypeToken<T> typeToken) throws IOException, LitmusApiException {
+        Request request = buildRequest(url, token, requestParamMap);
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, typeToken.getType());
+    }
+
+    private Request buildRequest(String url, String token, Map<String, String> requestParamMap) throws IOException {
+        HttpUrl.Builder httpUrlBuilder = HttpUrl.get(host + url).newBuilder();
+
+        if (requestParamMap != null) {
+            for(Map.Entry<String, String> param : requestParamMap.entrySet()) {
+                httpUrlBuilder.addQueryParameter(param.getKey(), param.getValue());
+            }
+        }
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(httpUrlBuilder.build())
+                .get();
+
+        if (StringUtils.isNotEmpty(token)) {
+            requestBuilder
+                    .header("Authorization", "Bearer " + token);
+        }
+
+        return requestBuilder.build();
     }
 
     public <T> T post(String url, Object object, Class<T> responseType) throws IOException, LitmusApiException {
