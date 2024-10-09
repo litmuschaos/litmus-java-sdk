@@ -1,5 +1,6 @@
 import io.litmuschaos.LitmusClient;
 import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.request.ListProjectRequest;
 import io.litmuschaos.response.ListProjectsResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,14 @@ public class BuildRequestTest {
         String sortField = "name";
         boolean createdByMe = true;
 
-        ListProjectsResponse response = litmusClient.listProjects(page, limit, sortField, createdByMe);
+        ListProjectRequest request = new ListProjectRequest.Builder()
+                .page(page)
+                .limit(limit)
+                .sortField(sortField)
+                .createdByMe(createdByMe)
+                .build();
+
+        ListProjectsResponse response = litmusClient.listProjects(request);
 
         assertThat(response.getTotalNumberOfProjects())
                 .isGreaterThanOrEqualTo(1);
