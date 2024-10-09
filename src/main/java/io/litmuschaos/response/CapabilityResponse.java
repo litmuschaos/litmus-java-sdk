@@ -6,12 +6,12 @@ public class CapabilityResponse {
     public Dex getDex() {
         return dex;
     }
-}
 
-class Dex {
-    private boolean enabled;
+    private class Dex {
+        private boolean enabled;
 
-    public boolean isEnabled() {
-        return enabled;
+        public boolean isEnabled() {
+            return enabled;
+        }
     }
 }
