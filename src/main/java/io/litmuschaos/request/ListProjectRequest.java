@@ -13,6 +13,10 @@ public class ListProjectRequest {
         this.createdByMe = builder.createdByMe;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private Integer page;
         private Integer limit;

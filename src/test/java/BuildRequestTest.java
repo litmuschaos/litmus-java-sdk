@@ -29,7 +29,7 @@ public class BuildRequestTest {
         String sortField = "name";
         boolean createdByMe = true;
 
-        ListProjectRequest request = new ListProjectRequest.Builder()
+        ListProjectRequest request = ListProjectRequest.builder()
                 .page(page)
                 .limit(limit)
                 .sortField(sortField)
