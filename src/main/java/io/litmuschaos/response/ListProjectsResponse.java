@@ -5,9 +5,9 @@ import java.util.List;
 public class ListProjectsResponse {
 
     private List<ProjectResponse> projects;
-    private int totalNumberOfProjects;
+    private Integer totalNumberOfProjects;
 
-    public ListProjectsResponse(List<ProjectResponse> projects, int totalNumberOfProjects) {
+    public ListProjectsResponse(List<ProjectResponse> projects, Integer totalNumberOfProjects) {
         this.projects = projects;
         this.totalNumberOfProjects = totalNumberOfProjects;
     }

@@ -1,9 +1,6 @@
 package io.litmuschaos.http;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.exception.detailed.*;
 import okhttp3.Response;
@@ -57,6 +54,15 @@ public class HttpResponseHandler {
     }
 
     private <T> T transform(String response, Type responseType) {
+        JsonElement jsonElement = JsonParser.parseString(response);
+
+        if (jsonElement.isJsonObject()) {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            if (jsonObject.has("data")) {
+                JsonElement dataElement = jsonObject.get("data");
+                return gson.fromJson(dataElement.toString(), responseType);
+            }
+        }
         return gson.fromJson(response, responseType);
     }
 

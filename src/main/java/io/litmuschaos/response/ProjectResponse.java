@@ -4,11 +4,11 @@ import java.util.List;
 
 public class ProjectResponse {
 
-    private long updatedAt;
-    private long createdAt;
+    private Long updatedAt;
+    private Long createdAt;
     private CreatedBy createdBy;
     private UpdatedBy updatedBy;
-    private boolean isRemoved;
+    private Boolean isRemoved;
     private String projectID;
     private String name;
     private List<ProjectMember> members;
@@ -16,9 +16,9 @@ public class ProjectResponse {
     private List<String> tags;
     private String description;
 
-    public ProjectResponse(long updatedAt, long createdAt, CreatedBy createdBy, UpdatedBy updatedBy,
-            boolean isRemoved, String projectID, String name, List<ProjectMember> members,
-            String state, List<String> tags, String description) {
+    public ProjectResponse(Long updatedAt, Long createdAt, CreatedBy createdBy, UpdatedBy updatedBy,
+                           Boolean isRemoved, String projectID, String name, List<ProjectMember> members,
+                           String state, List<String> tags, String description) {
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
@@ -32,11 +32,11 @@ public class ProjectResponse {
         this.description = description;
     }
 
-    public long getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public long getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
@@ -48,7 +48,7 @@ public class ProjectResponse {
         return updatedBy;
     }
 
-    public boolean isRemoved() {
+    public Boolean isRemoved() {
         return isRemoved;
     }
 
@@ -93,10 +93,10 @@ public class ProjectResponse {
         private String name;
         private String role;
         private String invitation;
-        private long joinedAt;
+        private Long joinedAt;
 
         public ProjectMember(String userID, String username, String email, String name, String role,
-                String invitation, long joinedAt) {
+                             String invitation, Long joinedAt) {
             this.userID = userID;
             this.username = username;
             this.email = email;
