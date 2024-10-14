@@ -10,7 +10,7 @@ public class UserWithProjectResponse {
     private Long createdAt;
     private CreatedBy createdBy;
     private UpdatedBy updatedBy;
-    private boolean isRemoved;
+    private Boolean isRemoved;
     private String id;
     private String username;
     private String email;

@@ -2,7 +2,7 @@ package io.litmuschaos.response;
 
 public class ProjectRoleResponse {
 
-    String role;
+    private String role;
 
     public ProjectRoleResponse(String role) {
         this.role = role;
