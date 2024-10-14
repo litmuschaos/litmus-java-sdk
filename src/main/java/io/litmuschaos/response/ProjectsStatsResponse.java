@@ -55,9 +55,9 @@ public class ProjectsStatsResponse {
         private String userID;
         private String username;
         private String invitation;
-        private long joinedAt;
+        private Long joinedAt;
+        private Long deactivatedAt;
 
-        // Getters and Setters
         public String getUserID() {
             return userID;
         }
@@ -70,8 +70,12 @@ public class ProjectsStatsResponse {
             return invitation;
         }
 
-        public long getJoinedAt() {
+        public Long getJoinedAt() {
             return joinedAt;
+        }
+
+        public Long getDeactivatedAt() {
+            return deactivatedAt;
         }
 
         @Override
@@ -81,6 +85,7 @@ public class ProjectsStatsResponse {
                     ", username='" + username + '\'' +
                     ", invitation='" + invitation + '\'' +
                     ", joinedAt=" + joinedAt +
+                    ", deactivatedAt=" + deactivatedAt +
                     '}';
         }
     }

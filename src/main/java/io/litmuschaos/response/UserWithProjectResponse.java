@@ -6,8 +6,8 @@ import java.util.List;
 
 public class UserWithProjectResponse {
 
-    private long updatedAt;
-    private long createdAt;
+    private Long updatedAt;
+    private Long createdAt;
     private CreatedBy createdBy;
     private UpdatedBy updatedBy;
     private boolean isRemoved;
@@ -32,11 +32,11 @@ public class UserWithProjectResponse {
         this.projects = projects;
     }
 
-    public long getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public long getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 

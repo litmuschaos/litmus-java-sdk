@@ -8,10 +8,11 @@ public class ProjectMemberResponse {
     private String name;
     private String role;
     private String invitation;
-    private long joinedAt;
+    private Long joinedAt;
+    private Long deactivatedAt;
 
     public ProjectMemberResponse(String userID, String username, String email, String name,
-            String role, String invitation, long joinedAt) {
+            String role, String invitation, long joinedAt, Long deactivatedAt) {
         this.userID = userID;
         this.username = username;
         this.email = email;
@@ -19,6 +20,7 @@ public class ProjectMemberResponse {
         this.role = role;
         this.invitation = invitation;
         this.joinedAt = joinedAt;
+        this.deactivatedAt = deactivatedAt;
     }
 
     public String getUserID() {
@@ -49,6 +51,10 @@ public class ProjectMemberResponse {
         return joinedAt;
     }
 
+    public Long getDeactivatedAt() {
+        return deactivatedAt;
+    }
+
     @Override
     public String toString() {
         return "ProjectMember{" +
@@ -59,6 +65,7 @@ public class ProjectMemberResponse {
                 ", role='" + role + '\'' +
                 ", invitation='" + invitation + '\'' +
                 ", joinedAt=" + joinedAt +
+                ", deactivatedAt=" + deactivatedAt +
                 '}';
     }
 }
