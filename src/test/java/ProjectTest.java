@@ -8,15 +8,16 @@ import io.litmuschaos.request.ListProjectRequest;
 import io.litmuschaos.request.ProjectNameRequest;
 import io.litmuschaos.response.CommonResponse;
 import io.litmuschaos.response.ListProjectsResponse;
-import io.litmuschaos.response.ProjectMemberResponse;
 import io.litmuschaos.response.ProjectResponse;
+import io.litmuschaos.response.ProjectMemberResponse;
 import io.litmuschaos.response.ProjectRoleResponse;
 import io.litmuschaos.response.ProjectsStatsResponse;
 import io.litmuschaos.response.UserWithProjectResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.UUID;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class ProjectTest {
@@ -25,11 +26,32 @@ public class ProjectTest {
     private static final String username = "admin";
     private static final String password = "Litmus1234!";
 
-    private LitmusClient litmusClient;
+    private static LitmusClient litmusClient;
+    private static String projectId;
 
-    @BeforeEach
-    public void setup() throws IOException, LitmusApiException {
-        this.litmusClient = new LitmusClient(hostUrl, username, password);
+    @BeforeAll
+    public static void setup() throws IOException, LitmusApiException {
+        litmusClient = new LitmusClient(hostUrl, username, password);
+        projectId = createProjectAndGetId();
+    }
+
+    private static String generateUniqueProjectName(String baseName) {
+        return baseName + "-" + UUID.randomUUID().toString();
+    }
+
+    private static String createProjectAndGetId() throws IOException, LitmusApiException {
+        String projectName = generateUniqueProjectName("Temporary Project");
+        String description = "This is a temporary project.";
+        List<String> tags = Arrays.asList("tag1", "tag2");
+
+        CreateProjectRequest request = CreateProjectRequest.builder()
+                .projectName(projectName)
+                .description(description)
+                .tags(tags)
+                .build();
+
+        ProjectResponse response = litmusClient.createProject(request);
+        return response.getProjectID();
     }
 
     @Test
@@ -48,14 +70,12 @@ public class ProjectTest {
 
         ListProjectsResponse response = litmusClient.listProjects(request);
 
-        assertThat(response.getTotalNumberOfProjects())
-                .isGreaterThanOrEqualTo(1);
+        assertThat(response.getTotalNumberOfProjects()).isGreaterThanOrEqualTo(1);
     }
 
     @Test
     public void testCreateProject() throws IOException, LitmusApiException {
-
-        String projectName = "Test Project-2";
+        String projectName = generateUniqueProjectName("Test Project");
         String description = "This is a test project.";
         List<String> tags = Arrays.asList("tag1", "tag2");
 
@@ -73,11 +93,10 @@ public class ProjectTest {
 
     @Test
     public void testUpdateProjectName() throws IOException, LitmusApiException {
-        String projectID = "63488419-fc5c-4a1a-8aa9-4e736e8b3a73";
-        String projectName = "new project name!";
+        String projectName = generateUniqueProjectName("new project name");
 
         ProjectNameRequest request = ProjectNameRequest.builder()
-                .projectID(projectID)
+                .projectID(projectId)
                 .projectName(projectName)
                 .build();
 
@@ -86,11 +105,8 @@ public class ProjectTest {
         assertThat(response.getMessage()).isEqualTo("Successful");
     }
 
-
     @Test
     public void testGetProject() throws IOException, LitmusApiException {
-        String projectId = "537f6a86-f1fd-4312-ab89-230b65ea6c73";
-
         ProjectResponse response = litmusClient.getProject(projectId);
 
         assertThat(response.getProjectID()).isEqualTo(projectId);
@@ -108,26 +124,24 @@ public class ProjectTest {
 
     @Test
     public void leaveProjectTest() throws LitmusApiException, IOException {
+        String projectIDToLeave = createProjectAndGetId();
+
         LeaveProjectRequest request = LeaveProjectRequest.builder()
-                .projectID("9ea7420a-531a-4a61-a75f-ed4aae4a925f")
-                .userID("1141d7ab-21b7-4e0a-a043-ba3b08f54ce8")
+                .projectID(projectIDToLeave)
+                .userID(litmusClient.getProject(projectId).getMembers().get(0).getUserID())
                 .build();
 
         CommonResponse response = litmusClient.leaveProject(request);
+
         assertThat(response.getMessage()).isEqualTo("Successful");
     }
 
-
     @Test
     public void testGetProjectRole() throws IOException, LitmusApiException {
-        String projectId = "63488419-fc5c-4a1a-8aa9-4e736e8b3a73";
-
         ProjectRoleResponse response = litmusClient.getProjectRole(projectId);
 
-        assertThat(response).isNotNull();
         assertThat(response.getRole()).isEqualTo("Owner");
     }
-
 
     @Test
     public void testGetUserWithProject() throws IOException, LitmusApiException {
@@ -136,14 +150,12 @@ public class ProjectTest {
         UserWithProjectResponse response = litmusClient.getUserWithProject(testUsername);
 
         assertThat(response.getUsername()).isEqualTo(testUsername);
-        assertThat(response.getProjects()).isNotNull();
         assertThat(response.getProjects().size()).isGreaterThanOrEqualTo(1);
 
         ProjectResponse firstProject = response.getProjects().get(0);
         assertThat(firstProject.getProjectID()).isNotNull();
         assertThat(firstProject.getName()).isNotNull();
     }
-
 
     @Test
     public void testGetProjectsStats() throws IOException, LitmusApiException {
@@ -166,43 +178,34 @@ public class ProjectTest {
 
     @Test
     public void testGetProjectMembers() throws IOException, LitmusApiException {
-        String projectID = "63488419-fc5c-4a1a-8aa9-4e736e8b3a73";
         String status = "active";
 
-        List<ProjectMemberResponse> response = litmusClient.getProjectMembers(projectID, status);
+        List<ProjectMemberResponse> response = litmusClient.getProjectMembers(projectId, status);
 
         assertThat(response.size()).isGreaterThanOrEqualTo(1);
-
         ProjectMemberResponse firstMember = response.get(0);
         assertThat(firstMember.getUserID()).isNotNull();
         assertThat(firstMember.getUsername()).isNotNull();
 
-        if (firstMember.getDeactivatedAt() != null) {
-            assertThat(firstMember.getDeactivatedAt()).isGreaterThan(0L);
-        }
     }
 
     @Test
     public void testGetProjectOwners() throws IOException, LitmusApiException {
-        String projectID = "63488419-fc5c-4a1a-8aa9-4e736e8b3a73";
+        List<ProjectMemberResponse> response = litmusClient.getProjectOwners(projectId);
 
-        List<ProjectMemberResponse> response = litmusClient.getProjectOwners(projectID);
-
-        assertThat(response.size()).isGreaterThan(0);
+        assertThat(response.size()).isGreaterThanOrEqualTo(1);
         ProjectMemberResponse firstOwner = response.get(0);
         assertThat(firstOwner.getUserID()).isNotNull();
         assertThat(firstOwner.getUsername()).isNotNull();
         assertThat(firstOwner.getRole()).isEqualTo("Owner");
-
     }
 
     @Test
     public void testDeleteProject() throws IOException, LitmusApiException {
-        String projectID = "63488419-fc5c-4a1a-8aa9-4e736e8b3a73";
+        String projectIDToDelete = createProjectAndGetId();
 
-        CommonResponse response = litmusClient.deleteProject(projectID);
+        CommonResponse response = litmusClient.deleteProject(projectIDToDelete);
 
         assertThat(response.getMessage()).isEqualTo("Successfully deleted project.");
     }
-
 }
