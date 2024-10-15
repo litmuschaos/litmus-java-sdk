@@ -16,7 +16,7 @@ public class ListProjectsResponse {
         return projects;
     }
 
-    public int getTotalNumberOfProjects() {
+    public Integer getTotalNumberOfProjects() {
         return totalNumberOfProjects;
     }
 

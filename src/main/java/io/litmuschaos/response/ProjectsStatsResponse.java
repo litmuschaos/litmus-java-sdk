@@ -3,9 +3,16 @@ package io.litmuschaos.response;
 import java.util.List;
 
 public class ProjectsStatsResponse {
+
     private String name;
     private String projectID;
     private Members members;
+
+    public ProjectsStatsResponse(String name, String projectID, Members members) {
+        this.name = name;
+        this.projectID = projectID;
+        this.members = members;
+    }
 
     public String getName() {
         return name;
@@ -30,17 +37,22 @@ public class ProjectsStatsResponse {
     }
 
     public static class Members {
+
         private List<Owner> owner;
-        private int total;
+        private Integer total;
+
+        public Members(List<Owner> owner, Integer total) {
+            this.owner = owner;
+            this.total = total;
+        }
 
         public List<Owner> getOwner() {
             return owner;
         }
 
-        public int getTotal() {
+        public Integer getTotal() {
             return total;
         }
-
 
         @Override
         public String toString() {
@@ -57,6 +69,14 @@ public class ProjectsStatsResponse {
         private String invitation;
         private Long joinedAt;
         private Long deactivatedAt;
+
+        public Owner(String userID, String username, String invitation, Long joinedAt, Long deactivatedAt) {
+            this.userID = userID;
+            this.username = username;
+            this.invitation = invitation;
+            this.joinedAt = joinedAt;
+            this.deactivatedAt = deactivatedAt;
+        }
 
         public String getUserID() {
             return userID;

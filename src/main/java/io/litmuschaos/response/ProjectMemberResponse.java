@@ -12,7 +12,7 @@ public class ProjectMemberResponse {
     private Long deactivatedAt;
 
     public ProjectMemberResponse(String userID, String username, String email, String name,
-            String role, String invitation, long joinedAt, Long deactivatedAt) {
+            String role, String invitation, Long joinedAt, Long deactivatedAt) {
         this.userID = userID;
         this.username = username;
         this.email = email;
@@ -47,7 +47,7 @@ public class ProjectMemberResponse {
         return invitation;
     }
 
-    public long getJoinedAt() {
+    public Long getJoinedAt() {
         return joinedAt;
     }
 

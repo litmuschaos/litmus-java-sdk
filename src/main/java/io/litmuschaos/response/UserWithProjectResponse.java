@@ -17,8 +17,8 @@ public class UserWithProjectResponse {
     private String name;
     private List<ProjectResponse> projects;
 
-    public UserWithProjectResponse(long updatedAt, long createdAt, CreatedBy createdBy,
-            UpdatedBy updatedBy, boolean isRemoved, String id, String username, String email,
+    public UserWithProjectResponse(Long updatedAt, Long createdAt, CreatedBy createdBy,
+            UpdatedBy updatedBy, Boolean isRemoved, String id, String username, String email,
             String name, List<ProjectResponse> projects) {
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
@@ -48,7 +48,7 @@ public class UserWithProjectResponse {
         return updatedBy;
     }
 
-    public boolean isRemoved() {
+    public Boolean isRemoved() {
         return isRemoved;
     }
 
