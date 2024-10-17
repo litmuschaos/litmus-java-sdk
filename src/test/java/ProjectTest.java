@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ProjectTest {
@@ -30,8 +31,12 @@ public class ProjectTest {
     private static String projectId;
 
     @BeforeAll
-    public static void setup() throws IOException, LitmusApiException {
+    public static void setupClient() throws IOException, LitmusApiException {
         litmusClient = new LitmusClient(hostUrl, username, password);
+    }
+
+    @BeforeEach
+    public void setupProject() throws IOException, LitmusApiException {
         projectId = createProjectAndGetId();
     }
 
@@ -124,10 +129,8 @@ public class ProjectTest {
 
     @Test
     public void leaveProjectTest() throws LitmusApiException, IOException {
-        String projectIDToLeave = createProjectAndGetId();
-
         LeaveProjectRequest request = LeaveProjectRequest.builder()
-                .projectID(projectIDToLeave)
+                .projectID(projectId)
                 .userID(litmusClient.getProject(projectId).getMembers().get(0).getUserID())
                 .build();
 
@@ -202,9 +205,7 @@ public class ProjectTest {
 
     @Test
     public void testDeleteProject() throws IOException, LitmusApiException {
-        String projectIDToDelete = createProjectAndGetId();
-
-        CommonResponse response = litmusClient.deleteProject(projectIDToDelete);
+        CommonResponse response = litmusClient.deleteProject(projectId);
 
         assertThat(response.getMessage()).isEqualTo("Successfully deleted project.");
     }
