@@ -11,14 +11,14 @@ public class ProjectResponse {
     private Boolean isRemoved;
     private String projectID;
     private String name;
-    private List<ProjectMember> members;
+    private List<ProjectMemberResponse> members;
     private String state;
     private List<String> tags;
     private String description;
 
     public ProjectResponse(Long updatedAt, Long createdAt, CreatedBy createdBy, UpdatedBy updatedBy,
-                           Boolean isRemoved, String projectID, String name, List<ProjectMember> members,
-                           String state, List<String> tags, String description) {
+            Boolean isRemoved, String projectID, String name, List<ProjectMemberResponse> members,
+            String state, List<String> tags, String description) {
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
@@ -60,7 +60,7 @@ public class ProjectResponse {
         return name;
     }
 
-    public List<ProjectMember> getMembers() {
+    public List<ProjectMemberResponse> getMembers() {
         return members;
     }
 
@@ -78,68 +78,19 @@ public class ProjectResponse {
 
     @Override
     public String toString() {
-        return "ProjectResponse{" + "updatedAt=" + updatedAt + ", createdAt=" + createdAt
-                + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", isRemoved="
-                + isRemoved + ", projectID='" + projectID + '\'' + ", name='" + name + '\''
-                + ", members=" + members + ", state='" + state + '\'' + ", tags=" + tags
-                + ", description='" + description + '\'' + '}';
-    }
-
-    public static class ProjectMember {
-
-        private String userID;
-        private String username;
-        private String email;
-        private String name;
-        private String role;
-        private String invitation;
-        private Long joinedAt;
-
-        public ProjectMember(String userID, String username, String email, String name, String role,
-                             String invitation, Long joinedAt) {
-            this.userID = userID;
-            this.username = username;
-            this.email = email;
-            this.name = name;
-            this.role = role;
-            this.invitation = invitation;
-            this.joinedAt = joinedAt;
-        }
-
-        public String getUserID() {
-            return userID;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getRole() {
-            return role;
-        }
-
-        public String getInvitation() {
-            return invitation;
-        }
-
-        public long getJoinedAt() {
-            return joinedAt;
-        }
-
-        @Override
-        public String toString() {
-            return "ProjectMember{" + "userID='" + userID + '\'' + ", username='" + username + '\''
-                    + ", email='" + email + '\'' + ", name='" + name + '\'' + ", role='" + role
-                    + '\'' + ", invitation='" + invitation + '\'' + ", joinedAt=" + joinedAt + '}';
-        }
+        return "ProjectResponse{" +
+                "updatedAt=" + updatedAt +
+                ", createdAt=" + createdAt +
+                ", createdBy=" + createdBy +
+                ", updatedBy=" + updatedBy +
+                ", isRemoved=" + isRemoved +
+                ", projectID='" + projectID + '\'' +
+                ", name='" + name + '\'' +
+                ", members=" + members +
+                ", state='" + state + '\'' +
+                ", tags=" + tags +
+                ", description='" + description + '\'' +
+                '}';
     }
 
     public static class CreatedBy {
@@ -168,8 +119,11 @@ public class ProjectResponse {
 
         @Override
         public String toString() {
-            return "CreatedBy{" + "userID='" + userID + '\'' + ", username='" + username + '\''
-                    + ", email='" + email + '\'' + '}';
+            return "CreatedBy{" +
+                    "userID='" + userID + '\'' +
+                    ", username='" + username + '\'' +
+                    ", email='" + email + '\'' +
+                    '}';
         }
     }
 
@@ -199,8 +153,11 @@ public class ProjectResponse {
 
         @Override
         public String toString() {
-            return "UpdatedBy{" + "userID='" + userID + '\'' + ", username='" + username + '\''
-                    + ", email='" + email + '\'' + '}';
+            return "UpdatedBy{" +
+                    "userID='" + userID + '\'' +
+                    ", username='" + username + '\'' +
+                    ", email='" + email + '\'' +
+                    '}';
         }
     }
 }
