@@ -1,6 +1,7 @@
 import io.litmuschaos.LitmusClient;
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.exception.detailed.UnauthorizedException;
+import io.litmuschaos.request.LoginRequest;
 import io.litmuschaos.response.CapabilityResponse;
 import io.litmuschaos.response.LoginResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,8 @@ public class AuthTest {
 
     @Test
     public void testAuthenticationAPI() throws IOException, LitmusApiException {
-        assertThat(authClient.authenticate(username, password))
+        LoginRequest request = LoginRequest.builder().username(username).password(password).build();
+        assertThat(authClient.authenticate(request))
                 .isNotNull()
                 .isInstanceOf(LoginResponse.class);
     }
@@ -43,9 +45,10 @@ public class AuthTest {
     public void testAuthenticationAPIFail() {
         // Given
         String wrongPassword = "litmus1234";
+        LoginRequest request = LoginRequest.builder().username(username).password(wrongPassword).build();
 
         // When & Then
-        assertThatThrownBy(() -> authClient.authenticate(username, wrongPassword))
+        assertThatThrownBy(() -> authClient.authenticate(request))
                 .isInstanceOf(UnauthorizedException.class);
     }
 }

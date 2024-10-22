@@ -1,26 +1,26 @@
 package io.litmuschaos.request;
 
-public class LoginRequest {
+public class UserStateUpdateRequest {
 
     private final String username;
-    private final String password;
+    private final boolean isDeactivate;
 
-    public LoginRequest(Builder builder) {
+    private UserStateUpdateRequest(Builder builder) {
         this.username = builder.username;
-        this.password = builder.password;
+        this.isDeactivate = builder.isDeactivate;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isDeactivate() {
+        return isDeactivate;
     }
 
     public static class Builder {
         private String username;
-        private String password;
+        private boolean isDeactivate;
 
         public Builder() {}
 
@@ -29,13 +29,13 @@ public class LoginRequest {
             return this;
         }
 
-        public Builder password(String password) {
-            this.password = password;
+        public Builder isDeactivate(boolean isDeactivate) {
+            this.isDeactivate = isDeactivate;
             return this;
         }
 
-        public LoginRequest build() {
-            return new LoginRequest(this);
+        public UserStateUpdateRequest build() {
+            return new UserStateUpdateRequest(this);
         }
     }
 

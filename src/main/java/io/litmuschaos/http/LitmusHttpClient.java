@@ -25,6 +25,10 @@ public class LitmusHttpClient implements AutoCloseable{
         return get(url, null, null, responseType);
     }
 
+    public <T> T get(String url, TypeToken<T> typeToken) throws IOException, LitmusApiException {
+        return get(url, null, null, typeToken);
+    }
+
     public <T> T get(String url, String token, Class<T> responseType) throws IOException, LitmusApiException {
         return get(url, token, null, responseType);
     }

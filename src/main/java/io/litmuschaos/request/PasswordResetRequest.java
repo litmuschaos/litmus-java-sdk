@@ -1,26 +1,26 @@
 package io.litmuschaos.request;
 
-public class LoginRequest {
+public class PasswordResetRequest {
 
     private final String username;
-    private final String password;
+    private final String newPassword;
 
-    public LoginRequest(Builder builder) {
+    private PasswordResetRequest(Builder builder) {
         this.username = builder.username;
-        this.password = builder.password;
+        this.newPassword = builder.newPassword;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getNewPassword() {
+        return newPassword;
     }
 
     public static class Builder {
         private String username;
-        private String password;
+        private String newPassword;
 
         public Builder() {}
 
@@ -29,13 +29,13 @@ public class LoginRequest {
             return this;
         }
 
-        public Builder password(String password) {
-            this.password = password;
+        public Builder newPassword(String newPassword) {
+            this.newPassword = newPassword;
             return this;
         }
 
-        public LoginRequest build() {
-            return new LoginRequest(this);
+        public PasswordResetRequest build() {
+            return new PasswordResetRequest(this);
         }
     }
 
