@@ -12,7 +12,6 @@ import io.litmuschaos.response.CapabilityResponse;
 import io.litmuschaos.response.CommonResponse;
 import io.litmuschaos.response.ListProjectsResponse;
 import io.litmuschaos.response.LoginResponse;
-
 import io.litmuschaos.response.ProjectMemberResponse;
 import io.litmuschaos.response.ProjectResponse;
 import io.litmuschaos.response.ProjectRoleResponse;
@@ -42,7 +41,10 @@ public class LitmusClient implements AutoCloseable {
     // TODO - @Suyeon Jung : host, port config to LitmusAuthConfig class
     public LoginResponse authenticate(String username, String password)
             throws IOException, LitmusApiException {
-        LoginRequest request = new LoginRequest(username, password);
+        LoginRequest request = LoginRequest.builder()
+                .username(username)
+                .password(password)
+                .build();
         LoginResponse response = httpClient.post("/login", request, LoginResponse.class);
         this.token = response.getAccessToken();
         return response;
