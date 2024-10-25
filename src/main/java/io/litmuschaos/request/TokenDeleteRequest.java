@@ -1,10 +1,12 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class TokenDeleteRequest {
     private final String userID;
     private final String token;
 
-    private TokenDeleteRequest(TokenDeleteRequest.Builder builder) {
+    private TokenDeleteRequest(TokenDeleteRequestBuilder builder) {
         this.userID = builder.userID;
         this.token = builder.token;
     }
@@ -18,18 +20,18 @@ public class TokenDeleteRequest {
     }
 
 
-    public static class Builder {
+    public static class TokenDeleteRequestBuilder implements Builder<TokenDeleteRequest> {
         private String userID;
         private String token;
 
-        public Builder() {}
+        public TokenDeleteRequestBuilder() {}
 
-        public Builder userID(String userId) {
+        public TokenDeleteRequestBuilder userID(String userId) {
             this.userID = userId;
             return this;
         }
 
-        public Builder token(String token) {
+        public TokenDeleteRequestBuilder token(String token) {
             this.token = token;
             return this;
         }
@@ -39,7 +41,7 @@ public class TokenDeleteRequest {
         }
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static TokenDeleteRequestBuilder builder() {
+        return new TokenDeleteRequestBuilder();
     }
 }

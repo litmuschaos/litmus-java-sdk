@@ -1,11 +1,13 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class PasswordResetRequest {
 
     private final String username;
     private final String newPassword;
 
-    private PasswordResetRequest(Builder builder) {
+    private PasswordResetRequest(PasswordResetRequestBuilder builder) {
         this.username = builder.username;
         this.newPassword = builder.newPassword;
     }
@@ -18,18 +20,18 @@ public class PasswordResetRequest {
         return newPassword;
     }
 
-    public static class Builder {
+    public static class PasswordResetRequestBuilder implements Builder<PasswordResetRequest> {
         private String username;
         private String newPassword;
 
-        public Builder() {}
+        public PasswordResetRequestBuilder() {}
 
-        public Builder username(String username) {
+        public PasswordResetRequestBuilder username(String username) {
             this.username = username;
             return this;
         }
 
-        public Builder newPassword(String newPassword) {
+        public PasswordResetRequestBuilder newPassword(String newPassword) {
             this.newPassword = newPassword;
             return this;
         }
@@ -39,7 +41,7 @@ public class PasswordResetRequest {
         }
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static PasswordResetRequestBuilder builder() {
+        return new PasswordResetRequestBuilder();
     }
 }

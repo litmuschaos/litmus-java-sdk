@@ -1,5 +1,7 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class PasswordUpdateRequest {
 
     private final String username;
@@ -8,7 +10,7 @@ public class PasswordUpdateRequest {
 
     private final String newPassword;
 
-    private PasswordUpdateRequest(Builder builder) {
+    private PasswordUpdateRequest(PasswordUpdateRequestBuilder builder) {
         this.username = builder.username;
         this.oldPassword = builder.oldPassword;
         this.newPassword = builder.newPassword;
@@ -26,26 +28,26 @@ public class PasswordUpdateRequest {
         return newPassword;
     }
 
-    public static class Builder {
+    public static class PasswordUpdateRequestBuilder implements Builder<PasswordUpdateRequest> {
         private String username;
 
         private String oldPassword;
 
         private String newPassword;
 
-        public Builder(){}
+        public PasswordUpdateRequestBuilder(){}
 
-        public Builder username(String username){
+        public PasswordUpdateRequestBuilder username(String username){
             this.username = username;
             return this;
         }
 
-        public Builder oldPassword(String oldPassword){
+        public PasswordUpdateRequestBuilder oldPassword(String oldPassword){
             this.oldPassword = oldPassword;
             return this;
         }
 
-        public Builder newPassword(String newPassword){
+        public PasswordUpdateRequestBuilder newPassword(String newPassword){
             this.newPassword = newPassword;
             return this;
         }
@@ -55,7 +57,7 @@ public class PasswordUpdateRequest {
         }
     }
 
-    public static Builder builder(){
-        return new Builder();
+    public static PasswordUpdateRequestBuilder builder(){
+        return new PasswordUpdateRequestBuilder();
     }
 }

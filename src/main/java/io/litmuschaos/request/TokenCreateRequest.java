@@ -1,12 +1,14 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class TokenCreateRequest {
     // Field names in token dto follow snake case convention to maintain consistency with chaos center API response format
     private final String user_id;
     private final String name;
     private final Integer days_until_expiration;
 
-    private TokenCreateRequest(Builder builder) {
+    private TokenCreateRequest(TokenCreateRequestBuilder builder) {
         this.user_id = builder.userID;
         this.name = builder.name;
         this.days_until_expiration = builder.daysUntilExpiration;
@@ -24,24 +26,24 @@ public class TokenCreateRequest {
         return days_until_expiration;
     }
 
-    public static class Builder {
+    public static class TokenCreateRequestBuilder implements Builder<TokenCreateRequest> {
         private String userID;
         private String name;
         private Integer daysUntilExpiration;
 
-        public Builder() {}
+        public TokenCreateRequestBuilder() {}
 
-        public Builder userID(String userId) {
+        public TokenCreateRequestBuilder userID(String userId) {
             this.userID = userId;
             return this;
         }
 
-        public Builder name(String name) {
+        public TokenCreateRequestBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder daysUntilExpiration(Integer daysUntilExpiration) {
+        public TokenCreateRequestBuilder daysUntilExpiration(Integer daysUntilExpiration) {
             this.daysUntilExpiration = daysUntilExpiration;
             return this;
         }
@@ -51,7 +53,7 @@ public class TokenCreateRequest {
         }
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static TokenCreateRequestBuilder builder() {
+        return new TokenCreateRequestBuilder();
     }
 }

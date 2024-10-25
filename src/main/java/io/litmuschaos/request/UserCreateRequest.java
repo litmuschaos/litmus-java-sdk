@@ -1,5 +1,7 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class UserCreateRequest {
 
     private final String username;
@@ -8,7 +10,7 @@ public class UserCreateRequest {
     private final String email;
     private final String name;
 
-    private UserCreateRequest(Builder builder) {
+    private UserCreateRequest(UserCreateRequestBuilder builder) {
         this.username = builder.username;
         this.password = builder.password;
         this.role = builder.role;
@@ -36,36 +38,38 @@ public class UserCreateRequest {
         return name;
     }
 
-    public static class Builder {
+    public static UserCreateRequestBuilder builder(){
+        return new UserCreateRequestBuilder();
+    }
+
+    public static class UserCreateRequestBuilder implements Builder<UserCreateRequest> {
         private String username;
         private String password;
         private String role;
         private String email;
         private String name;
 
-        public Builder() {}
-
-        public Builder username(String username) {
+        public UserCreateRequestBuilder username(String username) {
             this.username = username;
             return this;
         }
 
-        public Builder password(String password) {
+        public UserCreateRequestBuilder password(String password) {
             this.password = password;
             return this;
         }
 
-        public Builder role(String role) {
+        public UserCreateRequestBuilder role(String role) {
             this.role = role;
             return this;
         }
 
-        public Builder email(String email) {
+        public UserCreateRequestBuilder email(String email) {
             this.email = email;
             return this;
         }
 
-        public Builder name(String name) {
+        public UserCreateRequestBuilder name(String name) {
             this.name = name;
             return this;
         }
@@ -74,10 +78,5 @@ public class UserCreateRequest {
             return new UserCreateRequest(this);
         }
     }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
 }
 

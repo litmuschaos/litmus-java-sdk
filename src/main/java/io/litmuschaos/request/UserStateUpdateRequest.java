@@ -1,11 +1,13 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class UserStateUpdateRequest {
 
     private final String username;
     private final boolean isDeactivate;
 
-    private UserStateUpdateRequest(Builder builder) {
+    private UserStateUpdateRequest(UserStateUpdateRequestBuilder builder) {
         this.username = builder.username;
         this.isDeactivate = builder.isDeactivate;
     }
@@ -18,28 +20,26 @@ public class UserStateUpdateRequest {
         return isDeactivate;
     }
 
-    public static class Builder {
+    public static UserStateUpdateRequestBuilder builder(){
+        return new UserStateUpdateRequestBuilder();
+    }
+
+    public static class UserStateUpdateRequestBuilder implements Builder<UserStateUpdateRequest> {
         private String username;
         private boolean isDeactivate;
 
-        public Builder() {}
-
-        public Builder username(String username) {
+        public UserStateUpdateRequestBuilder username(String username) {
             this.username = username;
             return this;
         }
 
-        public Builder isDeactivate(boolean isDeactivate) {
+        public UserStateUpdateRequestBuilder isDeactivate(boolean isDeactivate) {
             this.isDeactivate = isDeactivate;
             return this;
         }
 
-        public UserStateUpdateRequest build() {
+        public UserStateUpdateRequest build(){
             return new UserStateUpdateRequest(this);
         }
-    }
-
-    public static Builder builder() {
-        return new Builder();
     }
 }

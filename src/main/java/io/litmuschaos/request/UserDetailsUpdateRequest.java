@@ -6,7 +6,7 @@ public class UserDetailsUpdateRequest {
     private final String name;
     private final String email;
 
-    private UserDetailsUpdateRequest(UserDetailsUpdateRequest.Builder builder) {
+    private UserDetailsUpdateRequest(UserDetailsUpdateRequestBuilder builder) {
         this.id = builder.userID;
         this.name = builder.name;
         this.email = builder.email;
@@ -24,24 +24,24 @@ public class UserDetailsUpdateRequest {
         return id;
     }
 
-    public static class Builder {
+    public static class UserDetailsUpdateRequestBuilder {
         private String userID;
         private String name;
         private String email;
 
-        public Builder() {}
+        public UserDetailsUpdateRequestBuilder() {}
 
-        public UserDetailsUpdateRequest.Builder name(String name) {
+        public UserDetailsUpdateRequestBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        public UserDetailsUpdateRequest.Builder email(String email) {
+        public UserDetailsUpdateRequestBuilder email(String email) {
             this.email = email;
             return this;
         }
 
-        public UserDetailsUpdateRequest.Builder userID(String userID) {
+        public UserDetailsUpdateRequestBuilder userID(String userID) {
             this.userID = userID;
             return this;
         }
@@ -51,7 +51,7 @@ public class UserDetailsUpdateRequest {
         }
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static UserDetailsUpdateRequestBuilder builder() {
+        return new UserDetailsUpdateRequestBuilder();
     }
 }
