@@ -43,9 +43,19 @@ public class UserTest {
 
     @Test
     void userCreateTest() throws IOException, LitmusApiException {
-        UserCreateRequest request = makeTestUserCreateRequest();
-        assertThat(litmusClient.createUser(request))
-                .isNotNull()
+        // Given
+        UserCreateRequest request = UserCreateRequest.builder()
+                .username(randomUsername)
+                .password(TEST_USER_PASSWORD)
+                .role(TEST_USER_ROLE)
+                .email(TEST_USER_EMAIL)
+                .name(TEST_USER_NAME).build();
+
+        // When
+        UserResponse user = litmusClient.createUser(request);
+
+        // Then
+        assertThat(user).isNotNull()
                 .hasFieldOrPropertyWithValue("username", randomUsername)
                 .hasFieldOrPropertyWithValue("email", TEST_USER_EMAIL)
                 .hasFieldOrPropertyWithValue("name", TEST_USER_NAME)
@@ -54,63 +64,85 @@ public class UserTest {
 
     @Test
     void getUserTest() throws IOException, LitmusApiException {
-        UserCreateRequest request = makeTestUserCreateRequest();
-        UserResponse userResponse = litmusClient.createUser(request);
-        assertThat(litmusClient.getUser(userResponse.getUserID()))
-                .isNotNull()
+        // Given
+        UserResponse createdUser = createTestUser(randomUsername, TEST_USER_PASSWORD, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME);
+
+        // When
+        UserResponse user = litmusClient.getUser(createdUser.getUserID());
+        List<UserResponse> users = litmusClient.getUsers();
+
+        // Then
+        assertThat(user).isNotNull()
                 .hasFieldOrPropertyWithValue("username", randomUsername)
                 .hasFieldOrPropertyWithValue("email", TEST_USER_EMAIL)
                 .hasFieldOrPropertyWithValue("name", TEST_USER_NAME)
                 .hasFieldOrPropertyWithValue("role", TEST_USER_ROLE);
 
-        assertThat(litmusClient.getUsers())
-                .isNotNull()
+        assertThat(users).isNotNull()
                 .hasSizeGreaterThanOrEqualTo(1)
-                .anyMatch(response -> response.getUserID().equals(userResponse.getUserID()));
+                .anyMatch(response -> response.getUserID().equals(createdUser.getUserID()));
     }
 
     @Test
-    void updateUserStateTest() throws IOException, LitmusApiException {
-        UserResponse createdUser = litmusClient.createUser(makeTestUserCreateRequest());
-        String userID = createdUser.getUserID();
+    void updateUserStateDeactivateTest() throws IOException, LitmusApiException {
+        // Given
+        UserResponse createdUser = createTestUser(randomUsername, TEST_USER_PASSWORD, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME);
 
+        // When
         UserStateUpdateRequest stateUpdateRequest = UserStateUpdateRequest.builder()
                 .username(randomUsername)
                 .isDeactivate(true)
                 .build();
+        litmusClient.updateUserState(stateUpdateRequest);
 
-        assertThat(litmusClient.updateUserState(stateUpdateRequest)).isNotNull();
-
-        UserResponse user = litmusClient.getUser(userID);
+        // Then
+        UserResponse user = litmusClient.getUser(createdUser.getUserID());
         assertThat(user.isRemoved()).isTrue();
+    }
 
+    @Test
+    void updateUserStateActivateTest() throws IOException, LitmusApiException {
+        // Given
+        UserResponse createdUser = createTestUser(randomUsername, TEST_USER_PASSWORD, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME);
+        UserStateUpdateRequest stateUpdateRequest = UserStateUpdateRequest.builder()
+                .username(randomUsername)
+                .isDeactivate(true)
+                .build();
+        litmusClient.updateUserState(stateUpdateRequest);
+
+        // When
         stateUpdateRequest = UserStateUpdateRequest.builder()
                 .username(randomUsername)
                 .isDeactivate(false)
                 .build();
         litmusClient.updateUserState(stateUpdateRequest);
-        user = litmusClient.getUser(userID);
+
+        // Then
+        UserResponse user = litmusClient.getUser(createdUser.getUserID());
         assertThat(user.isRemoved()).isFalse();
     }
 
     @Test
     void updatePasswordTest() throws IOException, LitmusApiException {
-        litmusClient.createUser(makeTestUserCreateRequest());
+        // Given
+        UserResponse createdUser = createTestUser(randomUsername, TEST_USER_PASSWORD, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME);
         String newPassword = "newPassword1!";
+
+        // When
         PasswordUpdateRequest request = PasswordUpdateRequest.builder()
-                .username(randomUsername)
+                .username(createdUser.getUsername())
                 .oldPassword(TEST_USER_PASSWORD)
                 .newPassword(newPassword)
                 .build();
 
+        // Then
         // Only password owner can update own password
         // admin user try to update user's password -> fail
         assertThatThrownBy(() -> litmusClient.updatePassword(request))
                 .isInstanceOf(UnauthorizedException.class);
 
-
         // authenticate by password owner's username, password then change password
-        litmusClient.authenticate(LoginRequest.builder().username(randomUsername).password(TEST_USER_PASSWORD).build());
+        litmusClient.authenticate(LoginRequest.builder().username(createdUser.getUsername()).password(TEST_USER_PASSWORD).build());
         assertThat(litmusClient.updatePassword(request))
                 .isNotNull()
                 .hasFieldOrProperty("message")
@@ -119,7 +151,8 @@ public class UserTest {
 
     @Test
     void resetPasswordTest() throws IOException, LitmusApiException {
-        litmusClient.createUser(makeTestUserCreateRequest());
+        // Given
+        UserResponse createdUser = createTestUser(randomUsername, TEST_USER_PASSWORD, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME);
         String newPassword = "newPassword1!";
         PasswordResetRequest request = PasswordResetRequest.builder()
                 .username(randomUsername)
@@ -140,9 +173,12 @@ public class UserTest {
 
     @Test
     void updateUserDetailsTest() throws IOException, LitmusApiException {
-        UserResponse user = litmusClient.createUser(makeTestUserCreateRequest());
+        // Given
+        UserResponse user = createTestUser(randomUsername, TEST_USER_PASSWORD, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME);
         String newName = "newName";
         String newEmail = "new@new.com";
+
+        // When & Then
         UserDetailsUpdateRequest request = UserDetailsUpdateRequest.builder()
                 .userID(user.getUserID())
                 .name(newName)
@@ -155,21 +191,19 @@ public class UserTest {
 
     @Test
     void createTokenTest() throws IOException, LitmusApiException {
-        UserResponse user = litmusClient.createUser(makeTestUserCreateRequest());
-        litmusClient.authenticate(LoginRequest.builder().username(randomUsername).password(TEST_USER_PASSWORD).build());
-        PasswordUpdateRequest passwordUpdateRequest = PasswordUpdateRequest.builder()
-                .username(randomUsername)
-                .oldPassword(TEST_USER_PASSWORD)
-                .newPassword("newPassword1!")
-                .build();
-        litmusClient.updatePassword(passwordUpdateRequest);
+        // Given
+        UserResponse user =createPasswordUpdatedTestUser(
+                randomUsername, TEST_USER_PASSWORD, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME, "newPassword1!"
+        );
 
+        // When
         TokenCreateRequest request = TokenCreateRequest.builder()
                 .userID(user.getUserID())
                 .name("test token")
-                .daysUntilExpiration(30)
-                .build();
+                .daysUntilExpiration(30).build();
         TokenCreateResponse tokenCreateResponse = litmusClient.createToken(request);
+
+        // Then
         List<TokenResponse> tokens = litmusClient.getTokens(user.getUserID()).getTokens();
         assertThat(tokens).anyMatch(
                 token ->
@@ -180,41 +214,53 @@ public class UserTest {
 
     @Test
     void deleteTokenTest() throws IOException, LitmusApiException {
-        UserResponse user = litmusClient.createUser(makeTestUserCreateRequest());
-        litmusClient.authenticate(LoginRequest.builder().username(randomUsername).password(TEST_USER_PASSWORD).build());
-        PasswordUpdateRequest passwordUpdateRequest = PasswordUpdateRequest.builder()
-                .username(randomUsername)
-                .oldPassword(TEST_USER_PASSWORD)
-                .newPassword("newPassword1!")
-                .build();
-        litmusClient.updatePassword(passwordUpdateRequest);
-
-        // create token
+        // Given
+        UserResponse user =createPasswordUpdatedTestUser(
+                randomUsername, TEST_USER_PASSWORD, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME, "newPassword1!"
+        );
         TokenCreateRequest tokenCreateRequest = TokenCreateRequest.builder()
                 .userID(user.getUserID())
                 .name("test token")
-                .daysUntilExpiration(30)
-                .build();
+                .daysUntilExpiration(30).build();
         TokenCreateResponse tokenCreateResponse = litmusClient.createToken(tokenCreateRequest);
 
-        // delete token
+        // When
         TokenDeleteRequest tokenDeleteRequest = TokenDeleteRequest.builder()
                 .userID(user.getUserID())
-                .token(tokenCreateResponse.getAccessToken())
-                .build();
-
+                .token(tokenCreateResponse.getAccessToken()).build();
         litmusClient.deleteToken(tokenDeleteRequest);
+
+        // Then
         ListTokensResponse response = litmusClient.getTokens(user.getUserID());
         assertThat(response.getTokens()).isNull();
     }
 
-    private UserCreateRequest makeTestUserCreateRequest(){
-        return UserCreateRequest.builder()
-                .username(randomUsername)
-                .password(TEST_USER_PASSWORD)
-                .role(TEST_USER_ROLE)
-                .email(TEST_USER_EMAIL)
-                .name(TEST_USER_NAME).build();
+    private UserResponse createTestUser(
+            String username, String password, String role, String email, String name
+    ) throws LitmusApiException, IOException
+    {
+        UserCreateRequest request = UserCreateRequest.builder().
+                username(username)
+                .password(password)
+                .role(role)
+                .email(email)
+                .name(name).build();
+        return litmusClient.createUser(request);
+    }
+
+    private UserResponse createPasswordUpdatedTestUser(
+            String username, String password, String role, String email, String name, String newPassword
+    ) throws LitmusApiException, IOException
+    {
+        UserResponse user = createTestUser(username, password, role, email, name);
+        litmusClient.authenticate(LoginRequest.builder().username(username).password(password).build());
+        PasswordUpdateRequest passwordUpdateRequest = PasswordUpdateRequest.builder()
+                .username(username)
+                .oldPassword(password)
+                .newPassword(newPassword)
+                .build();
+        litmusClient.updatePassword(passwordUpdateRequest);
+        return litmusClient.getUser(user.getUserID());
     }
 
 }
