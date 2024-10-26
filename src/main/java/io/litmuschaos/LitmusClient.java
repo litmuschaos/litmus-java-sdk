@@ -3,6 +3,9 @@ package io.litmuschaos;
 import com.google.gson.reflect.TypeToken;
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.http.LitmusHttpClient;
+import io.litmuschaos.request.*;
+import io.litmuschaos.response.*;
+
 import io.litmuschaos.request.CreateProjectRequest;
 import io.litmuschaos.request.LeaveProjectRequest;
 import io.litmuschaos.request.ListProjectRequest;
@@ -30,7 +33,8 @@ public class LitmusClient implements AutoCloseable {
     public LitmusClient(String host, String username, String password)
             throws IOException, LitmusApiException {
         this.httpClient = new LitmusHttpClient(host);
-        this.authenticate(username, password);
+        LoginRequest request = LoginRequest.builder().username(username).password(password).build();
+        this.authenticate(request);
     }
 
     @Override
@@ -38,16 +42,58 @@ public class LitmusClient implements AutoCloseable {
         this.httpClient.close();
     }
 
-    // TODO - @Suyeon Jung : host, port config to LitmusAuthConfig class
-    public LoginResponse authenticate(String username, String password)
+    public LoginResponse authenticate(LoginRequest request)
             throws IOException, LitmusApiException {
-        LoginRequest request = LoginRequest.builder()
-                .username(username)
-                .password(password)
-                .build();
         LoginResponse response = httpClient.post("/login", request, LoginResponse.class);
         this.token = response.getAccessToken();
         return response;
+    }
+
+    public CommonResponse logout() throws IOException, LitmusApiException {
+        CommonResponse commonResponse = httpClient.post("/logout", token, CommonResponse.class);
+        this.token = "";
+        return commonResponse;
+    }
+
+    public ListTokensResponse getTokens(String userId) throws IOException, LitmusApiException {
+        return httpClient.get("/token/" + userId, token, ListTokensResponse.class);
+    }
+
+    public TokenCreateResponse createToken(TokenCreateRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/create_token", token, request, TokenCreateResponse.class);
+    }
+
+    public CommonResponse deleteToken(TokenDeleteRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/remove_token", token, request, CommonResponse.class);
+    }
+
+    public UserResponse getUser(String userId) throws IOException, LitmusApiException {
+        return httpClient.get("/get_user/" + userId, token, UserResponse.class);
+    }
+
+    public List<UserResponse> getUsers() throws IOException, LitmusApiException {
+        TypeToken<List<UserResponse>> typeToken = new TypeToken<>() {};
+        return httpClient.get("/users", token, typeToken);
+    }
+
+    public PasswordUpdateResponse updatePassword(PasswordUpdateRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/update/password", token, request, PasswordUpdateResponse.class);
+    }
+
+    public UserResponse createUser(UserCreateRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/create_user", token, request, UserResponse.class);
+    }
+
+    public CommonResponse resetPassword(PasswordResetRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/reset/password", token, request, CommonResponse.class);
+    }
+
+    public CommonResponse updateUserDetails(UserDetailsUpdateRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/update/details", token, request, CommonResponse.class);
+    }
+
+    public CommonResponse updateUserState(UserStateUpdateRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/update/state", token, request, CommonResponse.class);
     }
 
     public CapabilityResponse capabilities() throws IOException, LitmusApiException {

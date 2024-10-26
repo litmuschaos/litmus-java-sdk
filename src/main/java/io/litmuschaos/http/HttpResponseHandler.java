@@ -28,8 +28,12 @@ public class HttpResponseHandler {
 
     private void handleErrorResponse(Response response) throws LitmusApiException, IOException {
         String errorMessage = "";
-        if(response.body() != null && !response.body().string().isEmpty()) {
-            errorMessage = parseErrorDescription(response.body().string());
+        String bodyString = "";
+        if (response.body() != null) {
+            bodyString = response.body().string();
+            if (!bodyString.isEmpty()) {
+                errorMessage = parseErrorDescription(bodyString);
+            }
         }
         switch (response.code()) {
             case 400:
@@ -46,9 +50,17 @@ public class HttpResponseHandler {
     }
 
     private String parseErrorDescription(String errorBody) {
-        JsonObject jsonObject = gson.fromJson(errorBody, JsonObject.class);
-        if (jsonObject.has("errorDescription")) {
-            return jsonObject.get("errorDescription").getAsString();
+        try {
+            String[] jsonObjects = errorBody.split("(?<=})(?=\\{)");
+
+            for (String jsonStr : jsonObjects) {
+                JsonObject jsonObject = gson.fromJson(jsonStr, JsonObject.class);
+                if (jsonObject.has("errorDescription")) {
+                    return jsonObject.get("errorDescription").getAsString();
+                }
+            }
+        } catch (Exception e) {
+            return "";
         }
         return "";
     }

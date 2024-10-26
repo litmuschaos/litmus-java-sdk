@@ -35,4 +35,12 @@ public class LoginRequest {
             return new LoginRequest(this);
         }
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
