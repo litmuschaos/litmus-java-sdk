@@ -1,35 +1,46 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class RemoveInvitationRequest {
 
-    private String projectId;
-    private String userId;
+    private final String projectId;
+    private final String userId;
 
-    public RemoveInvitationRequest(String projectId, String userId) {
-        this.projectId = projectId;
-        this.userId = userId;
+    private RemoveInvitationRequest(RemoveInvitationRequestBuilder builder) {
+        this.projectId = builder.projectId;
+        this.userId = builder.userId;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public String getProjectId() {
+        return projectId;
     }
 
-    public static class Builder {
+    public String getUserId() {
+        return userId;
+    }
+
+    public static RemoveInvitationRequestBuilder builder() {
+        return new RemoveInvitationRequestBuilder();
+    }
+
+    public static class RemoveInvitationRequestBuilder implements Builder<RemoveInvitationRequest> {
         private String projectId;
         private String userId;
 
-        public Builder projectId(String projectId) {
+        public RemoveInvitationRequestBuilder projectId(String projectId) {
             this.projectId = projectId;
             return this;
         }
 
-        public Builder userId(String userId) {
+        public RemoveInvitationRequestBuilder userId(String userId) {
             this.userId = userId;
             return this;
         }
 
+        @Override
         public RemoveInvitationRequest build() {
-            return new RemoveInvitationRequest(this.projectId, this.userId);
+            return new RemoveInvitationRequest(this);
         }
     }
 }

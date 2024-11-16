@@ -1,44 +1,17 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class SendInvitationRequest {
 
-    private String projectId;
-    private String userId;
-    private String role;
+    private final String projectId;
+    private final String userId;
+    private final String role;
 
-    public SendInvitationRequest(String projectId, String userId, String role) {
-        this.projectId = projectId;
-        this.userId = userId;
-        this.role = role;
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private String projectId;
-        private String userId;
-        private String role;
-
-        public Builder projectId(String projectId) {
-            this.projectId = projectId;
-            return this;
-        }
-
-        public Builder userId(String userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public Builder role(String role) {
-            this.role = role;
-            return this;
-        }
-
-        public SendInvitationRequest build() {
-            return new SendInvitationRequest(this.projectId, this.userId, this.role);
-        }
+    private SendInvitationRequest(SendInvitationRequestBuilder builder) {
+        this.projectId = builder.projectId;
+        this.userId = builder.userId;
+        this.role = builder.role;
     }
 
     public String getProjectId() {
@@ -51,5 +24,35 @@ public class SendInvitationRequest {
 
     public String getRole() {
         return role;
+    }
+
+    public static SendInvitationRequestBuilder builder() {
+        return new SendInvitationRequestBuilder();
+    }
+
+    public static class SendInvitationRequestBuilder implements Builder<SendInvitationRequest> {
+        private String projectId;
+        private String userId;
+        private String role;
+
+        public SendInvitationRequestBuilder projectId(String projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        public SendInvitationRequestBuilder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public SendInvitationRequestBuilder role(String role) {
+            this.role = role;
+            return this;
+        }
+
+        @Override
+        public SendInvitationRequest build() {
+            return new SendInvitationRequest(this);
+        }
     }
 }

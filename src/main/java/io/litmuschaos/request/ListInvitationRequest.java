@@ -1,35 +1,46 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.util.Builder;
+
 public class ListInvitationRequest {
 
-    private String projectId;
-    private String userId;
+    private final String projectId;
+    private final String userId;
 
-    public ListInvitationRequest(String projectId, String userId) {
-        this.projectId = projectId;
-        this.userId = userId;
+    private ListInvitationRequest(ListInvitationRequestBuilder builder) {
+        this.projectId = builder.projectId;
+        this.userId = builder.userId;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public String getProjectId() {
+        return projectId;
     }
 
-    public static class Builder {
+    public String getUserId() {
+        return userId;
+    }
+
+    public static ListInvitationRequestBuilder builder() {
+        return new ListInvitationRequestBuilder();
+    }
+
+    public static class ListInvitationRequestBuilder implements Builder<ListInvitationRequest> {
         private String projectId;
         private String userId;
 
-        public Builder projectId(String projectId) {
+        public ListInvitationRequestBuilder projectId(String projectId) {
             this.projectId = projectId;
             return this;
         }
 
-        public Builder userId(String userId) {
+        public ListInvitationRequestBuilder userId(String userId) {
             this.userId = userId;
             return this;
         }
 
+        @Override
         public ListInvitationRequest build() {
-            return new ListInvitationRequest(this.projectId, this.userId);
+            return new ListInvitationRequest(this);
         }
     }
 }
