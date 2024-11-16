@@ -127,7 +127,6 @@ public class InviteTest {
 
     @Test
     public void testAcceptInvitation() throws IOException, LitmusApiException {
-        System.out.println("projectId: " + projectId + " userId: " + userId);
         createInvite(projectId, userId);
         AcceptInvitationRequest request = AcceptInvitationRequest.builder()
                 .projectId(projectId)
@@ -199,10 +198,13 @@ public class InviteTest {
         List<InviteUsersResponse> response1 = litmusClient.inviteUsers(projectResponse.getProjectID());
 
         String userTestName = generateRandomUsername();
-        UserResponse userTemp = createPasswordUpdatedTestUser(userTestName, oldPassword, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME, password);
+        createPasswordUpdatedTestUser(userTestName, oldPassword, TEST_USER_ROLE, TEST_USER_EMAIL, TEST_USER_NAME, password);
 
         litmusClient.authenticate(LoginRequest.builder().username(username).password(password).build());
         List<InviteUsersResponse> response2 = litmusClient.inviteUsers(projectResponse.getProjectID());
+
+        litmusClient.deleteProject(projectId);
+
         assertThat(response2.size()).isEqualTo(response1.size() + 1);
     }
 
