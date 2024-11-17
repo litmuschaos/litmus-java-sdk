@@ -166,4 +166,31 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.post("/delete_project/" + projectID, token, CommonResponse.class);
     }
 
+
+    public SendInvitationResponse sendInvitation(SendInvitationRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/send_invitation", token, request, SendInvitationResponse.class);
+    }
+
+    public CommonResponse acceptInvitation(AcceptInvitationRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/accept_invitation", token, request, CommonResponse.class);
+    }
+
+    public CommonResponse declineInvitation(DeclineInvitationRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/decline_invitation", token, request, CommonResponse.class);
+    }
+
+    public CommonResponse removeInvitation(RemoveInvitationRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/remove_invitation", token, request, CommonResponse.class);
+    }
+
+    public List<ListInvitationResponse> listInvitation(String status)
+            throws IOException, LitmusApiException {
+        return httpClient.get("/list_invitations_with_filters/" + status, token, List.class);
+    }
+
+    public List<InviteUsersResponse> inviteUsers(String projectId)
+            throws IOException, LitmusApiException {
+        return httpClient.get("/invite_users/" + projectId, token, List.class);
+    }
+
 }
