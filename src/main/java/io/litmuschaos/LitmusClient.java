@@ -1,7 +1,9 @@
 package io.litmuschaos;
 
 import com.google.gson.reflect.TypeToken;
+import com.netflix.graphql.dgs.client.GraphQLResponse;
 import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
 import io.litmuschaos.request.*;
 import io.litmuschaos.response.*;
@@ -24,15 +26,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import okhttp3.OkHttpClient;
 
 public class LitmusClient implements AutoCloseable {
 
     private String token;
     private final LitmusHttpClient httpClient;
+    private final LitmusGraphQLClient graphQLClient;
 
     public LitmusClient(String host, String username, String password)
             throws IOException, LitmusApiException {
-        this.httpClient = new LitmusHttpClient(host);
+        OkHttpClient okHttpClient = new OkHttpClient();
+        this.httpClient = new LitmusHttpClient(okHttpClient, host);
+        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, host);
         LoginRequest request = LoginRequest.builder().username(username).password(password).build();
         this.authenticate(request);
     }
@@ -193,4 +199,8 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get("/invite_users/" + projectId, token, List.class);
     }
 
+    public void graph(){
+        GraphQLResponse query = graphQLClient.graphQLClient.executeQuery("query");
+        System.out.println(query);
+    }
 }
