@@ -2,7 +2,12 @@ package io.litmuschaos;
 
 import com.google.gson.reflect.TypeToken;
 import com.netflix.graphql.dgs.client.GraphQLResponse;
+import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
 import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
+import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
+import io.litmuschaos.generated.types.ListInfraRequest;
+import io.litmuschaos.generated.types.Pagination;
 import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
 import io.litmuschaos.request.*;
@@ -23,6 +28,7 @@ import io.litmuschaos.response.ProjectRoleResponse;
 import io.litmuschaos.response.ProjectsStatsResponse;
 import io.litmuschaos.response.UserWithProjectResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +44,9 @@ public class LitmusClient implements AutoCloseable {
             throws IOException, LitmusApiException {
         OkHttpClient okHttpClient = new OkHttpClient();
         this.httpClient = new LitmusHttpClient(okHttpClient, host);
-        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, host);
         LoginRequest request = LoginRequest.builder().username(username).password(password).build();
         this.authenticate(request);
+        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, "http://localhost:8080/query", token);
     }
 
     @Override
@@ -199,8 +205,14 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get("/invite_users/" + projectId, token, List.class);
     }
 
-    public void graph(){
-        GraphQLResponse query = graphQLClient.graphQLClient.executeQuery("query");
-        System.out.println(query);
+    public GraphQLResponse listInfras(String projectId, List<String> environmentIds){
+        String query = new GraphQLQueryRequest(
+            ListInfrasGraphQLQuery.newRequest()
+                .queryName("listInfras")
+                .projectID(projectId)
+                .request(ListInfraRequest.newBuilder().environmentIDs(environmentIds).pagination(
+                    Pagination.newBuilder().limit(5).page(0).build()).build()).build()
+        , new ListInfrasProjectionRoot<>().totalNoOfInfras()).serialize();
+        return graphQLClient.query(query, Collections.emptyMap());
     }
 }
