@@ -33,6 +33,7 @@
         <jackson.version>2.18.1</jackson.version>
         <dgs.cersion>9.2.2</dgs.cersion>
         <dgs-graphql-codegen-plugin.version>1.61.5</dgs-graphql-codegen-plugin.version>
+        <graphql-dgs-codegen-shared-code.version>5.12.4</graphql-dgs-codegen-shared-code.version>
     </properties>
 
     <dependencyManagement>
@@ -40,7 +41,7 @@
             <dependency>
                 <groupId>com.netflix.graphql.dgs</groupId>
                 <artifactId>graphql-dgs-platform-dependencies</artifactId>
-                <version>8.2.2</version>
+                <version>${dgs.cersion}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -50,7 +51,7 @@
         <dependency>
             <groupId>com.netflix.graphql.dgs.codegen</groupId>
             <artifactId>graphql-dgs-codegen-shared-core</artifactId>
-            <version>5.12.4</version>
+            <version>${graphql-dgs-codegen-shared-code.version}</version>
         </dependency>
         <dependency>
             <groupId>com.netflix.graphql.dgs</groupId>
@@ -85,12 +86,12 @@
             <artifactId>slf4j-api</artifactId>
             <version>2.0.16</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.16</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-simple</artifactId>-->
+<!--            <version>2.0.16</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <!-- Utils -->
         <dependency>

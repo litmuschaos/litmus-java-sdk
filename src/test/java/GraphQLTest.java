@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 public class GraphQLTest {
 
     private static final String hostUrl = "http://localhost:3000";
-    private static final String graphQLUrl = "http://localhost:8080/query";
     private static final String username = "admin";
     private static final String password = "Litmus1234!";
 

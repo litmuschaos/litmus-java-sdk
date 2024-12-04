@@ -46,7 +46,7 @@ public class LitmusClient implements AutoCloseable {
         this.httpClient = new LitmusHttpClient(okHttpClient, host);
         LoginRequest request = LoginRequest.builder().username(username).password(password).build();
         this.authenticate(request);
-        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, "http://localhost:8080/query", token);
+        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, "http://localhost:8080/query", token); // TODO : Need to refactor code to inject graphQL url from outside of litmusClient
     }
 
     @Override
