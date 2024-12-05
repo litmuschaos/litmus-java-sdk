@@ -42,11 +42,12 @@ public class LitmusClient implements AutoCloseable {
 
     public LitmusClient(String host, String username, String password)
             throws IOException, LitmusApiException {
+        host = sanitizeURL(host);
         OkHttpClient okHttpClient = new OkHttpClient();
         this.httpClient = new LitmusHttpClient(okHttpClient, host);
         LoginRequest request = LoginRequest.builder().username(username).password(password).build();
         this.authenticate(request);
-        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, "http://localhost:8080/query", token); // TODO : Need to refactor code to inject graphQL url from outside of litmusClient
+        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, host+"/api/query", token);
     }
 
     @Override
@@ -215,4 +216,11 @@ public class LitmusClient implements AutoCloseable {
         , new ListInfrasProjectionRoot<>().totalNoOfInfras()).serialize();
         return graphQLClient.query(query, Collections.emptyMap());
     }
+
+    private String sanitizeURL(String url) {
+        // TODO: need to add a validate URL without protocol
+        // edge case: If you're calling a service from within Kubernetes, you don't need a protocol.
+        return url.replaceAll("/$", "");
+    }
 }
+
