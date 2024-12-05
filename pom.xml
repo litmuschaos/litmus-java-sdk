@@ -33,6 +33,7 @@
         <jackson.version>2.18.1</jackson.version>
         <dgs.cersion>9.2.2</dgs.cersion>
         <dgs-graphql-codegen-plugin.version>1.61.5</dgs-graphql-codegen-plugin.version>
+        <graphql-dgs-codegen-shared-code.version>5.12.4</graphql-dgs-codegen-shared-code.version>
     </properties>
 
     <dependencyManagement>
@@ -48,13 +49,13 @@
     </dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.netflix.graphql.dgs</groupId>
-            <artifactId>graphql-dgs-spring-boot-starter</artifactId>
+            <groupId>com.netflix.graphql.dgs.codegen</groupId>
+            <artifactId>graphql-dgs-codegen-shared-core</artifactId>
+            <version>${graphql-dgs-codegen-shared-code.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.netflix.graphql.dgs</groupId>
-            <artifactId>graphql-dgs-subscriptions-websockets-autoconfigure</artifactId>
+            <artifactId>graphql-dgs-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -85,12 +86,12 @@
             <artifactId>slf4j-api</artifactId>
             <version>2.0.16</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.16</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-simple</artifactId>-->
+<!--            <version>2.0.16</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <!-- Utils -->
         <dependency>
@@ -135,6 +136,10 @@
                             <source>${maven.compiler.source}</source>
                             <target>${maven.compiler.source}</target>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

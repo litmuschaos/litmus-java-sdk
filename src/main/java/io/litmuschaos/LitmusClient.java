@@ -1,7 +1,14 @@
 package io.litmuschaos;
 
 import com.google.gson.reflect.TypeToken;
+import com.netflix.graphql.dgs.client.GraphQLResponse;
+import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
 import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
+import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
+import io.litmuschaos.generated.types.ListInfraRequest;
+import io.litmuschaos.generated.types.Pagination;
+import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
 import io.litmuschaos.request.*;
 import io.litmuschaos.response.*;
@@ -21,20 +28,25 @@ import io.litmuschaos.response.ProjectRoleResponse;
 import io.litmuschaos.response.ProjectsStatsResponse;
 import io.litmuschaos.response.UserWithProjectResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import okhttp3.OkHttpClient;
 
 public class LitmusClient implements AutoCloseable {
 
     private String token;
     private final LitmusHttpClient httpClient;
+    private final LitmusGraphQLClient graphQLClient;
 
     public LitmusClient(String host, String username, String password)
             throws IOException, LitmusApiException {
-        this.httpClient = new LitmusHttpClient(host);
+        OkHttpClient okHttpClient = new OkHttpClient();
+        this.httpClient = new LitmusHttpClient(okHttpClient, host);
         LoginRequest request = LoginRequest.builder().username(username).password(password).build();
         this.authenticate(request);
+        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, "http://localhost:8080/query", token); // TODO : Need to refactor code to inject graphQL url from outside of litmusClient
     }
 
     @Override
@@ -193,4 +205,14 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get("/invite_users/" + projectId, token, List.class);
     }
 
+    public GraphQLResponse listInfras(String projectId, List<String> environmentIds){
+        String query = new GraphQLQueryRequest(
+            ListInfrasGraphQLQuery.newRequest()
+                .queryName("listInfras")
+                .projectID(projectId)
+                .request(ListInfraRequest.newBuilder().environmentIDs(environmentIds).pagination(
+                    Pagination.newBuilder().limit(5).page(0).build()).build()).build()
+        , new ListInfrasProjectionRoot<>().totalNoOfInfras()).serialize();
+        return graphQLClient.query(query, Collections.emptyMap());
+    }
 }
