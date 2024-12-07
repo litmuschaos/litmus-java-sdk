@@ -2,8 +2,10 @@ import com.netflix.graphql.dgs.client.GraphQLResponse;
 import io.litmuschaos.LitmusClient;
 import io.litmuschaos.exception.LitmusApiException;
 import java.io.IOException;
-import java.util.List;
-import org.assertj.core.api.Assertions;
+
+import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
+import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
+import io.litmuschaos.generated.types.ListInfraResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +24,18 @@ public class GraphQLTest {
 
     @Test
     public void listInfrasTest(){
-        GraphQLResponse result = litmusClient.listInfras(
-            "c01699ba-2d16-4052-bfc6-400332fd2b9a",
-            List.of("demo"));
-        System.out.println(result.getData());
+        ListInfraResponse result = litmusClient.listInfras(
+                new ListInfrasGraphQLQuery
+                        .Builder()
+                        .projectID("8d2dc452-00dc-4ff9-968f-b8105385ecdb")
+                        .build(),
+                new ListInfrasProjectionRoot<>()
+                        .infras()
+                            .infraID()
+                            .name()
+                            .parent()
+                        .totalNoOfInfras()
+        );
+        System.out.println(result.getTotalNoOfInfras());
     }
 }
