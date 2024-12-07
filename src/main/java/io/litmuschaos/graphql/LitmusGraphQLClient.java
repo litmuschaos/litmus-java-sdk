@@ -37,4 +37,8 @@ public class LitmusGraphQLClient {
     public GraphQLResponse query(String query, Map<String,Object> variables){
         return client.executeQuery(query, variables);
     }
+
+    public GraphQLResponse query(String query){
+        return client.executeQuery(query);
+    }
 }

@@ -7,6 +7,7 @@ import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
 import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
 import io.litmuschaos.generated.types.ListInfraRequest;
+import io.litmuschaos.generated.types.ListInfraResponse;
 import io.litmuschaos.generated.types.Pagination;
 import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
@@ -40,13 +41,17 @@ public class LitmusClient implements AutoCloseable {
     private final LitmusHttpClient httpClient;
     private final LitmusGraphQLClient graphQLClient;
 
+    // TODO: using token rather than username & password
+    // TODO: validate a token whether starts with "Bearer "
     public LitmusClient(String host, String username, String password)
             throws IOException, LitmusApiException {
         host = sanitizeURL(host);
         OkHttpClient okHttpClient = new OkHttpClient();
-        this.httpClient = new LitmusHttpClient(okHttpClient, host);
+        this.httpClient = new LitmusHttpClient(okHttpClient, host+"/auth");
+        // TODO: deprecated
         LoginRequest request = LoginRequest.builder().username(username).password(password).build();
         this.authenticate(request);
+
         this.graphQLClient = new LitmusGraphQLClient(okHttpClient, host+"/api/query", token);
     }
 
@@ -55,6 +60,7 @@ public class LitmusClient implements AutoCloseable {
         this.httpClient.close();
     }
 
+    // User
     public LoginResponse authenticate(LoginRequest request)
             throws IOException, LitmusApiException {
         LoginResponse response = httpClient.post("/login", request, LoginResponse.class);
@@ -109,10 +115,12 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.post("/update/state", token, request, CommonResponse.class);
     }
 
+    // Capabilities
     public CapabilityResponse capabilities() throws IOException, LitmusApiException {
         return httpClient.get("/capabilities", CapabilityResponse.class);
     }
 
+    // Project
     public ListProjectsResponse listProjects(ListProjectRequest request)
             throws IOException, LitmusApiException {
         Map<String, String> requestParam = new HashMap<>();
@@ -179,7 +187,6 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.post("/delete_project/" + projectID, token, CommonResponse.class);
     }
 
-
     public SendInvitationResponse sendInvitation(SendInvitationRequest request) throws IOException, LitmusApiException {
         return httpClient.post("/send_invitation", token, request, SendInvitationResponse.class);
     }
@@ -206,16 +213,27 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get("/invite_users/" + projectId, token, List.class);
     }
 
-    public GraphQLResponse listInfras(String projectId, List<String> environmentIds){
-        String query = new GraphQLQueryRequest(
-            ListInfrasGraphQLQuery.newRequest()
-                .queryName("listInfras")
-                .projectID(projectId)
-                .request(ListInfraRequest.newBuilder().environmentIDs(environmentIds).pagination(
-                    Pagination.newBuilder().limit(5).page(0).build()).build()).build()
-        , new ListInfrasProjectionRoot<>().totalNoOfInfras()).serialize();
-        return graphQLClient.query(query, Collections.emptyMap());
+    // Chaos Experiment
+    // public GraphQLResponse createChaosExperiment
+
+    // Chaos Experiment Run
+
+    // Chaos Infrastructure
+    public ListInfraResponse listInfras(ListInfrasGraphQLQuery query, ListInfrasProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.dataAsObject(ListInfraResponse.class);
     }
+
+    // Chaos Hub
+
+    // Environment
+
+    // GitOps
+
+    // Image Registry
+
+    // Probe
 
     private String sanitizeURL(String url) {
         // TODO: need to add a validate URL without protocol
