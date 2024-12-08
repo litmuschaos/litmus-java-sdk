@@ -11,15 +11,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BuildRequestTest {
 
-    private static final String hostUrl = "http://localhost:3000";
-    private static final String username = "admin";
-    private static final String password = "Litmus1234!";
+    private static final String HOST_URL = "http://localhost:3000";
+    private static final String TEST_TOKEN = "Bearer token";
 
     private LitmusClient litmusClient;
 
     @BeforeEach
     public void setup() throws IOException, LitmusApiException {
-        this.litmusClient = new LitmusClient(hostUrl, username, password);
+        this.litmusClient = new LitmusClient(HOST_URL, TEST_TOKEN);
     }
 
     @Test

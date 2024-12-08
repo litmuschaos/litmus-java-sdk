@@ -1,38 +1,32 @@
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.litmuschaos.LitmusClient;
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.request.CreateProjectRequest;
 import io.litmuschaos.request.LeaveProjectRequest;
 import io.litmuschaos.request.ListProjectRequest;
 import io.litmuschaos.request.ProjectNameRequest;
-import io.litmuschaos.response.CommonResponse;
-import io.litmuschaos.response.ListProjectsResponse;
-import io.litmuschaos.response.ProjectResponse;
-import io.litmuschaos.response.ProjectMemberResponse;
-import io.litmuschaos.response.ProjectRoleResponse;
-import io.litmuschaos.response.ProjectsStatsResponse;
-import io.litmuschaos.response.UserWithProjectResponse;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import io.litmuschaos.response.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class ProjectTest {
 
-    private static final String hostUrl = "http://localhost:3000";
-    private static final String username = "admin";
-    private static final String password = "Litmus1234!";
+    private static final String HOST_URL = "http://localhost:3000";
+    private static final String TEST_TOKEN = "Bearer token";
 
     private static LitmusClient litmusClient;
     private static String projectId;
 
     @BeforeAll
-    public static void setupClient() throws IOException, LitmusApiException {
-        litmusClient = new LitmusClient(hostUrl, username, password);
+    public static void setupClient() {
+        litmusClient = new LitmusClient(HOST_URL, TEST_TOKEN);
     }
 
     @BeforeEach

@@ -1,8 +1,4 @@
-import com.netflix.graphql.dgs.client.GraphQLResponse;
 import io.litmuschaos.LitmusClient;
-import io.litmuschaos.exception.LitmusApiException;
-import java.io.IOException;
-
 import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
 import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
 import io.litmuschaos.generated.types.ListInfraResponse;
@@ -11,19 +7,18 @@ import org.junit.jupiter.api.Test;
 
 public class GraphQLTest {
 
-    private static final String hostUrl = "http://localhost:3000";
-    private static final String username = "admin";
-    private static final String password = "Litmus1234!";
+    private static final String HOST_URL = "http://localhost:3000";
+    private static final String TEST_TOKEN = "Bearer token";
 
     private LitmusClient litmusClient;
 
     @BeforeEach
-    public void setup() throws IOException, LitmusApiException {
-        this.litmusClient = new LitmusClient(hostUrl, username, password);
+    public void setup() {
+        this.litmusClient = new LitmusClient(HOST_URL, TEST_TOKEN);
     }
 
     @Test
-    public void listInfrasTest(){
+    public void listInfrasTest() {
         ListInfraResponse result = litmusClient.listInfras(
                 new ListInfrasGraphQLQuery
                         .Builder()
@@ -31,9 +26,9 @@ public class GraphQLTest {
                         .build(),
                 new ListInfrasProjectionRoot<>()
                         .infras()
-                            .infraID()
-                            .name()
-                            .parent()
+                        .infraID()
+                        .name()
+                        .parent()
                         .totalNoOfInfras()
         );
         System.out.println(result.getTotalNoOfInfras());
