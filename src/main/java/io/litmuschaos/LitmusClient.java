@@ -1,11 +1,16 @@
 package io.litmuschaos;
 
 import com.google.gson.reflect.TypeToken;
+import com.jayway.jsonpath.TypeRef;
 import com.netflix.graphql.dgs.client.GraphQLResponse;
 import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
 import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.generated.client.CreateEnvironmentGraphQLQuery;
+import io.litmuschaos.generated.client.CreateEnvironmentProjectionRoot;
+import io.litmuschaos.generated.client.DeleteEnvironmentGraphQLQuery;
 import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
 import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
+import io.litmuschaos.generated.types.Environment;
 import io.litmuschaos.generated.types.ListInfraResponse;
 import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
@@ -200,16 +205,27 @@ public class LitmusClient implements AutoCloseable {
 
     // Chaos Experiment Run
 
+    // Environment
+    public Environment createEnvironment(CreateEnvironmentGraphQLQuery query, CreateEnvironmentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.createEnvironment", new TypeRef<Environment>() {});
+    }
+
+    public String deleteEnvironment(DeleteEnvironmentGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteEnvironment");
+    }
+
     // Chaos Infrastructure
     public ListInfraResponse listInfras(ListInfrasGraphQLQuery query, ListInfrasProjectionRoot projectionRoot) {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.dataAsObject(ListInfraResponse.class);
+        return response.extractValueAsObject("data.listInfras", new TypeRef<ListInfraResponse>() {});
     }
 
     // Chaos Hub
-
-    // Environment
 
     // GitOps
 
@@ -223,4 +239,3 @@ public class LitmusClient implements AutoCloseable {
         return url.replaceAll("/$", "");
     }
 }
-
