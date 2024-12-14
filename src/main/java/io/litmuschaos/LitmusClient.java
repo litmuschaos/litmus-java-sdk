@@ -5,13 +5,8 @@ import com.jayway.jsonpath.TypeRef;
 import com.netflix.graphql.dgs.client.GraphQLResponse;
 import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
 import io.litmuschaos.exception.LitmusApiException;
-import io.litmuschaos.generated.client.CreateEnvironmentGraphQLQuery;
-import io.litmuschaos.generated.client.CreateEnvironmentProjectionRoot;
-import io.litmuschaos.generated.client.DeleteEnvironmentGraphQLQuery;
-import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
-import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
-import io.litmuschaos.generated.types.Environment;
-import io.litmuschaos.generated.types.ListInfraResponse;
+import io.litmuschaos.generated.client.*;
+import io.litmuschaos.generated.types.*;
 import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
 import io.litmuschaos.request.*;
@@ -200,12 +195,20 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get("/invite_users/" + projectId, token, List.class);
     }
 
-    // Chaos Experiment
-    // public GraphQLResponse createChaosExperiment
-
-    // Chaos Experiment Run
-
     // Environment
+    public Environment getEnvironment(GetEnvironmentGraphQLQuery query, GetEnvironmentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getEnvironment", new TypeRef<Environment>(){});
+    }
+
+    public ListEnvironmentResponse listEnvironments(ListEnvironmentsGraphQLQuery query, ListEnvironmentsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        System.out.println(response);
+        return response.extractValueAsObject("data.listEnvironments", new TypeRef<ListEnvironmentResponse>(){});
+    }
+
     public Environment createEnvironment(CreateEnvironmentGraphQLQuery query, CreateEnvironmentProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
@@ -218,6 +221,12 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValue("data.deleteEnvironment");
     }
 
+    public String updateEnvironment(UpdateEnvironmentGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.updateEnvironment");
+    }
+
     // Chaos Infrastructure
     public ListInfraResponse listInfras(ListInfrasGraphQLQuery query, ListInfrasProjectionRoot projectionRoot) {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
@@ -225,7 +234,100 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.listInfras", new TypeRef<ListInfraResponse>() {});
     }
 
+    public Infra getInfraDetails(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getInfraDetails", new TypeRef<Infra>(){});
+    }
+
+    public GetInfraStatsResponse getInfraStats(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getInfraStats", new TypeRef<GetInfraStatsResponse>(){});
+    }
+
+    public String getInfraManifest(GetInfraManifestGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.getInfraManifest");
+    }
+
+    public ConfirmInfraRegistrationResponse confirmInfraRegistration(ConfirmInfraRegistrationGraphQLQuery query, ConfirmInfraRegistrationProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.confirmInfraRegistration", new TypeRef<ConfirmInfraRegistrationResponse>(){});
+    }
+
+    public String deleteInfra(DeleteInfraGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteInfra");
+    }
+
+    public RegisterInfraResponse registerInfra(RegisterInfraGraphQLQuery query, RegisterInfraProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.registerInfra", new TypeRef<RegisterInfraResponse>(){});
+    }
+
     // Chaos Hub
+    public List<ChaosHub> listChaosHub(ListChaosHubGraphQLQuery query, ListChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listChaosHub", new TypeRef<List<ChaosHub>>(){});
+    }
+
+    public ChaosHub getChaosHub(GetChaosHubGraphQLQuery query, GetChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getChaosHub", new TypeRef<ChaosHub>() {});
+    }
+
+    public GetChaosHubStatsResponse getChaosHubStats(GetChaosHubStatsGraphQLQuery query, GetChaosHubStatsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getChaosHubStats", new TypeRef<GetChaosHubStatsResponse>() {});
+    }
+
+    public ChaosHub addChaosHub(AddChaosHubGraphQLQuery query, AddChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.addChaosHub", new TypeRef<ChaosHub>(){});
+    }
+
+    public ChaosHub addRemoteChaosHub(AddRemoteChaosHubGraphQLQuery query, AddRemoteChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.addRemoteChaosHub", new TypeRef<ChaosHub>() {});
+    }
+
+    public String deleteChaosHub(DeleteChaosHubGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteChaosHub");
+    }
+
+    public ChaosHub saveChaosHub(SaveChaosHubGraphQLQuery query, SaveChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.saveChaosHub", new TypeRef<ChaosHub>() {});
+    }
+
+    public String syncChaosHub(SyncChaosHubGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.syncChaosHub");
+    }
+
+    public ChaosHub updateChaosHub(UpdateChaosHubGraphQLQuery query, UpdateChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.addRemoteChaosHub", new TypeRef<ChaosHub>() {});
+    }
+
+    // Chaos Experiment
+
+    // Chaos Experiment Run
 
     // GitOps
 
