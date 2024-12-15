@@ -40,16 +40,14 @@ public class LitmusClient implements AutoCloseable {
         this.httpClient.close();
     }
 
-    public LoginResponse authenticate(LoginRequest request)
+    public String authenticate(LoginRequest request)
             throws IOException, LitmusApiException {
         LoginResponse response = httpClient.post(LOGIN, request, LoginResponse.class);
-        this.token = response.getAccessToken();
-        return response;
+        return response.getAccessToken();
     }
 
-    public CommonResponse logout() throws IOException, LitmusApiException {
-        CommonResponse commonResponse = httpClient.post(LOGOUT, token, CommonResponse.class);
-        this.token = "";
+    public CommonResponse logout(String accessToken) throws IOException, LitmusApiException {
+        CommonResponse commonResponse = httpClient.post(LOGOUT, accessToken, CommonResponse.class);
         return commonResponse;
     }
 
