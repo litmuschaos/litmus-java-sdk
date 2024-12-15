@@ -31,8 +31,8 @@ public class LitmusClient implements AutoCloseable {
         String sanitizedHost = sanitizeURL(host);
         OkHttpClient okHttpClient = new OkHttpClient();
         this.token = token;
-        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + "/auth");
-        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + "/api/query", this.token);
+        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + AUTH);
+        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + API_QUERY, this.token);
     }
 
     @Override

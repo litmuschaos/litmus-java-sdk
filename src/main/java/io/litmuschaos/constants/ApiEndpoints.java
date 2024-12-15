@@ -3,8 +3,12 @@ package io.litmuschaos.constants;
 public class ApiEndpoints {
 
     // Auth
+    public static final String AUTH = "/auth";
     public static final String LOGIN = "/login";
     public static final String LOGOUT = "/logout";
+
+    // Graphql
+    public static final String API_QUERY = "/api/query";
 
     // Token
     public static final String GET_TOKENS = "/token";
