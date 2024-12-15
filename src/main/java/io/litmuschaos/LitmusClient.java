@@ -327,6 +327,7 @@ public class LitmusClient implements AutoCloseable {
 
     // Chaos Experiment
 
+
     // Chaos Experiment Run
 
     // GitOps
@@ -334,6 +335,53 @@ public class LitmusClient implements AutoCloseable {
     // Image Registry
 
     // Probe
+    public List<Probe> listProbes(ListProbesGraphQLQuery query, ListProbesProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listProbes", new TypeRef<List<Probe>>(){});
+    }
+
+    public Probe getProbe(GetProbeGraphQLQuery query, GetProbeProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getProbe", new TypeRef<Probe>(){});
+    }
+
+    public GetProbeReferenceResponse getProbeReference(GetProbeReferenceGraphQLQuery query, GetProbeReferenceProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getProbeReference", new TypeRef<GetProbeReferenceResponse>(){});
+    }
+
+    public String getProbeYAML(GetProbeYAMLGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.getProbeYAML");
+    }
+
+    public GetProbesInExperimentRunResponse getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getProbesInExperimentRun", new TypeRef<GetProbesInExperimentRunResponse>(){});
+    }
+
+    public Probe addProbe(AddProbeGraphQLQuery query, AddProbeProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.addProbe", new TypeRef<Probe>(){});
+    }
+
+    public boolean deleteProbe(DeleteProbeGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteProbe");
+    }
+
+    public String updateProbe(UpdateProbeGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.updateProbe");
+    }
 
     private String sanitizeURL(String url) {
         // TODO: need to add a validate URL without protocol
