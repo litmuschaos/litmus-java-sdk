@@ -17,8 +17,8 @@ public class LitmusHttpClient implements AutoCloseable{
     private final HttpResponseHandler httpResponseHandler;
     private final String host;
 
-    public LitmusHttpClient(String host) {
-        this.okHttpClient = new OkHttpClient();
+    public LitmusHttpClient(OkHttpClient okHttpClient, String host) {
+        this.okHttpClient = okHttpClient;
         this.httpResponseHandler = new HttpResponseHandler();
         this.host = host;
     }

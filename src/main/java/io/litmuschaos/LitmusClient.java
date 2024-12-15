@@ -1,25 +1,18 @@
 package io.litmuschaos;
 
 import com.google.gson.reflect.TypeToken;
+import com.netflix.graphql.dgs.client.GraphQLResponse;
+import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
 import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
+import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
+import io.litmuschaos.generated.types.ListInfraResponse;
+import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
 import io.litmuschaos.request.*;
 import io.litmuschaos.response.*;
+import okhttp3.OkHttpClient;
 
-import io.litmuschaos.request.CreateProjectRequest;
-import io.litmuschaos.request.LeaveProjectRequest;
-import io.litmuschaos.request.ListProjectRequest;
-import io.litmuschaos.request.LoginRequest;
-import io.litmuschaos.request.ProjectNameRequest;
-import io.litmuschaos.response.CapabilityResponse;
-import io.litmuschaos.response.CommonResponse;
-import io.litmuschaos.response.ListProjectsResponse;
-import io.litmuschaos.response.LoginResponse;
-import io.litmuschaos.response.ProjectMemberResponse;
-import io.litmuschaos.response.ProjectResponse;
-import io.litmuschaos.response.ProjectRoleResponse;
-import io.litmuschaos.response.ProjectsStatsResponse;
-import io.litmuschaos.response.UserWithProjectResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -32,12 +25,14 @@ public class LitmusClient implements AutoCloseable {
 
     private String token;
     private final LitmusHttpClient httpClient;
+    private final LitmusGraphQLClient graphQLClient;
 
-    public LitmusClient(String host, String username, String password)
-            throws IOException, LitmusApiException {
-        this.httpClient = new LitmusHttpClient(host);
-        LoginRequest request = LoginRequest.builder().username(username).password(password).build();
-        this.authenticate(request);
+    public LitmusClient(String host, String token) {
+        String sanitizedHost = sanitizeURL(host);
+        OkHttpClient okHttpClient = new OkHttpClient();
+        this.token = token;
+        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + "/auth");
+        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + "/api/query", this.token);
     }
 
     @Override
@@ -99,10 +94,12 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.post(UPDATE_USER_STATE, token, request, CommonResponse.class);
     }
 
+    // Capabilities
     public CapabilityResponse capabilities() throws IOException, LitmusApiException {
         return httpClient.get(CAPABILITIES, CapabilityResponse.class);
     }
 
+    // Project
     public ListProjectsResponse listProjects(ListProjectRequest request)
             throws IOException, LitmusApiException {
         Map<String, String> requestParam = new HashMap<>();
@@ -169,4 +166,58 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.post(DELETE_PROJECT + "/" + projectID, token, CommonResponse.class);
     }
 
+    public SendInvitationResponse sendInvitation(SendInvitationRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/send_invitation", token, request, SendInvitationResponse.class);
+    }
+
+    public CommonResponse acceptInvitation(AcceptInvitationRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/accept_invitation", token, request, CommonResponse.class);
+    }
+
+    public CommonResponse declineInvitation(DeclineInvitationRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/decline_invitation", token, request, CommonResponse.class);
+    }
+
+    public CommonResponse removeInvitation(RemoveInvitationRequest request) throws IOException, LitmusApiException {
+        return httpClient.post("/remove_invitation", token, request, CommonResponse.class);
+    }
+
+    public List<ListInvitationResponse> listInvitation(String status)
+            throws IOException, LitmusApiException {
+        return httpClient.get("/list_invitations_with_filters/" + status, token, List.class);
+    }
+
+    public List<InviteUsersResponse> inviteUsers(String projectId)
+            throws IOException, LitmusApiException {
+        return httpClient.get("/invite_users/" + projectId, token, List.class);
+    }
+
+    // Chaos Experiment
+    // public GraphQLResponse createChaosExperiment
+
+    // Chaos Experiment Run
+
+    // Chaos Infrastructure
+    public ListInfraResponse listInfras(ListInfrasGraphQLQuery query, ListInfrasProjectionRoot projectionRoot) {
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.dataAsObject(ListInfraResponse.class);
+    }
+
+    // Chaos Hub
+
+    // Environment
+
+    // GitOps
+
+    // Image Registry
+
+    // Probe
+
+    private String sanitizeURL(String url) {
+        // TODO: need to add a validate URL without protocol
+        // edge case: If you're calling a service from within Kubernetes, you don't need a protocol.
+        return url.replaceAll("/$", "");
+    }
 }
+
