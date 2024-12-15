@@ -504,6 +504,17 @@ public class LitmusClient implements AutoCloseable {
     }
 
     // chaos fault
+    public FaultDetails getChaosFault(GetChaosFaultGraphQLQuery query, GetChaosFaultProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getChaosFault", new TypeRef<FaultDetails>(){});
+    }
+
+    public List<Chart> listChaosFaults(ListChaosFaultsGraphQLQuery query, ListChaosFaultsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listChaosFaults", new TypeRef<List<Chart>>(){});
+    }
 
     private String sanitizeURL(String url) {
         // TODO: need to add a validate URL without protocol
