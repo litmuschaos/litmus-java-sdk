@@ -327,10 +327,38 @@ public class LitmusClient implements AutoCloseable {
 
     // Chaos Experiment
 
-
     // Chaos Experiment Run
 
     // GitOps
+    public GitConfigResponse getGitOpsDetails(GetGitOpsDetailsGraphQLQuery query, GetGitOpsDetailsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getGitOpsDetails", new TypeRef<GitConfigResponse>(){});
+    }
+
+    public boolean disableGitOps(DisableGitOpsGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.disableGitOps");
+    }
+
+    public boolean enableGitOps(EnableGitOpsGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.enableGitOps");
+    }
+
+    public String gitopsNotifier(GitopsNotifierGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.gitopsNotifier");
+    }
+
+    public boolean updateGitOps(UpdateGitOpsGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.updateGitOps");
+    }
 
     // Image Registry
     public ImageRegistryResponse getImageRegistry(GetImageRegistryGraphQLQuery query, GetImageRegistryProjectionRoot projectionRoot){
