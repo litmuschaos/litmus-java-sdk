@@ -374,13 +374,13 @@ public class LitmusClient implements AutoCloseable {
     }
 
     public ChaosExperimentResponse updateChaosExperiment(UpdateChaosExperimentGraphQLQuery query, UpdateChaosExperimentProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.updateChaosExperiment", new TypeRef<ChaosExperimentResponse>(){});
     }
 
     public ChaosExperimentResponse createChaosExperiment(CreateChaosExperimentGraphQLQuery query, CreateChaosExperimentProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.createChaosExperiment", new TypeRef<ChaosExperimentResponse>(){});
     }
@@ -485,7 +485,7 @@ public class LitmusClient implements AutoCloseable {
     }
 
     public ImageRegistryResponse updateImageRegistry(UpdateImageRegistryGraphQLQuery query, UpdateImageRegistryProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.updateImageRegistry", new TypeRef<ImageRegistryResponse>(){});
     }
@@ -546,32 +546,34 @@ public class LitmusClient implements AutoCloseable {
 
     // chaos fault
     public FaultDetails getChaosFault(GetChaosFaultGraphQLQuery query, GetChaosFaultProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getChaosFault", new TypeRef<FaultDetails>(){});
     }
 
     public List<Chart> listChaosFaults(ListChaosFaultsGraphQLQuery query, ListChaosFaultsProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        System.out.println(request);
         GraphQLResponse response = graphQLClient.query(request);
+
         return response.extractValueAsObject("data.listChaosFaults", new TypeRef<List<Chart>>(){});
     }
 
     // others
     public ServerVersionResponse getServerVersion(GetServerVersionGraphQLQuery query, GetServerVersionProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getServerVersion", new TypeRef<ServerVersionResponse>(){});
     }
 
     public InfraVersionDetails getVersionDetails(GetVersionDetailsGraphQLQuery query, GetVersionDetailsProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getVersionDetails", new TypeRef<InfraVersionDetails>(){});
     }
 
     public SSHKey generateSSHKey(GenerateSSHKeyGraphQLQuery query, GenerateSSHKeyProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.generateSSHKey", new TypeRef<SSHKey>(){});
     }
@@ -602,19 +604,19 @@ public class LitmusClient implements AutoCloseable {
 
     // subscription
     public InfraEventResponse getInfraEvents(GetInfraEventsGraphQLQuery query, GetInfraEventsProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getInfraEvents", new TypeRef<InfraEventResponse>(){});
     }
 
     public KubeNamespaceResponse getKubeNamespace(GetKubeNamespaceGraphQLQuery query, GetKubeNamespaceProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query,projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getKubeNamespace", new TypeRef<KubeNamespaceResponse>(){});
     }
 
     public KubeObjectResponse getKubeObject(GetKubeObjectGraphQLQuery query, GetKubeObjectProjectionRoot projectionRoot){
-        String request = new GraphQLQueryRequest(query).serialize();
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getKubeObject", new TypeRef<KubeObjectResponse>(){});
     }
