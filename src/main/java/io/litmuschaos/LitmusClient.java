@@ -553,9 +553,7 @@ public class LitmusClient implements AutoCloseable {
 
     public List<Chart> listChaosFaults(ListChaosFaultsGraphQLQuery query, ListChaosFaultsProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        System.out.println(request);
         GraphQLResponse response = graphQLClient.query(request);
-
         return response.extractValueAsObject("data.listChaosFaults", new TypeRef<List<Chart>>(){});
     }
 
