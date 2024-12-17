@@ -165,29 +165,29 @@ public class LitmusClient implements AutoCloseable {
     }
 
     public SendInvitationResponse sendInvitation(SendInvitationRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/send_invitation", token, request, SendInvitationResponse.class);
+        return httpClient.post(SEND_INVITATION, token, request, SendInvitationResponse.class);
     }
 
     public CommonResponse acceptInvitation(AcceptInvitationRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/accept_invitation", token, request, CommonResponse.class);
+        return httpClient.post(ACCEPT_INVITATION, token, request, CommonResponse.class);
     }
 
     public CommonResponse declineInvitation(DeclineInvitationRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/decline_invitation", token, request, CommonResponse.class);
+        return httpClient.post(DECLINE_INVITATION, token, request, CommonResponse.class);
     }
 
     public CommonResponse removeInvitation(RemoveInvitationRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/remove_invitation", token, request, CommonResponse.class);
+        return httpClient.post(REMOVE_INVITATION, token, request, CommonResponse.class);
     }
 
     public List<ListInvitationResponse> listInvitation(String status)
             throws IOException, LitmusApiException {
-        return httpClient.get("/list_invitations_with_filters/" + status, token, List.class);
+        return httpClient.get(LIST_INVITATIONS_WITH_FILTERS + "/" + status, token, List.class);
     }
 
     public List<InviteUsersResponse> inviteUsers(String projectId)
             throws IOException, LitmusApiException {
-        return httpClient.get("/invite_users/" + projectId, token, List.class);
+        return httpClient.get(INVITE_USERS + "/" + projectId, token, List.class);
     }
 
     // Chaos Experiment

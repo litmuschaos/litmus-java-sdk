@@ -40,4 +40,12 @@ public class ApiEndpoints {
     public static final String GET_PROJECT_MEMBERS = "/get_project_members";
     public static final String GET_PROJECT_OWNERS = "/get_project_owners";
     public static final String DELETE_PROJECT = "/delete_project";
+
+    // Invitation
+    public static final String SEND_INVITATION = "/send_invitation";
+    public static final String ACCEPT_INVITATION = "/accept_invitation";
+    public static final String DECLINE_INVITATION = "/decline_invitation";
+    public static final String REMOVE_INVITATION = "/remove_invitation";
+    public static final String LIST_INVITATIONS_WITH_FILTERS = "/list_invitations_with_filters";
+    public static final String INVITE_USERS = "/invite_users";
 }
