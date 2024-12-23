@@ -1,12 +1,12 @@
 package io.litmuschaos;
 
 import com.google.gson.reflect.TypeToken;
+import com.jayway.jsonpath.TypeRef;
 import com.netflix.graphql.dgs.client.GraphQLResponse;
 import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
 import io.litmuschaos.exception.LitmusApiException;
-import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
-import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
-import io.litmuschaos.generated.types.ListInfraResponse;
+import io.litmuschaos.generated.client.*;
+import io.litmuschaos.generated.types.*;
 import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
 import io.litmuschaos.model.LitmusAuthToken;
@@ -191,27 +191,441 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get(INVITE_USERS + "/" + projectId, token, List.class);
     }
 
-    // Chaos Experiment
-    // public GraphQLResponse createChaosExperiment
+    // Environment
+    public Environment getEnvironment(GetEnvironmentGraphQLQuery query, GetEnvironmentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getEnvironment", new TypeRef<Environment>(){});
+    }
 
-    // Chaos Experiment Run
+    public ListEnvironmentResponse listEnvironments(ListEnvironmentsGraphQLQuery query, ListEnvironmentsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listEnvironments", new TypeRef<ListEnvironmentResponse>(){});
+    }
+
+    public Environment createEnvironment(CreateEnvironmentGraphQLQuery query, CreateEnvironmentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.createEnvironment", new TypeRef<Environment>() {});
+    }
+
+    public String deleteEnvironment(DeleteEnvironmentGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteEnvironment");
+    }
+
+    public String updateEnvironment(UpdateEnvironmentGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.updateEnvironment");
+    }
 
     // Chaos Infrastructure
+    public Infra getInfra(GetInfraGraphQLQuery query, GetInfraProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getInfra", new TypeRef<Infra>(){});
+    }
+
     public ListInfraResponse listInfras(ListInfrasGraphQLQuery query, ListInfrasProjectionRoot projectionRoot) {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.dataAsObject(ListInfraResponse.class);
+        return response.extractValueAsObject("data.listInfras", new TypeRef<ListInfraResponse>() {});
+    }
+
+    public Infra getInfraDetails(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getInfraDetails", new TypeRef<Infra>(){});
+    }
+
+    public GetInfraStatsResponse getInfraStats(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getInfraStats", new TypeRef<GetInfraStatsResponse>(){});
+    }
+
+    public String getInfraManifest(GetInfraManifestGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.getInfraManifest");
+    }
+
+    public ConfirmInfraRegistrationResponse confirmInfraRegistration(ConfirmInfraRegistrationGraphQLQuery query, ConfirmInfraRegistrationProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.confirmInfraRegistration", new TypeRef<ConfirmInfraRegistrationResponse>(){});
+    }
+
+    public String deleteInfra(DeleteInfraGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteInfra");
+    }
+
+    public RegisterInfraResponse registerInfra(RegisterInfraGraphQLQuery query, RegisterInfraProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.registerInfra", new TypeRef<RegisterInfraResponse>(){});
     }
 
     // Chaos Hub
+    public List<ChaosHubStatus> listChaosHub(ListChaosHubGraphQLQuery query, ListChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listChaosHub", new TypeRef<List<ChaosHubStatus>>(){});
+    }
 
-    // Environment
+    public ChaosHubStatus getChaosHub(GetChaosHubGraphQLQuery query, GetChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getChaosHub", new TypeRef<ChaosHubStatus>() {});
+    }
+
+    public GetChaosHubStatsResponse getChaosHubStats(GetChaosHubStatsGraphQLQuery query, GetChaosHubStatsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getChaosHubStats", new TypeRef<GetChaosHubStatsResponse>() {});
+    }
+
+    public ChaosHub addChaosHub(AddChaosHubGraphQLQuery query, AddChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.addChaosHub", new TypeRef<ChaosHub>(){});
+    }
+
+    public ChaosHub addRemoteChaosHub(AddRemoteChaosHubGraphQLQuery query, AddRemoteChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.addRemoteChaosHub", new TypeRef<ChaosHub>() {});
+    }
+
+    public Boolean deleteChaosHub(DeleteChaosHubGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteChaosHub");
+    }
+
+    public ChaosHub saveChaosHub(SaveChaosHubGraphQLQuery query, SaveChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.saveChaosHub", new TypeRef<ChaosHub>() {});
+    }
+
+    public String syncChaosHub(SyncChaosHubGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.syncChaosHub");
+    }
+
+    public ChaosHub updateChaosHub(UpdateChaosHubGraphQLQuery query, UpdateChaosHubProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.updateChaosHub", new TypeRef<ChaosHub>() {});
+    }
+
+    // Chaos Experiment
+    public GetExperimentResponse getExperiment(GetExperimentGraphQLQuery query, GetExperimentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getExperiment", new TypeRef<GetExperimentResponse>(){});
+    }
+
+    public ListExperimentResponse listExperiment(ListExperimentGraphQLQuery query, ListExperimentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listExperiment", new TypeRef<ListExperimentResponse>(){});
+    }
+
+    public GetExperimentStatsResponse getExperimentStats(GetExperimentStatsGraphQLQuery query, GetExperimentStatsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getExperimentStats", new TypeRef<GetExperimentStatsResponse>(){});
+    }
+
+    public List<PredefinedExperimentList> getPredefinedExperiment(GetPredefinedExperimentGraphQLQuery query, GetPredefinedExperimentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getPredefinedExperiment", new TypeRef<List<PredefinedExperimentList>>(){});
+    }
+
+    public List<PredefinedExperimentList> listPredefinedExperiments(ListPredefinedExperimentsGraphQLQuery query, ListPredefinedExperimentsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listPredefinedExperiments", new TypeRef<List<PredefinedExperimentList>>(){});
+    }
+
+    public RunChaosExperimentResponse runChaosExperiment(RunChaosExperimentGraphQLQuery query, RunChaosExperimentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.runChaosExperiment", new TypeRef<RunChaosExperimentResponse>(){});
+    }
+
+    public String saveChaosExperiment(SaveChaosExperimentGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.saveChaosExperiment");
+    }
+
+    public ChaosExperimentResponse updateChaosExperiment(UpdateChaosExperimentGraphQLQuery query, UpdateChaosExperimentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.updateChaosExperiment", new TypeRef<ChaosExperimentResponse>(){});
+    }
+
+    public ChaosExperimentResponse createChaosExperiment(CreateChaosExperimentGraphQLQuery query, CreateChaosExperimentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.createChaosExperiment", new TypeRef<ChaosExperimentResponse>(){});
+    }
+
+    public Boolean deleteChaosExperiment(DeleteChaosExperimentGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteChaosExperiment");
+    }
+
+    public Boolean updateCronExperimentState(UpdateCronExperimentStateGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.updateCronExperimentState");
+    }
+
+    // Chaos Experiment Run
+    public ExperimentRun getExperimentRun(GetExperimentRunGraphQLQuery query, GetExperimentRunProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getExperimentRun", new TypeRef<ExperimentRun>(){});
+    }
+
+    public GetExperimentRunStatsResponse getExperimentRunStats(GetExperimentRunStatsGraphQLQuery query, GetExperimentRunStatsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getExperimentRunStats", new TypeRef<GetExperimentRunStatsResponse>(){});
+    }
+
+    public ListExperimentRunResponse listExperimentRun(ListExperimentGraphQLQuery query, ListExperimentProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listExperimentRun", new TypeRef<ListExperimentRunResponse>(){});
+    }
+
+    public String chaosExperimentRun(ChaosExperimentRunGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.chaosExperimentRun");
+    }
+
+    public Boolean stopExperimentRuns(StopExperimentRunsGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.stopExperimentRuns");
+    }
 
     // GitOps
+    public GitConfigResponse getGitOpsDetails(GetGitOpsDetailsGraphQLQuery query, GetGitOpsDetailsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getGitOpsDetails", new TypeRef<GitConfigResponse>(){});
+    }
+
+    public Boolean disableGitOps(DisableGitOpsGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.disableGitOps");
+    }
+
+    public Boolean enableGitOps(EnableGitOpsGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.enableGitOps");
+    }
+
+    public String gitopsNotifier(GitopsNotifierGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.gitopsNotifier");
+    }
+
+    public Boolean updateGitOps(UpdateGitOpsGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.updateGitOps");
+    }
 
     // Image Registry
+    public ImageRegistryResponse getImageRegistry(GetImageRegistryGraphQLQuery query, GetImageRegistryProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getImageRegistry", new TypeRef<ImageRegistryResponse>(){});
+    }
 
+    public List<ImageRegistryResponse> listImageRegistry(ListImageRegistryGraphQLQuery query, ListImageRegistryProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listImageRegistry", new TypeRef<List<ImageRegistryResponse>>(){});
+    }
+
+    public ImageRegistryResponse createImageRegistry(CreateImageRegistryGraphQLQuery query, CreateImageRegistryProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.createImageRegistry", new TypeRef<ImageRegistryResponse>(){});
+    }
+
+    public String deleteImageRegistry(DeleteImageRegistryGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteImageRegistry");
+    }
+
+    public ImageRegistryResponse updateImageRegistry(UpdateImageRegistryGraphQLQuery query, UpdateImageRegistryProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.updateImageRegistry", new TypeRef<ImageRegistryResponse>(){});
+    }
     // Probe
+    public List<Probe> listProbes(ListProbesGraphQLQuery query, ListProbesProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listProbes", new TypeRef<List<Probe>>(){});
+    }
+
+    public Probe getProbe(GetProbeGraphQLQuery query, GetProbeProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getProbe", new TypeRef<Probe>(){});
+    }
+
+    public Boolean validateUniqueProbe(ValidateUniqueProbeGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.validateUniqueProbe");
+    }
+
+    public GetProbeReferenceResponse getProbeReference(GetProbeReferenceGraphQLQuery query, GetProbeReferenceProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getProbeReference", new TypeRef<GetProbeReferenceResponse>(){});
+    }
+
+    public String getProbeYAML(GetProbeYAMLGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.getProbeYAML");
+    }
+
+    public GetProbesInExperimentRunResponse getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getProbesInExperimentRun", new TypeRef<GetProbesInExperimentRunResponse>(){});
+    }
+
+    public Probe addProbe(AddProbeGraphQLQuery query, AddProbeProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.addProbe", new TypeRef<Probe>(){});
+    }
+
+    public Boolean deleteProbe(DeleteProbeGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.deleteProbe");
+    }
+
+    public String updateProbe(UpdateProbeGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.updateProbe");
+    }
+
+    // chaos fault
+    public FaultDetails getChaosFault(GetChaosFaultGraphQLQuery query, GetChaosFaultProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getChaosFault", new TypeRef<FaultDetails>(){});
+    }
+
+    public List<Chart> listChaosFaults(ListChaosFaultsGraphQLQuery query, ListChaosFaultsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.listChaosFaults", new TypeRef<List<Chart>>(){});
+    }
+
+    // others
+    public ServerVersionResponse getServerVersion(GetServerVersionGraphQLQuery query, GetServerVersionProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getServerVersion", new TypeRef<ServerVersionResponse>(){});
+    }
+
+    public InfraVersionDetails getVersionDetails(GetVersionDetailsGraphQLQuery query, GetVersionDetailsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getVersionDetails", new TypeRef<InfraVersionDetails>(){});
+    }
+
+    public SSHKey generateSSHKey(GenerateSSHKeyGraphQLQuery query, GenerateSSHKeyProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.generateSSHKey", new TypeRef<SSHKey>(){});
+    }
+
+    public String getManifestWithInfraID(GetManifestWithInfraIDGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.getManifestWithInfraID");
+    }
+
+    public String kubeNamespace(KubeNamespaceGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.kubeNamespace");
+    }
+
+    public String kubeObj(KubeObjGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.kubeObj");
+    }
+
+    public String podLog(PodLogGraphQLQuery query){
+        String request = new GraphQLQueryRequest(query).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValue("data.podLog");
+    }
+
+    // subscription
+    public InfraEventResponse getInfraEvents(GetInfraEventsGraphQLQuery query, GetInfraEventsProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getInfraEvents", new TypeRef<InfraEventResponse>(){});
+    }
+
+    public KubeNamespaceResponse getKubeNamespace(GetKubeNamespaceGraphQLQuery query, GetKubeNamespaceProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query,projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getKubeNamespace", new TypeRef<KubeNamespaceResponse>(){});
+    }
+
+    public KubeObjectResponse getKubeObject(GetKubeObjectGraphQLQuery query, GetKubeObjectProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getKubeObject", new TypeRef<KubeObjectResponse>(){});
+    }
+
+    public PodLogResponse getPodLog(GetPodLogGraphQLQuery query, GetPodLogProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.getPodLog", new TypeRef<PodLogResponse>(){});
+    }
+
+    public InfraActionResponse infraConnect(InfraConnectGraphQLQuery query, InfraConnectProjectionRoot projectionRoot){
+        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
+        GraphQLResponse response = graphQLClient.query(request);
+        return response.extractValueAsObject("data.infraConnect", new TypeRef<InfraActionResponse>(){});
+    }
 
     private String sanitizeURL(String url) {
         // TODO: need to add a validate URL without protocol
@@ -219,4 +633,3 @@ public class LitmusClient implements AutoCloseable {
         return url.replaceAll("/$", "");
     }
 }
-
