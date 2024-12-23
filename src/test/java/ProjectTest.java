@@ -1,5 +1,6 @@
 import io.litmuschaos.LitmusClient;
 import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.model.LitmusAuthToken;
 import io.litmuschaos.request.CreateProjectRequest;
 import io.litmuschaos.request.LeaveProjectRequest;
 import io.litmuschaos.request.ListProjectRequest;
@@ -19,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ProjectTest {
 
     private static final String HOST_URL = "http://localhost:3000";
-    private static final String TEST_TOKEN = "Bearer token";
+    private static final String TEST_TOKEN_STRING = "Bearer token";
+    private static final LitmusAuthToken TEST_TOKEN = new LitmusAuthToken(TEST_TOKEN_STRING);
 
     private static LitmusClient litmusClient;
     private static String projectId;

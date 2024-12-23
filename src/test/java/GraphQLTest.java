@@ -2,13 +2,15 @@ import io.litmuschaos.LitmusClient;
 import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
 import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
 import io.litmuschaos.generated.types.ListInfraResponse;
+import io.litmuschaos.model.LitmusAuthToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GraphQLTest {
 
     private static final String HOST_URL = "http://localhost:3000";
-    private static final String TEST_TOKEN = "Bearer token";
+    private static final String TEST_TOKEN_STRING = "Bearer token";
+    private static final LitmusAuthToken TEST_TOKEN = new LitmusAuthToken(TEST_TOKEN_STRING);
 
     private LitmusClient litmusClient;
 
