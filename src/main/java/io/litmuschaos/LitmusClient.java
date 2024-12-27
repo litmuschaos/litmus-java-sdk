@@ -190,11 +190,6 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get("/list_invitations_with_filters/" + status, token, List.class);
     }
 
-    public List<InviteUsersResponse> inviteUsers(String projectId)
-            throws IOException, LitmusApiException {
-        return httpClient.get("/invite_users/" + projectId, token, List.class);
-    }
-
     // Environment
     public Environment getEnvironment(GetEnvironmentGraphQLQuery query, GetEnvironmentProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
@@ -211,19 +206,19 @@ public class LitmusClient implements AutoCloseable {
     public Environment createEnvironment(CreateEnvironmentGraphQLQuery query, CreateEnvironmentProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject("data.createEnvironment", new TypeRef<Environment>() {});
+        return response.extractValueAsObject("data.createEnvironment", new TypeRef<Environment>(){});
     }
 
-    public String deleteEnvironment(DeleteEnvironmentGraphQLQuery query){
+    public DeleteEnvironmentResponse deleteEnvironment(DeleteEnvironmentGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.deleteEnvironment");
+        return response.extractValueAsObject("data.deleteEnvironment", new TypeRef<DeleteEnvironmentResponse>(){});
     }
 
-    public String updateEnvironment(UpdateEnvironmentGraphQLQuery query){
+    public UpdateEnvironmentResponse updateEnvironment(UpdateEnvironmentGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.updateEnvironment");
+        return response.extractValueAsObject("data.updateEnvironment", new TypeRef<UpdateEnvironmentResponse>(){});
     }
 
     // Chaos Infrastructure
@@ -251,10 +246,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getInfraStats", new TypeRef<GetInfraStatsResponse>(){});
     }
 
-    public String getInfraManifest(GetInfraManifestGraphQLQuery query){
+    public GetInfraManifestResponse getInfraManifest(GetInfraManifestGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.getInfraManifest");
+        return response.extractValueAsObject("data.getInfraManifest", new TypeRef<GetInfraManifestResponse>(){});
     }
 
     public ConfirmInfraRegistrationResponse confirmInfraRegistration(ConfirmInfraRegistrationGraphQLQuery query, ConfirmInfraRegistrationProjectionRoot projectionRoot){
@@ -263,10 +258,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.confirmInfraRegistration", new TypeRef<ConfirmInfraRegistrationResponse>(){});
     }
 
-    public String deleteInfra(DeleteInfraGraphQLQuery query){
+    public DeleteInfraResponse deleteInfra(DeleteInfraGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.deleteInfra");
+        return response.extractValueAsObject("data.deleteInfra", new TypeRef<DeleteInfraResponse>(){});
     }
 
     public RegisterInfraResponse registerInfra(RegisterInfraGraphQLQuery query, RegisterInfraProjectionRoot projectionRoot){
@@ -306,10 +301,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.addRemoteChaosHub", new TypeRef<ChaosHub>() {});
     }
 
-    public Boolean deleteChaosHub(DeleteChaosHubGraphQLQuery query){
+    public DeleteChaosHubResponse deleteChaosHub(DeleteChaosHubGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.deleteChaosHub");
+        return response.extractValueAsObject("data.deleteChaosHub", new TypeRef<DeleteChaosHubResponse>(){});
     }
 
     public ChaosHub saveChaosHub(SaveChaosHubGraphQLQuery query, SaveChaosHubProjectionRoot projectionRoot){
@@ -318,10 +313,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.saveChaosHub", new TypeRef<ChaosHub>() {});
     }
 
-    public String syncChaosHub(SyncChaosHubGraphQLQuery query){
+    public SyncChaosHubResponse syncChaosHub(SyncChaosHubGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.syncChaosHub");
+        return response.extractValueAsObject("data.syncChaosHub", new TypeRef<SyncChaosHubResponse>() {});
     }
 
     public ChaosHub updateChaosHub(UpdateChaosHubGraphQLQuery query, UpdateChaosHubProjectionRoot projectionRoot){
@@ -367,10 +362,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.runChaosExperiment", new TypeRef<RunChaosExperimentResponse>(){});
     }
 
-    public String saveChaosExperiment(SaveChaosExperimentGraphQLQuery query){
+    public SaveChaosExperimentResponse saveChaosExperiment(SaveChaosExperimentGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.saveChaosExperiment");
+        return response.extractValueAsObject("data.saveChaosExperiment", new TypeRef<SaveChaosExperimentResponse>(){});
     }
 
     public ChaosExperimentResponse updateChaosExperiment(UpdateChaosExperimentGraphQLQuery query, UpdateChaosExperimentProjectionRoot projectionRoot){
@@ -385,16 +380,16 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.createChaosExperiment", new TypeRef<ChaosExperimentResponse>(){});
     }
 
-    public Boolean deleteChaosExperiment(DeleteChaosExperimentGraphQLQuery query){
+    public DeleteChaosExperimentResponse deleteChaosExperiment(DeleteChaosExperimentGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.deleteChaosExperiment");
+        return response.extractValueAsObject("data.deleteChaosExperiment", new TypeRef<DeleteChaosExperimentResponse>(){});
     }
 
-    public Boolean updateCronExperimentState(UpdateCronExperimentStateGraphQLQuery query){
+    public UpdateCronExperimentStateResponse updateCronExperimentState(UpdateCronExperimentStateGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.updateCronExperimentState");
+        return response.extractValueAsObject("data.updateCronExperimentState", new TypeRef<UpdateCronExperimentStateResponse>(){});
     }
 
     // Chaos Experiment Run
@@ -416,16 +411,16 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.listExperimentRun", new TypeRef<ListExperimentRunResponse>(){});
     }
 
-    public String chaosExperimentRun(ChaosExperimentRunGraphQLQuery query){
+    public ChaosExperimentRunResponse chaosExperimentRun(ChaosExperimentRunGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.chaosExperimentRun");
+        return response.extractValueAsObject("data.chaosExperimentRun", new TypeRef<ChaosExperimentRunResponse>(){});
     }
 
-    public Boolean stopExperimentRuns(StopExperimentRunsGraphQLQuery query){
+    public StopExperimentRunsResponse stopExperimentRuns(StopExperimentRunsGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.stopExperimentRuns");
+        return response.extractValueAsObject("data.stopExperimentRuns", new TypeRef<StopExperimentRunsResponse>(){});
     }
 
     // GitOps
@@ -435,28 +430,28 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getGitOpsDetails", new TypeRef<GitConfigResponse>(){});
     }
 
-    public Boolean disableGitOps(DisableGitOpsGraphQLQuery query){
+    public DisableGitOpsResponse disableGitOps(DisableGitOpsGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.disableGitOps");
+        return response.extractValueAsObject("data.disableGitOps", new TypeRef<DisableGitOpsResponse>(){});
     }
 
-    public Boolean enableGitOps(EnableGitOpsGraphQLQuery query){
+    public EnableGitOpsResponse enableGitOps(EnableGitOpsGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.enableGitOps");
+        return response.extractValueAsObject("data.enableGitOps", new TypeRef<EnableGitOpsResponse>(){});
     }
 
-    public String gitopsNotifier(GitopsNotifierGraphQLQuery query){
+    public GitOpsNotifierResponse gitopsNotifier(GitopsNotifierGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.gitopsNotifier");
+        return response.extractValueAsObject("data.gitopsNotifier", new TypeRef<GitOpsNotifierResponse>(){});
     }
 
-    public Boolean updateGitOps(UpdateGitOpsGraphQLQuery query){
+    public UpdateGitOpsResponse updateGitOps(UpdateGitOpsGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.updateGitOps");
+        return response.extractValueAsObject("data.updateGitOps", new TypeRef<UpdateGitOpsResponse>(){});
     }
 
     // Image Registry
@@ -478,10 +473,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.createImageRegistry", new TypeRef<ImageRegistryResponse>(){});
     }
 
-    public String deleteImageRegistry(DeleteImageRegistryGraphQLQuery query){
+    public DeleteImageRegistryResponse deleteImageRegistry(DeleteImageRegistryGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.deleteImageRegistry");
+        return response.extractValueAsObject("data.deleteImageRegistry", new TypeRef<DeleteImageRegistryResponse>(){});
     }
 
     public ImageRegistryResponse updateImageRegistry(UpdateImageRegistryGraphQLQuery query, UpdateImageRegistryProjectionRoot projectionRoot){
@@ -502,10 +497,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getProbe", new TypeRef<Probe>(){});
     }
 
-    public Boolean validateUniqueProbe(ValidateUniqueProbeGraphQLQuery query){
+    public ValidateUniqueProbeResponse validateUniqueProbe(ValidateUniqueProbeGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.validateUniqueProbe");
+        return response.extractValueAsObject("data.validateUniqueProbe", new TypeRef<ValidateUniqueProbeResponse>(){});
     }
 
     public GetProbeReferenceResponse getProbeReference(GetProbeReferenceGraphQLQuery query, GetProbeReferenceProjectionRoot projectionRoot){
@@ -514,10 +509,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getProbeReference", new TypeRef<GetProbeReferenceResponse>(){});
     }
 
-    public String getProbeYAML(GetProbeYAMLGraphQLQuery query){
+    public GetProbeYAMLResponse getProbeYAML(GetProbeYAMLGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.getProbeYAML");
+        return response.extractValueAsObject("data.getProbeYAML", new TypeRef<GetProbeYAMLResponse>(){});
     }
 
     public GetProbesInExperimentRunResponse getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot){
@@ -532,16 +527,16 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.addProbe", new TypeRef<Probe>(){});
     }
 
-    public Boolean deleteProbe(DeleteProbeGraphQLQuery query){
+    public DeleteProbeResponse deleteProbe(DeleteProbeGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.deleteProbe");
+        return response.extractValueAsObject("data.deleteProbe", new TypeRef<DeleteProbeResponse>(){});
     }
 
-    public String updateProbe(UpdateProbeGraphQLQuery query){
+    public UpdateProbeResponse updateProbe(UpdateProbeGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.updateProbe");
+        return response.extractValueAsObject("data.updateProbe", new TypeRef<UpdateProbeResponse>(){});
     }
 
     // chaos fault
@@ -576,29 +571,29 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.generateSSHKey", new TypeRef<SSHKey>(){});
     }
 
-    public String getManifestWithInfraID(GetManifestWithInfraIDGraphQLQuery query){
+    public GetManifestWithInfraIDResponse getManifestWithInfraID(GetManifestWithInfraIDGraphQLQuery query){
         String request = new GraphQLQueryRequest(query).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.getManifestWithInfraID");
+        return response.extractValueAsObject("data.getManifestWithInfraID", new TypeRef<GetManifestWithInfraIDResponse>(){});
     }
 
-    public String kubeNamespace(KubeNamespaceGraphQLQuery query){
-        String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.kubeNamespace");
-    }
+//    public String kubeNamespace(KubeNamespaceGraphQLQuery query){
+//        String request = new GraphQLQueryRequest(query).serialize();
+//        GraphQLResponse response = graphQLClient.query(request);
+//        return response.extractValue("data.kubeNamespace");
+//    }
 
-    public String kubeObj(KubeObjGraphQLQuery query){
-        String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.kubeObj");
-    }
-
-    public String podLog(PodLogGraphQLQuery query){
-        String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValue("data.podLog");
-    }
+//    public String kubeObj(KubeObjGraphQLQuery query){
+//        String request = new GraphQLQueryRequest(query).serialize();
+//        GraphQLResponse response = graphQLClient.query(request);
+//        return response.extractValue("data.kubeObj");
+//    }
+//
+//    public String podLog(PodLogGraphQLQuery query){
+//        String request = new GraphQLQueryRequest(query).serialize();
+//        GraphQLResponse response = graphQLClient.query(request);
+//        return response.extractValue("data.podLog");
+//    }
 
     // subscription
     public InfraEventResponse getInfraEvents(GetInfraEventsGraphQLQuery query, GetInfraEventsProjectionRoot projectionRoot){
