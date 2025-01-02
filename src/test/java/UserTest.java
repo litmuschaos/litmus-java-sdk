@@ -21,7 +21,7 @@ public class UserTest {
     private static final String CLIENT_SETUP_PASSWORD = "Litmus1234!";
     private static final String TEST_USER_PASSWORD = "testPassword";
     private static final String TEST_USER_ROLE = "user";
-    private static final String TEST_TOKEN = "Bear token"; // Put your token here
+    private static final String TEST_TOKEN = "Bearer token"; // Put your token here
     private static final String TEST_USER_EMAIL = "test@test.com";
     private static final String TEST_USER_NAME = "testName";
 

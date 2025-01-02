@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class GraphQLTest {
 
     private static final String HOST_URL = "http://127.0.0.1:3000";
-    private static final String TEST_TOKEN = "Bear token"; // Put your token here
+    private static final String TEST_TOKEN = "Bearer token"; // Put your token here
 
     private LitmusClient litmusClient;
 
