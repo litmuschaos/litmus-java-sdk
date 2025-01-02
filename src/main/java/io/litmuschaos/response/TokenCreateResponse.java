@@ -1,18 +1,17 @@
 package io.litmuschaos.response;
 
-import io.litmuschaos.model.LitmusAuthToken;
 
 public class TokenCreateResponse {
 
-    private LitmusAuthToken accessToken;
+    private String accessToken;
     private String type;
 
     public TokenCreateResponse(String accessToken, String type) {
-        this.accessToken = new LitmusAuthToken(accessToken);
+        this.accessToken = new String(accessToken);
         this.type = type;
     }
 
-    public LitmusAuthToken getAccessToken() {
+    public String getAccessToken() {
         return accessToken;
     }
 

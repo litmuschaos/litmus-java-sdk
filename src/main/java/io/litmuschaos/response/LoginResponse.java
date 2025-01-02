@@ -1,16 +1,15 @@
 package io.litmuschaos.response;
 
-import io.litmuschaos.model.LitmusAuthToken;
 
 public class LoginResponse {
 
-    private LitmusAuthToken accessToken;
+    private String accessToken;
     private String expiresIn;
     private String projectID;
     private String projectRole;
     private String type;
 
-    public LoginResponse(LitmusAuthToken accessToken, String expiresIn, String projectID, String projectRole, String type) {
+    public LoginResponse(String accessToken, String expiresIn, String projectID, String projectRole, String type) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.projectID = projectID;
@@ -18,7 +17,7 @@ public class LoginResponse {
         this.type = type;
     }
 
-    public LitmusAuthToken getAccessToken() {
+    public String getAccessToken() {
         return accessToken;
     }
 
@@ -41,7 +40,7 @@ public class LoginResponse {
     @Override
     public String toString() {
         return "LoginResponse{" +
-                "accessToken='" + accessToken.getTokenValue() + '\'' +
+                "accessToken='" + accessToken + '\'' +
                 ", expiresIn='" + expiresIn + '\'' +
                 ", projectID='" + projectID + '\'' +
                 ", projectRole='" + projectRole + '\'' +

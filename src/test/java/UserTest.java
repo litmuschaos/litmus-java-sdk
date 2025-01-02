@@ -1,11 +1,8 @@
 import io.litmuschaos.LitmusClient;
 import io.litmuschaos.exception.LitmusApiException;
-import io.litmuschaos.model.LitmusAuthToken;
-import io.litmuschaos.request.UserCreateRequest;
-import io.litmuschaos.request.UserDetailsUpdateRequest;
-import io.litmuschaos.request.UserStateUpdateRequest;
-import io.litmuschaos.response.CommonResponse;
-import io.litmuschaos.response.UserResponse;
+import io.litmuschaos.exception.detailed.UnauthorizedException;
+import io.litmuschaos.request.*;
+import io.litmuschaos.response.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +21,7 @@ public class UserTest {
     private static final String CLIENT_SETUP_PASSWORD = "Litmus1234!";
     private static final String TEST_USER_PASSWORD = "testPassword";
     private static final String TEST_USER_ROLE = "user";
-    private static final String TEST_TOKEN_STRING = "Bearer token";
-    private static final LitmusAuthToken TEST_TOKEN = new LitmusAuthToken(TEST_TOKEN_STRING);
+    private static final String TEST_TOKEN = "Bear token"; // Put your token here
     private static final String TEST_USER_EMAIL = "test@test.com";
     private static final String TEST_USER_NAME = "testName";
 

@@ -18,8 +18,7 @@
 //    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //    private static final SecureRandom RANDOM = new SecureRandom();
 //    private static final String HOST_URL = "http://localhost:3000";
-//    private static final String TEST_TOKEN_STRING = "Bearer token";
-//    private static final LitmusAuthToken TEST_TOKEN = new LitmusAuthToken(TEST_TOKEN_STRING);
+//    private static final String TEST_TOKEN = "Bearer token";
 //    private static final String oldPassword = "Litmus12345!";
 //
 //    private static final String TEST_USER_ROLE = "admin";

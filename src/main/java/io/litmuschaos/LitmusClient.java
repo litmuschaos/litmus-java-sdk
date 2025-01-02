@@ -9,7 +9,6 @@ import io.litmuschaos.generated.client.*;
 import io.litmuschaos.generated.types.*;
 import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
-import io.litmuschaos.model.LitmusAuthToken;
 import io.litmuschaos.request.*;
 import io.litmuschaos.response.*;
 import okhttp3.OkHttpClient;
@@ -24,32 +23,21 @@ import static io.litmuschaos.constants.RequestParams.*;
 
 public class LitmusClient implements AutoCloseable {
 
-    private LitmusAuthToken token;
+    private String token;
     private final LitmusHttpClient httpClient;
     private final LitmusGraphQLClient graphQLClient;
 
-    public LitmusClient(String host, LitmusAuthToken token) {
+    public LitmusClient(String host, String token) {
         String sanitizedHost = sanitizeURL(host);
         OkHttpClient okHttpClient = new OkHttpClient();
         this.token = token;
-        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + AUTH);
+        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost);
         this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + API_QUERY, this.token);
     }
 
     @Override
     public void close() throws Exception {
         this.httpClient.close();
-    }
-
-    public LitmusAuthToken authenticate(LoginRequest request)
-            throws IOException, LitmusApiException {
-        LoginResponse response = httpClient.post(LOGIN, request, LoginResponse.class);
-        return response.getAccessToken();
-    }
-
-    public CommonResponse logout(LitmusAuthToken accessToken) throws IOException, LitmusApiException {
-        CommonResponse commonResponse = httpClient.post(LOGOUT, accessToken, CommonResponse.class);
-        return commonResponse;
     }
 
     public ListTokensResponse getTokens(String userId) throws IOException, LitmusApiException {

@@ -5,7 +5,6 @@ import com.netflix.graphql.dgs.client.HttpResponse;
 import java.io.IOException;
 import java.util.Map;
 
-import io.litmuschaos.model.LitmusAuthToken;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,11 +16,11 @@ public class LitmusGraphQLClient {
 
     public final GraphQLClient client;
 
-    public LitmusGraphQLClient(OkHttpClient okHttpClient, String host, LitmusAuthToken token) {
+    public LitmusGraphQLClient(OkHttpClient okHttpClient, String host, String token) {
         client = GraphQLClient.createCustom(host, ((url, headers, body) -> {
             Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Authorization", token.getTokenValue())
+                .addHeader("Authorization", token)
                 .post(RequestBody.create(body, MediaType.parse("application/json"))
             ).build();
 

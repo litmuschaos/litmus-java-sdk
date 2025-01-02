@@ -3,7 +3,6 @@ package io.litmuschaos.http;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import io.litmuschaos.exception.LitmusApiException;
-import io.litmuschaos.model.LitmusAuthToken;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,27 +31,27 @@ public class LitmusHttpClient implements AutoCloseable{
         return get(url, null, null, typeToken);
     }
 
-    public <T> T get(String url, LitmusAuthToken token, Class<T> responseType) throws IOException, LitmusApiException {
+    public <T> T get(String url, String token, Class<T> responseType) throws IOException, LitmusApiException {
         return get(url, token, null, responseType);
     }
 
-    public <T> T get(String url, LitmusAuthToken token, Map<String, String> requestParamMap, Class<T> responseType) throws IOException, LitmusApiException {
+    public <T> T get(String url, String token, Map<String, String> requestParamMap, Class<T> responseType) throws IOException, LitmusApiException {
         Request request = buildRequest(url, token, requestParamMap);
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
-    public <T> T get(String url, LitmusAuthToken token, TypeToken<T> typeToken) throws IOException, LitmusApiException {
+    public <T> T get(String url, String token, TypeToken<T> typeToken) throws IOException, LitmusApiException {
         return get(url, token, null, typeToken);
     }
 
-    public <T> T get(String url, LitmusAuthToken token, Map<String, String> requestParamMap, TypeToken<T> typeToken) throws IOException, LitmusApiException {
+    public <T> T get(String url, String token, Map<String, String> requestParamMap, TypeToken<T> typeToken) throws IOException, LitmusApiException {
         Request request = buildRequest(url, token, requestParamMap);
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, typeToken.getType());
     }
 
-    private Request buildRequest(String url, LitmusAuthToken token, Map<String, String> requestParamMap) throws IOException {
+    private Request buildRequest(String url, String token, Map<String, String> requestParamMap) throws IOException {
         HttpUrl.Builder httpUrlBuilder = HttpUrl.get(host + url).newBuilder();
 
         if (requestParamMap != null) {
@@ -65,9 +64,9 @@ public class LitmusHttpClient implements AutoCloseable{
                 .url(httpUrlBuilder.build())
                 .get();
 
-        if (StringUtils.isNotEmpty(token.getTokenValue())) {
+        if (StringUtils.isNotEmpty(token)) {
             requestBuilder
-                    .header(AUTHORIZATION, BEARER + " " + token.getTokenValue());
+                    .header(AUTHORIZATION, BEARER + " " + token);
         }
 
         return requestBuilder.build();
@@ -83,23 +82,23 @@ public class LitmusHttpClient implements AutoCloseable{
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
-    public <T> T post(String url, LitmusAuthToken token, Object object, Class<T> responseType) throws IOException, LitmusApiException {
+    public <T> T post(String url, String token, Object object, Class<T> responseType) throws IOException, LitmusApiException {
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON + "; " + CHARSET_UTF_8), toJson(object));
         Request request = new Request.Builder()
                 .url(host + url)
                 .post(body)
-                .header(AUTHORIZATION, BEARER + " " + token.getTokenValue())
+                .header(AUTHORIZATION, BEARER + " " + token)
                 .build();
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
-    public <T> T post(String url, LitmusAuthToken token, Class<T> responseType) throws IOException, LitmusApiException {
+    public <T> T post(String url, String token, Class<T> responseType) throws IOException, LitmusApiException {
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON + "; " + CHARSET_UTF_8), "");
         Request request = new Request.Builder()
                 .url(host + url)
                 .post(body)
-                .header(AUTHORIZATION, BEARER + " " + token.getTokenValue())
+                .header(AUTHORIZATION, BEARER + " " + token)
                 .build();
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, responseType);
