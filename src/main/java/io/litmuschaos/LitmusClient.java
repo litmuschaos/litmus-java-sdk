@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static io.litmuschaos.constants.ApiEndpoints.*;
+import static io.litmuschaos.constants.RequestParams.*;
+
 public class LitmusClient implements AutoCloseable {
 
     private String token;
@@ -28,8 +31,8 @@ public class LitmusClient implements AutoCloseable {
         String sanitizedHost = sanitizeURL(host);
         OkHttpClient okHttpClient = new OkHttpClient();
         this.token = token;
-        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + "/auth");
-        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + "/api/query", this.token);
+        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost);
+        this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + API_QUERY, this.token);
     }
 
     @Override
@@ -37,162 +40,143 @@ public class LitmusClient implements AutoCloseable {
         this.httpClient.close();
     }
 
-    // User
-//    public LoginResponse authenticate(LoginRequest request)
-//            throws IOException, LitmusApiException {
-//        LoginResponse response = httpClient.post("/login", request, LoginResponse.class);
-//        this.token = response.getAccessToken();
-//        return response;
-//    }
-
-//    public CommonResponse logout() throws IOException, LitmusApiException {
-//        CommonResponse commonResponse = httpClient.post("/logout", token, CommonResponse.class);
-//        this.token = "";
-//        return commonResponse;
-//    }
-
     public ListTokensResponse getTokens(String userId) throws IOException, LitmusApiException {
-        return httpClient.get("/token/" + userId, token, ListTokensResponse.class);
+        return httpClient.get(GET_TOKENS + "/" + userId, token, ListTokensResponse.class);
     }
 
     public TokenCreateResponse createToken(TokenCreateRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/create_token", token, request, TokenCreateResponse.class);
+        return httpClient.post(CREATE_TOKEN, token, request, TokenCreateResponse.class);
     }
 
     public CommonResponse deleteToken(TokenDeleteRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/remove_token", token, request, CommonResponse.class);
+        return httpClient.post(REMOVE_TOKEN, token, request, CommonResponse.class);
     }
 
     public UserResponse getUser(String userId) throws IOException, LitmusApiException {
-        return httpClient.get("/get_user/" + userId, token, UserResponse.class);
+        return httpClient.get(GET_USER + "/" + userId, token, UserResponse.class);
     }
 
     public List<UserResponse> getUsers() throws IOException, LitmusApiException {
-        TypeToken<List<UserResponse>> typeToken = new TypeToken<>() {
-        };
-        return httpClient.get("/users", token, typeToken);
+        TypeToken<List<UserResponse>> typeToken = new TypeToken<>() {};
+        return httpClient.get(GET_USERS, token, typeToken);
     }
 
     public PasswordUpdateResponse updatePassword(PasswordUpdateRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/update/password", token, request, PasswordUpdateResponse.class);
+        return httpClient.post(UPDATE_PASSWORD, token, request, PasswordUpdateResponse.class);
     }
 
     public UserResponse createUser(UserCreateRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/create_user", token, request, UserResponse.class);
+        return httpClient.post(CREATE_USER, token, request, UserResponse.class);
     }
 
     public CommonResponse resetPassword(PasswordResetRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/reset/password", token, request, CommonResponse.class);
+        return httpClient.post(RESET_PASSWORD, token, request, CommonResponse.class);
     }
 
     public CommonResponse updateUserDetails(UserDetailsUpdateRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/update/details", token, request, CommonResponse.class);
+        return httpClient.post(UPDATE_USER_DETAILS, token, request, CommonResponse.class);
     }
 
     public CommonResponse updateUserState(UserStateUpdateRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/update/state", token, request, CommonResponse.class);
+        return httpClient.post(UPDATE_USER_STATE, token, request, CommonResponse.class);
     }
 
     // Capabilities
     public CapabilityResponse capabilities() throws IOException, LitmusApiException {
-        return httpClient.get("/capabilities", CapabilityResponse.class);
+        return httpClient.get(CAPABILITIES, CapabilityResponse.class);
     }
 
     // Project
     public ListProjectsResponse listProjects(ListProjectRequest request)
             throws IOException, LitmusApiException {
         Map<String, String> requestParam = new HashMap<>();
-        requestParam.put("page", String.valueOf(request.getPage()));
-        requestParam.put("limit", String.valueOf(request.getLimit()));
-        requestParam.put("sortField", request.getSortField());
-        requestParam.put("createdByMe", String.valueOf(request.getCreatedByMe()));
-        return httpClient.get("/list_projects", token, requestParam, ListProjectsResponse.class);
+        requestParam.put(PAGE, String.valueOf(request.getPage()));
+        requestParam.put(LIMIT, String.valueOf(request.getLimit()));
+        requestParam.put(SORT_FIELD, request.getSortField());
+        requestParam.put(CREATED_BY_ME, String.valueOf(request.getCreatedByMe()));
+        return httpClient.get(LIST_PROJECTS, token, requestParam, ListProjectsResponse.class);
     }
 
     public ProjectResponse createProject(CreateProjectRequest request)
             throws IOException, LitmusApiException {
-        return httpClient.post("/create_project", token, request, ProjectResponse.class);
+        return httpClient.post(CREATE_PROJECT, token, request, ProjectResponse.class);
     }
 
     public CommonResponse updateProjectName(ProjectNameRequest request)
             throws IOException, LitmusApiException {
-        return httpClient.post("/update_project_name", token, request, CommonResponse.class);
+        return httpClient.post(UPDATE_PROJECT_NAME, token, request, CommonResponse.class);
     }
 
     public ProjectResponse getProject(String projectId) throws IOException, LitmusApiException {
-        return httpClient.get("/get_project/" + projectId, token, ProjectResponse.class);
+        return httpClient.get(GET_PROJECT + "/" + projectId, token, ProjectResponse.class);
     }
 
     public List<ProjectResponse> getOwnerProjects() throws IOException, LitmusApiException {
-        TypeToken<List<ProjectResponse>> typeToken = new TypeToken<List<ProjectResponse>>() {
-        };
-        return httpClient.get("/get_owner_projects", token, typeToken);
+        TypeToken<List<ProjectResponse>> typeToken = new TypeToken<List<ProjectResponse>>() {};
+        return httpClient.get(GET_OWNER_PROJECTS, token, typeToken);
     }
 
     public CommonResponse leaveProject(LeaveProjectRequest request)
             throws IOException, LitmusApiException {
-        return httpClient.post("/leave_project", token, request, CommonResponse.class);
+        return httpClient.post(LEAVE_PROJECT, token, request, CommonResponse.class);
     }
 
     public ProjectRoleResponse getProjectRole(String projectId)
             throws IOException, LitmusApiException {
-        return httpClient.get("/get_project_role/" + projectId, token, ProjectRoleResponse.class);
+        return httpClient.get(GET_PROJECT_ROLE + "/" + projectId, token, ProjectRoleResponse.class);
     }
 
     public UserWithProjectResponse getUserWithProject(String username)
             throws IOException, LitmusApiException {
-        return httpClient.get("/get_user_with_project/" + username, token,
+        return httpClient.get(GET_USER_WITH_PROJECT + "/" + username, token,
                 UserWithProjectResponse.class);
     }
 
     public List<ProjectsStatsResponse> getProjectsStats() throws IOException, LitmusApiException {
-        TypeToken<List<ProjectsStatsResponse>> typeToken = new TypeToken<List<ProjectsStatsResponse>>() {
-        };
-        return httpClient.get("/get_projects_stats", token, typeToken);
+        TypeToken<List<ProjectsStatsResponse>> typeToken = new TypeToken<List<ProjectsStatsResponse>>() {};
+        return httpClient.get(GET_PROJECTS_STATS, token, typeToken);
     }
 
     public List<ProjectMemberResponse> getProjectMembers(String projectID, String status)
             throws IOException, LitmusApiException {
-        TypeToken<List<ProjectMemberResponse>> typeToken = new TypeToken<List<ProjectMemberResponse>>() {
-        };
-        return httpClient.get("/get_project_members/" + projectID + "/" + status, token, typeToken);
+        TypeToken<List<ProjectMemberResponse>> typeToken = new TypeToken<List<ProjectMemberResponse>>() {};
+        return httpClient.get(GET_PROJECT_MEMBERS + "/" + projectID + "/" + status, token, typeToken);
     }
 
     public List<ProjectMemberResponse> getProjectOwners(String projectID)
             throws IOException, LitmusApiException {
-        TypeToken<List<ProjectMemberResponse>> typeToken = new TypeToken<List<ProjectMemberResponse>>() {
-        };
-        return httpClient.get("/get_project_owners/" + projectID, token, typeToken);
+        TypeToken<List<ProjectMemberResponse>> typeToken = new TypeToken<List<ProjectMemberResponse>>() {};
+        return httpClient.get(GET_PROJECT_OWNERS + "/" + projectID, token, typeToken);
     }
 
     public CommonResponse deleteProject(String projectID) throws IOException, LitmusApiException {
-        return httpClient.post("/delete_project/" + projectID, token, CommonResponse.class);
+        return httpClient.post(DELETE_PROJECT + "/" + projectID, token, CommonResponse.class);
     }
 
     public SendInvitationResponse sendInvitation(SendInvitationRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/send_invitation", token, request, SendInvitationResponse.class);
+        return httpClient.post(SEND_INVITATION, token, request, SendInvitationResponse.class);
     }
 
     public CommonResponse acceptInvitation(AcceptInvitationRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/accept_invitation", token, request, CommonResponse.class);
+        return httpClient.post(ACCEPT_INVITATION, token, request, CommonResponse.class);
     }
 
     public CommonResponse declineInvitation(DeclineInvitationRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/decline_invitation", token, request, CommonResponse.class);
+        return httpClient.post(DECLINE_INVITATION, token, request, CommonResponse.class);
     }
 
     public CommonResponse removeInvitation(RemoveInvitationRequest request) throws IOException, LitmusApiException {
-        return httpClient.post("/remove_invitation", token, request, CommonResponse.class);
+        return httpClient.post(REMOVE_INVITATION, token, request, CommonResponse.class);
     }
 
     public List<ListInvitationResponse> listInvitation(String status)
             throws IOException, LitmusApiException {
-        return httpClient.get("/list_invitations_with_filters/" + status, token, List.class);
+        return httpClient.get(LIST_INVITATIONS_WITH_FILTERS + "/" + status, token, List.class);
     }
 
     public List<InviteUsersResponse> inviteUsers(String projectId)
             throws IOException, LitmusApiException {
-        return httpClient.get("/invite_users/" + projectId, token, List.class);
+        return httpClient.get(INVITE_USERS + "/" + projectId, token, List.class);
     }
 
     // Environment

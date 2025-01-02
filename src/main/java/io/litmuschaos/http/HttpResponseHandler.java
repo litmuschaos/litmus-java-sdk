@@ -1,6 +1,7 @@
 package io.litmuschaos.http;
 
 import com.google.gson.*;
+import io.litmuschaos.constants.ResponseBodyFields;
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.exception.detailed.*;
 import okhttp3.Response;
@@ -55,8 +56,8 @@ public class HttpResponseHandler {
 
             for (String jsonStr : jsonObjects) {
                 JsonObject jsonObject = gson.fromJson(jsonStr, JsonObject.class);
-                if (jsonObject.has("errorDescription")) {
-                    return jsonObject.get("errorDescription").getAsString();
+                if (jsonObject.has(ResponseBodyFields.ERROR_DESCRIPTION)) {
+                    return jsonObject.get(ResponseBodyFields.ERROR_DESCRIPTION).getAsString();
                 }
             }
         } catch (Exception e) {
@@ -70,8 +71,8 @@ public class HttpResponseHandler {
 
         if (jsonElement.isJsonObject()) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            if (jsonObject.has("data")) {
-                JsonElement dataElement = jsonObject.get("data");
+            if (jsonObject.has(ResponseBodyFields.DATA)) {
+                JsonElement dataElement = jsonObject.get(ResponseBodyFields.DATA);
                 return gson.fromJson(dataElement.toString(), responseType);
             }
         }

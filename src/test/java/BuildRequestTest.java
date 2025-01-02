@@ -12,8 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BuildRequestTest {
 
     private static final String HOST_URL = "http://localhost:3000";
-    private static final String TEST_TOKEN = "Bearer token";
-
+    private static final String TEST_TOKEN = "Bearer token"; // Put your token here
     private LitmusClient litmusClient;
 
     @BeforeEach
