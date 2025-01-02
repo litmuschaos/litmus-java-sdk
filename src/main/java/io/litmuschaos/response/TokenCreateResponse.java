@@ -7,7 +7,7 @@ public class TokenCreateResponse {
     private String type;
 
     public TokenCreateResponse(String accessToken, String type) {
-        this.accessToken = new String(accessToken);
+        this.accessToken = accessToken;
         this.type = type;
     }
 

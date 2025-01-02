@@ -11,7 +11,7 @@ public class TokenResponse {
     public TokenResponse(String userId, String name, String token, Long expiresAt, Long createdAt) {
         this.user_id = userId;
         this.name = name;
-        this.token = new String(token);
+        this.token = token;
         this.expires_at = expiresAt;
         this.created_at = createdAt;
     }
