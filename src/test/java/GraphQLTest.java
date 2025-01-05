@@ -3,14 +3,18 @@ import io.litmuschaos.generated.client.*;
 import io.litmuschaos.generated.types.*;
 
 import java.util.Random;
+
 import org.assertj.core.api.Assertions;
+import io.litmuschaos.generated.client.ListInfrasGraphQLQuery;
+import io.litmuschaos.generated.client.ListInfrasProjectionRoot;
+import io.litmuschaos.generated.types.ListInfraResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GraphQLTest {
 
     private static final String HOST_URL = "http://127.0.0.1:3000";
-    private static final String TEST_TOKEN = "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4ODc2MTQ3MDQsInJvbGUiOiJhZG1pbiIsInVpZCI6ImU5YTg5MjY4LWFhMWItNDBlZC05NjZlLTNjNmIyMjMwNWU5YSIsInVzZXJuYW1lIjoiYWRtaW4ifQ.J3qpbQDTtF_ghrQB3h-uTFPqr7UGxR5-59CfzJQ6tqSkeOi-lhaBgwMlR80-F0-U9ZovDMcfD55zeQLA63v58g";
+    private static final String TEST_TOKEN = "Bearer token"; // Put your token here
 
     private LitmusClient litmusClient;
 
@@ -100,7 +104,7 @@ public class GraphQLTest {
 
         Assertions.assertThat(result).isEqualTo("successfully deleted environment");
     }
-    
+
     @Test
     public void createEnvironmentTest() {
 
@@ -135,7 +139,7 @@ public class GraphQLTest {
         int random = new Random().nextInt();
         String environmentID = "TEST-ENVIRONMENT-ID-" + random;
         String environmentName = "TEST-ENVIRONMENT-NAME-" + random;
-        
+
         Environment result = litmusClient.createEnvironment(
                 CreateEnvironmentGraphQLQuery.newRequest()
                         .projectID(projectId)
@@ -150,7 +154,7 @@ public class GraphQLTest {
                 new CreateEnvironmentProjectionRoot<>()
                         .environmentID()
         );
-        
+
         String updatedResult = litmusClient.updateEnvironment(
                 UpdateEnvironmentGraphQLQuery.newRequest()
                         .projectID(projectId)

@@ -1,5 +1,6 @@
 package io.litmuschaos.response;
 
+
 public class LoginResponse {
 
     private String accessToken;

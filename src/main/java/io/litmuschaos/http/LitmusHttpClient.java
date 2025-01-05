@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.util.Map;
 
+import static io.litmuschaos.constants.RequestHeaders.*;
+
 public class LitmusHttpClient implements AutoCloseable{
 
     private final OkHttpClient okHttpClient;
@@ -64,14 +66,14 @@ public class LitmusHttpClient implements AutoCloseable{
 
         if (StringUtils.isNotEmpty(token)) {
             requestBuilder
-                    .header("Authorization", "Bearer " + token);
+                    .header(AUTHORIZATION, BEARER + " " + token);
         }
 
         return requestBuilder.build();
     }
 
     public <T> T post(String url, Object object, Class<T> responseType) throws IOException, LitmusApiException {
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson(object));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON + "; " + CHARSET_UTF_8), toJson(object));
         Request request = new Request.Builder()
                 .url(host + url)
                 .post(body)
@@ -81,22 +83,22 @@ public class LitmusHttpClient implements AutoCloseable{
     }
 
     public <T> T post(String url, String token, Object object, Class<T> responseType) throws IOException, LitmusApiException {
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson(object));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON + "; " + CHARSET_UTF_8), toJson(object));
         Request request = new Request.Builder()
                 .url(host + url)
                 .post(body)
-                .header("Authorization", "Bearer " + token)
+                .header(AUTHORIZATION, BEARER + " " + token)
                 .build();
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, responseType);
     }
 
     public <T> T post(String url, String token, Class<T> responseType) throws IOException, LitmusApiException {
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), "");
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON + "; " + CHARSET_UTF_8), "");
         Request request = new Request.Builder()
                 .url(host + url)
                 .post(body)
-                .header("Authorization", "Bearer " + token)
+                .header(AUTHORIZATION, BEARER + " " + token)
                 .build();
         Response response = okHttpClient.newCall(request).execute();
         return httpResponseHandler.handleResponse(response, responseType);
