@@ -179,6 +179,19 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get(INVITE_USERS + "/" + projectId, token, List.class);
     }
 
+    public CommonResponse updateMemberRole(UpdateMemberRoleRequest request) throws IOException, LitmusApiException{
+        return httpClient.post(UPDATE_MEMBER_ROLE, token, request, CommonResponse.class);
+    }
+
+    // Misc
+    public StatusResponse status() throws IOException, LitmusApiException {
+        return httpClient.get(STATUS, token, StatusResponse.class);
+    }
+
+    public ReadinessResponse readiness() throws IOException, LitmusApiException {
+        return httpClient.get(READINESS, token, ReadinessResponse.class);
+    }
+
     // Environment
     public Environment getEnvironment(GetEnvironmentGraphQLQuery query, GetEnvironmentProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
