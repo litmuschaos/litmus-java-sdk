@@ -2,11 +2,6 @@ package io.litmuschaos.constants;
 
 public class ApiEndpoints {
 
-    // Auth
-    public static final String AUTH = "/auth";
-    public static final String LOGIN = "/login";
-    public static final String LOGOUT = "/logout";
-
     // Graphql
     public static final String API_QUERY = "/api/query";
 
@@ -27,6 +22,10 @@ public class ApiEndpoints {
     // Capabilities
     public static final String CAPABILITIES = "/capabilities";
 
+    // Misc
+    public static final String STATUS = "/status";
+    public static final String READINESS = "/readiness";
+
     // Project
     public static final String LIST_PROJECTS = "/list_projects";
     public static final String CREATE_PROJECT = "/create_project";
@@ -40,6 +39,7 @@ public class ApiEndpoints {
     public static final String GET_PROJECT_MEMBERS = "/get_project_members";
     public static final String GET_PROJECT_OWNERS = "/get_project_owners";
     public static final String DELETE_PROJECT = "/delete_project";
+    public static final String UPDATE_MEMBER_ROLE = "/update_member_role";
 
     // Invitation
     public static final String SEND_INVITATION = "/send_invitation";
