@@ -181,23 +181,4 @@ public class GraphQLTest {
 //        Assertions.assertThat(updatedResult).isEqualTo("environment updated successfully");
 //        Assertions.assertThat(updatedEnvironment.getName()).isEqualTo("updated environment");
 //    }
-//
-//    // ChaosInfra
-//    @Test
-//    public void listInfrasTest() {
-//        ListInfraResponse result = litmusClient.listInfras(
-//                new ListInfrasGraphQLQuery
-//                        .Builder()
-//                        .projectID("3f397b8c-292f-4d4d-b5dd-447e3205acd1")
-//                        .build(),
-//                new ListInfrasProjectionRoot<>()
-//                        .infras()
-//                        .infraID()
-//                        .name()
-//                        .parent()
-//                        .totalNoOfInfras()
-//        );
-//        System.out.println(result);
-//    }
-//}
 }
