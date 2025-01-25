@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
-public class MockedLitmusClient {
+public class MockLitmusClient {
 
-    public MockedLitmusClient(String host, String token) {
+    public MockLitmusClient(String host, String token) {
     }
 
     public ListTokensResponse getTokens(String userId) throws IOException, LitmusApiException {
@@ -188,17 +188,15 @@ public class MockedLitmusClient {
 
     public CommonResponse updateMemberRole(UpdateMemberRoleRequest request) throws IOException, LitmusApiException {
         // Mock implementation
-        return null;
+        return new CommonResponse("Successful");
     }
 
     public StatusResponse status() throws IOException, LitmusApiException {
-        // Mock implementation
-        return null;
+        return new StatusResponse("Healthy");
     }
 
     public ReadinessResponse readiness() throws IOException, LitmusApiException {
-        // Mock implementation
-        return null;
+        return new ReadinessResponse("database","collections");
     }
 
     public Environment getEnvironment(GetEnvironmentGraphQLQuery query, GetEnvironmentProjectionRoot projectionRoot) {

@@ -2,12 +2,10 @@ package io.litmuschaos.request;
 
 public class UserDetailsUpdateRequest {
 
-    private final String id;
     private final String name;
     private final String email;
 
     private UserDetailsUpdateRequest(UserDetailsUpdateRequestBuilder builder) {
-        this.id = builder.userID;
         this.name = builder.name;
         this.email = builder.email;
     }
@@ -20,12 +18,7 @@ public class UserDetailsUpdateRequest {
         return email;
     }
 
-    public String getUserID(){
-        return id;
-    }
-
     public static class UserDetailsUpdateRequestBuilder {
-        private String userID;
         private String name;
         private String email;
 
@@ -38,11 +31,6 @@ public class UserDetailsUpdateRequest {
 
         public UserDetailsUpdateRequestBuilder email(String email) {
             this.email = email;
-            return this;
-        }
-
-        public UserDetailsUpdateRequestBuilder userID(String userID) {
-            this.userID = userID;
             return this;
         }
 
