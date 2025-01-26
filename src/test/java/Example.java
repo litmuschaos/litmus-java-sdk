@@ -1,4 +1,10 @@
+import com.jayway.jsonpath.TypeRef;
+import com.netflix.graphql.dgs.client.GraphQLResponse;
+import com.netflix.graphql.dgs.client.codegen.BaseSubProjectionNode;
+import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
 import io.litmuschaos.exception.LitmusApiException;
+import io.litmuschaos.generated.client.*;
+import io.litmuschaos.generated.types.*;
 import io.litmuschaos.request.*;
 import io.litmuschaos.response.*;
 import org.junit.jupiter.api.Test;
@@ -14,6 +20,8 @@ public class Example {
     private static final String TEST_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
     private final MockLitmusClient litmusClient = new MockLitmusClient(HOST_URL,TEST_TOKEN);
+
+    // authentication
 
     @Test
     public void getTokens() throws IOException, LitmusApiException {
@@ -298,5 +306,375 @@ public class Example {
     public void readiness() throws IOException, LitmusApiException {
         ReadinessResponse response = litmusClient.readiness();
         assertThat(response).isInstanceOf(ReadinessResponse.class);
+    }
+
+    /*
+     * GraphQL
+     * You can select the response fields you want to return using an object graph called ProjectionRoot.
+     * There are two ways to move to the top of the object graph: root(), parent()
+     * - root(): Moves to the root of the object graph.
+     * - parent(): Moves directly above in the object graph.
+     */
+
+    @Test
+    public void getEnvironment() throws IOException, LitmusApiException {
+        GetEnvironmentGraphQLQuery query = new GetEnvironmentGraphQLQuery.Builder()
+                .queryName("getEnvironment")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .environmentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .build();
+        GetEnvironmentProjectionRoot projectionRoot = new GetEnvironmentProjectionRoot<>()
+                .projectID()
+                .name()
+                .environmentID()
+                .infraIDs()
+                .updatedAt()
+                .createdAt()
+                .tags()
+                .description()
+                .isRemoved()
+                .createdBy().userID().email().username().root() // after select inner object's field, you need to move above by using root() or parent()
+                .updatedBy().userID().email().username().root()
+                .type().root();
+
+        Environment response = litmusClient.getEnvironment(query, projectionRoot);
+        assertThat(response).isInstanceOf(Environment.class);
+    }
+
+    @Test
+    public void listEnvironments() throws IOException, LitmusApiException {
+        ListEnvironmentsGraphQLQuery query = new ListEnvironmentsGraphQLQuery.Builder()
+                .queryName("listEnvironments")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .request(new ListEnvironmentRequest.Builder()
+                        .environmentIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
+                        .filter(EnvironmentFilterInput.newBuilder()
+                                .name("test")
+                                .description("test")
+                                .tags(List.of("tag1", "tag2"))
+                                .type(EnvironmentType.PROD)
+                                .build())
+                        .pagination(Pagination.newBuilder().page(0).limit(10).build())
+                        .sort(EnvironmentSortInput.newBuilder().ascending(true).field(EnvironmentSortingField.NAME).build())
+                        .build()
+                )
+                .build();
+        ListEnvironmentsProjectionRoot projectionRoot = new ListEnvironmentsProjectionRoot<>()
+                .environments()
+                .projectID()
+                .environmentID()
+                .createdAt()
+                .updatedAt()
+                .infraIDs()
+                .name()
+                .description()
+                .tags()
+                .isRemoved()
+                .createdBy().userID().email().username().parent()
+                .updatedBy().userID().email().username().parent()
+                .type().root()
+                .totalNoOfEnvironments();
+
+        ListEnvironmentResponse response = litmusClient.listEnvironments(query, projectionRoot);
+        assertThat(response).isInstanceOf(ListEnvironmentResponse.class);
+    }
+
+    @Test
+    public void createEnvironment() {
+        CreateEnvironmentGraphQLQuery query = new CreateEnvironmentGraphQLQuery.Builder()
+                .queryName("createEnvironment")
+                .projectID("3f397b8c-292f-4d4d-b5dd-447e3205acd1")
+                .request(CreateEnvironmentRequest.newBuilder()
+                        .environmentID("TEST-ENVIRONMENT-ID-")
+                        .tags(List.of("tag1", "tag2"))
+                        .description("Test environment description")
+                        .name("TEST-ENVIRONMENT-NAME-")
+                        .type(EnvironmentType.NON_PROD)
+                        .build()
+                )
+                .build();
+
+        CreateEnvironmentProjectionRoot projectionRoot = new CreateEnvironmentProjectionRoot<>()
+                .projectID()
+                .name()
+                .environmentID()
+                .infraIDs()
+                .updatedAt()
+                .createdAt()
+                .tags()
+                .description()
+                .isRemoved()
+                .createdBy().userID().email().username().root() // after select inner object's field, you need to move above by using root() or parent()
+                .updatedBy().userID().email().username().root()
+                .type().root();
+
+
+        Environment response = litmusClient.createEnvironment(query, projectionRoot);
+        assertThat(response).isInstanceOf(Environment.class);
+    }
+
+    @Test
+    public void updateEnvironment() {
+        UpdateEnvironmentGraphQLQuery query = new UpdateEnvironmentGraphQLQuery.Builder()
+                .queryName("updateEnvironment")
+                .projectID("3f397b8c-292f-4d4d-b5dd-447e3205acd1")
+                .request(UpdateEnvironmentRequest.newBuilder()
+                        .environmentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                        .name("updated environment")
+                        .tags(List.of("tag1", "tag2"))
+                        .type(EnvironmentType.NON_PROD)
+                        .description("Updated environment description")
+                        .build()
+                )
+                .build();
+
+        UpdateEnvironmentResponse response = litmusClient.updateEnvironment(query);
+        assertThat(response).isInstanceOf(UpdateEnvironmentResponse.class);
+    }
+
+    @Test
+    public void deleteEnvironment() {
+        DeleteEnvironmentGraphQLQuery query = new DeleteEnvironmentGraphQLQuery.Builder()
+                .queryName("deleteEnvironment")
+                .projectID("3f397b8c-292f-4d4d-b5dd-447e3205acd1")
+                .environmentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .build();
+
+        DeleteEnvironmentResponse response = litmusClient.deleteEnvironment(query);
+        assertThat(response).isInstanceOf(DeleteEnvironmentResponse.class);
+    }
+
+    @Test
+    public void getInfra() {
+        GetInfraGraphQLQuery query = new GetInfraGraphQLQuery.Builder()
+                .queryName("getInfra")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .build();
+        GetInfraProjectionRoot projectionRoot = new GetInfraProjectionRoot<>()
+                .infraSaExists()
+                .infraNsExists()
+                .infraNamespace()
+                .description()
+                .environmentID()
+                .infraID()
+                .infraScope()
+                .infraType().root()
+                .isActive()
+                .isRemoved()
+                .isInfraConfirmed()
+                .lastExperimentTimestamp()
+                .name()
+                .noOfExperimentRuns()
+                .noOfExperiments()
+                .platformName()
+                .projectID()
+                .serviceAccount()
+                .startTime()
+                .tags()
+                .token()
+                .version()
+                .createdAt()
+                .updatedAt()
+                .createdBy().userID().email().username().root()
+                .updatedBy().userID().email().username().root()
+                .updateStatus().root();
+
+        Infra response = litmusClient.getInfra(query, projectionRoot);
+        assertThat(response).isInstanceOf(Infra.class);
+    }
+
+    @Test
+    public void listInfras() {
+
+        ListInfrasGraphQLQuery query = new ListInfrasGraphQLQuery.Builder()
+                .queryName("listInfras")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .request(new ListInfraRequest.Builder()
+                        .infraIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
+                        .environmentIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
+                        .filter(InfraFilterInput.newBuilder()
+                                .name("test")
+                                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                                .description("test")
+                                .platformName("test")
+                                .tags(List.of("tag1", "tag2"))
+                                .isActive(true)
+                                .infraScope(INFRA_SCOPE.cluster)
+                                .build())
+                        .pagination(Pagination.newBuilder().page(0).limit(10).build())
+                        .build()
+                )
+                .build();
+
+        ListInfrasProjectionRoot projectionRoot = new ListInfrasProjectionRoot<>()
+                .infras()
+                .projectID()
+                .infraID()
+                .createdAt()
+                .updatedAt()
+                .infraNamespace()
+                .updateStatus().parent()
+                .isInfraConfirmed()
+                .name()
+                .description()
+                .tags()
+                .isActive()
+                .isRemoved()
+                .infraScope()
+                .environmentID()
+                .platformName()
+                .serviceAccount()
+                .token()
+                .version()
+                .lastExperimentTimestamp()
+                .noOfExperiments()
+                .noOfExperimentRuns()
+                .createdBy().userID().email().username().parent()
+                .updatedBy().userID().email().username().parent()
+                .updateStatus().root()
+                .totalNoOfInfras();
+
+        ListInfraResponse response = litmusClient.listInfras(query, projectionRoot);
+        assertThat(response).isInstanceOf(ListInfraResponse.class);
+    }
+
+    @Test
+    public void getInfraDetails(){
+        GetInfraDetailsGraphQLQuery query = new GetInfraDetailsGraphQLQuery.Builder()
+                .queryName("getInfraDetails")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .build();
+
+        GetInfraDetailsProjectionRoot projectionRoot = new GetInfraDetailsProjectionRoot<>()
+                .infraID()
+                .infraNamespace()
+                .description()
+                .environmentID()
+                .infraScope()
+                .infraType().root()
+                .isActive()
+                .isRemoved()
+                .isInfraConfirmed()
+                .lastExperimentTimestamp()
+                .name()
+                .noOfExperimentRuns()
+                .noOfExperiments()
+                .platformName()
+                .projectID()
+                .serviceAccount()
+                .startTime()
+                .tags()
+                .token()
+                .version()
+                .createdAt()
+                .updatedAt()
+                .createdBy().userID().email().username().root()
+                .updatedBy().userID().email().username().root()
+                .updateStatus().root();
+
+        Infra response = litmusClient.getInfraDetails(query, projectionRoot);
+        assertThat(response).isInstanceOf(Infra.class);
+    }
+
+    @Test
+    public void getInfraStats(){
+        GetInfraStatsGraphQLQuery query = new GetInfraStatsGraphQLQuery.Builder()
+                .queryName("getInfraStats")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .build();
+
+        GetInfraStatsProjectionRoot projectionRoot = new GetInfraStatsProjectionRoot<>()
+                .totalActiveInfrastructure()
+                .totalConfirmedInfrastructure()
+                .totalInactiveInfrastructures()
+                .totalInfrastructures()
+                .totalNonConfirmedInfrastructures();
+
+
+        GetInfraStatsResponse response = litmusClient.getInfraStats(query, projectionRoot);
+        assertThat(response).isInstanceOf(GetInfraStatsResponse.class);
+    }
+
+    @Test
+    public void getInfraManifest(){
+        GetInfraManifestGraphQLQuery query = new GetInfraManifestGraphQLQuery.Builder()
+                .queryName("getInfraManifest")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .upgrade(true)
+                .build();
+
+        GetInfraManifestResponse response = litmusClient.getInfraManifest(query);
+        assertThat(response).isInstanceOf(GetInfraManifestResponse.class);
+
+    }
+
+    @Test
+    public void confirmInfraRegistration(){
+        ConfirmInfraRegistrationGraphQLQuery query = new ConfirmInfraRegistrationGraphQLQuery.Builder()
+                .queryName("confirmInfraRegistration")
+                .request(InfraIdentity.newBuilder()
+                        .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                        .accessKey("test access key")
+                        .version("test version")
+                        .build())
+                .build();
+
+        ConfirmInfraRegistrationProjectionRoot projectionRoot = new ConfirmInfraRegistrationProjectionRoot<>()
+                .infraID()
+                .isInfraConfirmed()
+                .newAccessKey();
+
+
+        ConfirmInfraRegistrationResponse response = litmusClient.confirmInfraRegistration(query, projectionRoot);
+        assertThat(response).isInstanceOf(ConfirmInfraRegistrationResponse.class);
+    }
+
+    @Test
+    public void deleteInfra(){
+        DeleteInfraGraphQLQuery query = new DeleteInfraGraphQLQuery.Builder()
+                .queryName("deleteInfra")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .build();
+
+        DeleteInfraResponse response = litmusClient.deleteInfra(query);
+        assertThat(response).isInstanceOf(DeleteInfraResponse.class);
+    }
+
+    @Test
+    public void registerInfra(){
+        RegisterInfraGraphQLQuery query = new RegisterInfraGraphQLQuery.Builder()
+                .queryName("registerInfra")
+                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .request(RegisterInfraRequest.newBuilder()
+                        .description("test description")
+                        .environmentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                        .infraNamespace("test namespace")
+                        .infraNsExists(true)
+                        .infraSaExists(true)
+                        .infraScope(INFRA_SCOPE.cluster.name())
+                        .infrastructureType(InfrastructureType.Kubernetes)
+                        .name("test name")
+                        .nodeSelector("test node selector")
+                        .platformName("test platform name")
+                        .serviceAccount("test service account")
+                        .skipSsl(true)
+                        .tags(List.of("tag1", "tag2"))
+                        .tolerations(List.of(Toleration.newBuilder().value("test value").key("test key").effect("test effect").build()))
+                        .build()
+                )
+                .build();
+
+        RegisterInfraProjectionRoot projectionRoot = new RegisterInfraProjectionRoot<>()
+                .infraID()
+                .name()
+                .manifest()
+                .token();
+
+        RegisterInfraResponse response = litmusClient.registerInfra(query, projectionRoot);
+        assertThat(response).isInstanceOf(RegisterInfraResponse.class);
     }
 }

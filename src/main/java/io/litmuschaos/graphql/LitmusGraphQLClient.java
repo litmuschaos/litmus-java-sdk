@@ -11,6 +11,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static io.litmuschaos.constants.RequestHeaders.BEARER;
+
 
 public class LitmusGraphQLClient {
 
@@ -20,7 +22,7 @@ public class LitmusGraphQLClient {
         client = GraphQLClient.createCustom(host, ((url, headers, body) -> {
             Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Authorization", token)
+                .addHeader("Authorization", BEARER + " " + token)
                 .post(RequestBody.create(body, MediaType.parse("application/json"))
             ).build();
 

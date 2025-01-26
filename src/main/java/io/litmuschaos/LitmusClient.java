@@ -242,7 +242,7 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getInfraDetails", new TypeRef<Infra>(){});
     }
 
-    public GetInfraStatsResponse getInfraStats(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot){
+    public GetInfraStatsResponse getInfraStats(GetInfraStatsGraphQLQuery query, GetInfraStatsProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getInfraStats", new TypeRef<GetInfraStatsResponse>(){});

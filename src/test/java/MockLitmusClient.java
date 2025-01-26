@@ -239,7 +239,7 @@ public class MockLitmusClient {
         return null;
     }
 
-    public GetInfraStatsResponse getInfraStats(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot) {
+    public GetInfraStatsResponse getInfraStats(GetInfraStatsGraphQLQuery query, GetInfraStatsProjectionRoot projectionRoot) {
         // Mock implementation
         return null;
     }
