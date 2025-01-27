@@ -31,7 +31,7 @@ public class LitmusClient implements AutoCloseable {
         String sanitizedHost = sanitizeURL(host);
         OkHttpClient okHttpClient = new OkHttpClient();
         this.token = token;
-        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost);
+        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + AUTH);
         this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + API_QUERY, this.token);
     }
 
@@ -518,10 +518,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getProbeYAML", new TypeRef<GetProbeYAMLResponse>(){});
     }
 
-    public GetProbesInExperimentRunResponse getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot){
+    public List<GetProbesInExperimentRunResponse> getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject("data.getProbesInExperimentRun", new TypeRef<GetProbesInExperimentRunResponse>(){});
+        return response.extractValueAsObject("data.getProbesInExperimentRun", new TypeRef<List<GetProbesInExperimentRunResponse>>(){});
     }
 
     public Probe addProbe(AddProbeGraphQLQuery query, AddProbeProjectionRoot projectionRoot){
