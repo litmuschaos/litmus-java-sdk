@@ -368,7 +368,7 @@ public class MockLitmusClient {
         return null;
     }
 
-    public ListExperimentRunResponse listExperimentRun(ListExperimentGraphQLQuery query, ListExperimentProjectionRoot projectionRoot) {
+    public ListExperimentRunResponse listExperimentRun(ListExperimentRunGraphQLQuery query, ListExperimentRunProjectionRoot projectionRoot) {
         return null;
     }
 
