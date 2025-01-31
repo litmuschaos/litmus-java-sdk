@@ -13,8 +13,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Example {
 
-    private static final String HOST_URL = "http://localhost:62797";
-    private static final String TEST_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4OTE1ODQwNzMsInJvbGUiOiJhZG1pbiIsInVpZCI6ImI1NWVlMzQwLWZiNzMtNDAyYy1hN2QwLWUxM2QzY2JiYTczOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.1bwzyAyAgW9ba7JgqaLXEomoEer-WtfyDaSqlwAdwLlKagt9lRjgaDcSm20YprsTqvM164eOSGu7FUhlOxZ81w";
+    private static final String HOST_URL = "http://localhost:62797"; // your frontend url here
+    private static final String TEST_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4OTE1ODQwNzMsInJvbGUiOiJhZG1pbiIsInVpZCI6ImI1NWVlMzQwLWZiNzMtNDAyYy1hN2QwLWUxM2QzY2JiYTczOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.1bwzyAyAgW9ba7JgqaLXEomoEer-WtfyDaSqlwAdwLlKagt9lRjgaDcSm20YprsTqvM164eOSGu7FUhlOxZ81w"; // your API token here.
 
     private final LitmusClient litmusClient = new LitmusClient(HOST_URL,TEST_TOKEN);
 
@@ -22,7 +22,7 @@ public class Example {
 
     @Test
     public void getTokens() throws IOException, LitmusApiException {
-        String userId = "2f8bcfce-b4f3-475f-9e92-f852f99df29c";
+        String userId = "b55ee340-fb73-402c-a7d0-e13d3cbba738";
         ListTokensResponse response = litmusClient.getTokens(userId);
         assertThat(response).isInstanceOf(ListTokensResponse.class);
     }
@@ -30,21 +30,19 @@ public class Example {
     @Test
     public void createToken() throws IOException, LitmusApiException {
         TokenCreateRequest request = TokenCreateRequest.builder()
-                .userID("2f8bcfce-b4f3-475f-9e92-f852f99df29c")
-                .name("test 2")
+                .userID("b55ee340-fb73-402c-a7d0-e13d3cbba738")
+                .name("new token name")
                 .daysUntilExpiration(36500)
                 .build();
         TokenCreateResponse response = litmusClient.createToken(request);
-        System.out.println(response);
         assertThat(response).isInstanceOf(TokenCreateResponse.class);
     }
 
-    // It is not working in local environment
     @Test
     public void deleteToken() throws IOException, LitmusApiException {
         TokenDeleteRequest request = TokenDeleteRequest.builder()
-                .token(TEST_TOKEN)
-                .userID("5ee70855-c77e-4a8f-a0d7-715bb5846bdd")
+                .token("eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4OTE5Mzg2NTksInJvbGUiOiJhZG1pbiIsInVpZCI6ImI1NWVlMzQwLWZiNzMtNDAyYy1hN2QwLWUxM2QzY2JiYTczOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.5iio28gGfk9PVzvDmMGenwlKvm4VTCPgSXama5FfaG1-6fCPFMMbGCymq2_4kHYsVITYyZfLnYDw-ywAYEsP2Q")
+                .userID("b55ee340-fb73-402c-a7d0-e13d3cbba738")
                 .build();
         CommonResponse response = litmusClient.deleteToken(request);
         assertThat(response).isInstanceOf(CommonResponse.class);
@@ -60,17 +58,16 @@ public class Example {
     @Test
     public void getUsers() throws IOException, LitmusApiException {
         List<UserResponse> response = litmusClient.getUsers();
-        System.out.println(response);
         assertThat(response).isInstanceOf(List.class);
     }
 
     @Test
     public void updatePassword() throws IOException, LitmusApiException {
-        PasswordUpdateRequest request = PasswordUpdateRequest.builder().
-                username("test_username").
-                oldPassword("old password").
-                newPassword("new password").
-                build();
+        PasswordUpdateRequest request = PasswordUpdateRequest.builder()
+                .username("test")
+                .oldPassword("old password")
+                .newPassword("new password")
+                .build();
         PasswordUpdateResponse response = litmusClient.updatePassword(request);
         assertThat(response).isInstanceOf(PasswordUpdateResponse.class);
     }
@@ -151,8 +148,8 @@ public class Example {
     @Test
     public void updateProjectName() throws IOException, LitmusApiException {
         ProjectNameRequest request = ProjectNameRequest.builder()
-                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
-                .projectName("test projectName")
+                .projectID("02eb82e7-eafa-4528-8262-a49efd10c857")
+                .projectName("test projectName 2")
                 .build();
         CommonResponse response = litmusClient.updateProjectName(request);
         assertThat(response).isInstanceOf(CommonResponse.class);
@@ -227,8 +224,8 @@ public class Example {
     public void sendInvitation() throws IOException, LitmusApiException {
         SendInvitationRequest request = SendInvitationRequest.builder()
                 .projectId("50703e0e-18de-4cc4-80fb-0784c100bb07")
-                .role("Executor") // Role can be Owner, Executor, Viewer
                 .userId("5ee70855-c77e-4a8f-a0d7-715bb5846bdd")
+                .role("Executor") // Role can be Owner, Executor, Viewer
                 .build();
 
         SendInvitationResponse response = litmusClient.sendInvitation(request);
@@ -260,8 +257,8 @@ public class Example {
     @Test
     public void removeInvitation() throws IOException, LitmusApiException {
         RemoveInvitationRequest request = RemoveInvitationRequest.builder()
-                .projectId("50703e0e-18de-4cc4-80fb-0784c100bb07")
-                .userId("5ee70855-c77e-4a8f-a0d7-715bb5846bdd")
+                .projectId("02eb82e7-eafa-4528-8262-a49efd10c857")
+                .userId("2f8bcfce-b4f3-475f-9e92-f852f99df29c")
                 .build();
 
         CommonResponse response = litmusClient.removeInvitation(request);
@@ -278,7 +275,7 @@ public class Example {
     // List of users that can be invited
     @Test
     public void inviteUsers() throws IOException, LitmusApiException {
-        String projectId = "50703e0e-18de-4cc4-80fb-0784c100bb07";
+        String projectId = "02eb82e7-eafa-4528-8262-a49efd10c857";
         List<InviteUsersResponse> response = litmusClient.inviteUsers(projectId);
         assertThat(response).isInstanceOf(List.class);
     }
