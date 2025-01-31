@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Example {
 
-    private static final String HOST_URL = "http://localhost:62121";
+    private static final String HOST_URL = "http://localhost:62797";
     private static final String TEST_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4OTE1ODQwNzMsInJvbGUiOiJhZG1pbiIsInVpZCI6ImI1NWVlMzQwLWZiNzMtNDAyYy1hN2QwLWUxM2QzY2JiYTczOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.1bwzyAyAgW9ba7JgqaLXEomoEer-WtfyDaSqlwAdwLlKagt9lRjgaDcSm20YprsTqvM164eOSGu7FUhlOxZ81w";
 
     private final LitmusClient litmusClient = new LitmusClient(HOST_URL,TEST_TOKEN);
@@ -316,7 +316,7 @@ public class Example {
      */
 
     @Test
-    public void getEnvironment() throws IOException, LitmusApiException {
+    public void getEnvironment() {
         GetEnvironmentGraphQLQuery query = new GetEnvironmentGraphQLQuery.Builder()
                 .queryName("getEnvironment")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
@@ -341,18 +341,18 @@ public class Example {
     }
 
     @Test
-    public void listEnvironments() throws IOException, LitmusApiException {
+    public void listEnvironments() {
         ListEnvironmentsGraphQLQuery query = new ListEnvironmentsGraphQLQuery.Builder()
                 .queryName("listEnvironments")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListEnvironmentRequest.Builder()
-                //      .environmentIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
-                //      .filter(EnvironmentFilterInput.newBuilder()
-                //                .name("test")
-                //                .description("test")
-                //                .tags(List.of("tag1", "tag2"))
-                //                .type(EnvironmentType.PROD)
-                //                .build())
+                      .environmentIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
+                      .filter(EnvironmentFilterInput.newBuilder()
+                                .name("test")
+                                .description("test")
+                                .tags(List.of("tag1", "tag2"))
+                                .type(EnvironmentType.PROD)
+                                .build())
                         .pagination(Pagination.newBuilder().page(0).limit(10).build())
                         .sort(EnvironmentSortInput.newBuilder().ascending(true).field(EnvironmentSortingField.NAME).build())
                         .build()
@@ -448,7 +448,7 @@ public class Example {
     }
 
     @Test
-    public void getInfra() { // not work
+    public void getInfra() {
         GetInfraGraphQLQuery query = new GetInfraGraphQLQuery.Builder()
                 .queryName("getInfra")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
@@ -456,6 +456,9 @@ public class Example {
                 .build();
 
         GetInfraProjectionRoot projectionRoot = new GetInfraProjectionRoot<>()
+                .tags()
+                .version()
+                .name()
                 .infraSaExists()
                 .infraNsExists();
 
@@ -471,16 +474,16 @@ public class Example {
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListInfraRequest.Builder()
                         .environmentIDs(List.of("testing"))
-//                        .infraIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
-//                        .filter(InfraFilterInput.newBuilder()
-//                                .name("test")
-//                                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
-//                                .description("test")
-//                                .platformName("test")
-//                                .tags(List.of("tag1", "tag2"))
-//                                .isActive(true)
-//                                .infraScope(INFRA_SCOPE.cluster)
-//                                .build())
+                        .infraIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
+                        .filter(InfraFilterInput.newBuilder()
+                                .name("test")
+                                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                                .description("test")
+                                .platformName("test")
+                                .tags(List.of("tag1", "tag2"))
+                                .isActive(true)
+                                .infraScope(INFRA_SCOPE.cluster)
+                                .build())
                         .pagination(Pagination.newBuilder().page(0).limit(10).build())
                         .build()
                 )
@@ -575,12 +578,13 @@ public class Example {
         assertThat(response).isInstanceOf(GetInfraStatsResponse.class);
     }
 
+    // output not exist
     @Test
-    public void getInfraManifest(){ // unknown
+    public void getInfraManifest(){
         GetInfraManifestGraphQLQuery query = new GetInfraManifestGraphQLQuery.Builder()
                 .queryName("getInfraManifest")
-                .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
-                .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
+                .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
+                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .upgrade(true)
                 .build();
 
@@ -611,7 +615,6 @@ public class Example {
         assertThat(response).isInstanceOf(ConfirmInfraRegistrationResponse.class);
     }
 
-    // it doesn't remove kubernetes resources
     @Test
     public void deleteInfra(){
         DeleteInfraGraphQLQuery query = new DeleteInfraGraphQLQuery.Builder()
@@ -662,15 +665,15 @@ public class Example {
         ListChaosHubGraphQLQuery query = new ListChaosHubGraphQLQuery.Builder()
                 .queryName("listChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
-//                .request(new ListChaosHubRequest.Builder()
-//                        .chaosHubIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
-//                        .filter(ChaosHubFilterInput.newBuilder()
-//                                .chaosHubName("test")
-//                                .tags(List.of("tag1", "tag2"))
-//                                .description("test")
-//                                .build())
-//                        .build()
-//                )
+                .request(new ListChaosHubRequest.Builder()
+                        .chaosHubIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
+                        .filter(ChaosHubFilterInput.newBuilder()
+                                .chaosHubName("test")
+                                .tags(List.of("tag1", "tag2"))
+                                .description("test")
+                                .build())
+                        .build()
+                )
                 .build();
 
         ListChaosHubProjectionRoot projectionRoot = new ListChaosHubProjectionRoot<>()
@@ -752,8 +755,9 @@ public class Example {
         assertThat(response).isInstanceOf(ChaosHub.class);
     }
 
+    // is it work?
     @Test
-    public void addRemoteChaosHub(){ // unknown
+    public void addRemoteChaosHub(){
         AddRemoteChaosHubGraphQLQuery query = new AddRemoteChaosHubGraphQLQuery.Builder()
                 .queryName("addRemoteChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
@@ -792,7 +796,7 @@ public class Example {
     }
 
     @Test
-    public void saveChaosHub(){ // need to check
+    public void saveChaosHub(){
         SaveChaosHubGraphQLQuery query = new SaveChaosHubGraphQLQuery.Builder()
                 .queryName("saveChaosHub")
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
@@ -856,35 +860,33 @@ public class Example {
     }
 
     @Test
-    public void getExperiment(){ // need to check
+    public void getExperiment(){
         GetExperimentGraphQLQuery query = new GetExperimentGraphQLQuery.Builder()
-                .queryName("getExperiment")
-                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
-                .experimentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
+                .experimentID("0eab377f-d8dc-491d-af40-dfebf110b4fe")
                 .build();
 
         GetExperimentProjectionRoot projectionRoot = new GetExperimentProjectionRoot<>()
                 .averageResiliencyScore()
-                .experimentDetails().parent()
                 .experimentDetails()
                 .createdAt()
+                .name()
+                .tags()
                 .projectID()
                 .root();
 
-
         GetExperimentResponse response = litmusClient.getExperiment(query, projectionRoot);
+        System.out.println(response);
         assertThat(response).isInstanceOf(GetExperimentResponse.class);
     }
 
     @Test
     public void listExperiment(){
         ListExperimentGraphQLQuery query = new ListExperimentGraphQLQuery.Builder()
-                .queryName("listExperiment")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .request(new ListExperimentRequest.Builder()
                         .experimentIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
                         .filter(ExperimentFilterInput.newBuilder()
-                             //    .experimentName("test")
                                 .dateRange(DateRange.newBuilder()
                                         .startDate("1737817199000")
                                         .endDate("1733929200000")
@@ -921,7 +923,6 @@ public class Example {
     @Test
     public void getExperimentStats(){
         GetExperimentStatsGraphQLQuery query = new GetExperimentStatsGraphQLQuery.Builder()
-                .queryName("getExperimentStats")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
 
@@ -937,7 +938,6 @@ public class Example {
     @Test
     public void getPredefinedExperiment(){
         GetPredefinedExperimentGraphQLQuery query = new GetPredefinedExperimentGraphQLQuery.Builder()
-                .queryName("getPredefinedExperiment")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .experimentName(List.of("Node CPU Hog"))
                 .hubID("6f39cea9-6264-4951-83a8-29976b614289")
@@ -956,7 +956,6 @@ public class Example {
     @Test
     public void listPredefinedExperiments(){
         ListPredefinedExperimentsGraphQLQuery query = new ListPredefinedExperimentsGraphQLQuery.Builder()
-                .queryName("listPredefinedExperiments")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .hubID("6f39cea9-6264-4951-83a8-29976b614289")
                 .build();
@@ -974,7 +973,6 @@ public class Example {
     @Test
     public void runChaosExperiment(){
         RunChaosExperimentGraphQLQuery query = new RunChaosExperimentGraphQLQuery.Builder()
-                .queryName("runChaosExperiment")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .experimentID("1af067d5-fec7-4117-92df-036f5a571372")
                 .build();
@@ -990,7 +988,6 @@ public class Example {
     @Test
     public void saveChaosExperiment(){
         SaveChaosExperimentGraphQLQuery query = new SaveChaosExperimentGraphQLQuery.Builder()
-                .queryName("saveChaosExperiment")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .request(SaveChaosExperimentRequest.newBuilder()
                         .description("test description")
@@ -998,7 +995,6 @@ public class Example {
                         .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
                         .manifest("manifest file")
                         .tags(List.of("tag1", "tag2"))
-//                        .type(ExperimentType.Experiment)
                         .name("test2-experiment")
                         .build())
                 .build();
@@ -1010,9 +1006,8 @@ public class Example {
     }
 
     @Test
-    public void updateChaosExperiment(){ // need to check
+    public void updateChaosExperiment(){
         UpdateChaosExperimentGraphQLQuery query = new UpdateChaosExperimentGraphQLQuery.Builder()
-                .queryName("updateChaosExperiment")
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .request(ChaosExperimentRequest.newBuilder()
                         .experimentManifest("test manifest")
@@ -1033,16 +1028,20 @@ public class Example {
     }
 
     @Test
-    public void createChaosExperiment(){ // need to check
+    public void createChaosExperiment(){ // is it work?
         CreateChaosExperimentGraphQLQuery query = new CreateChaosExperimentGraphQLQuery.Builder()
-                .queryName("createChaosExperiment")
-                .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
-                .request(ChaosExperimentRequest.newBuilder()
+                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
+                .request(
+                        ChaosExperimentRequest.newBuilder()
+                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
+                        .experimentID("fbbd6d12-bd3e-4b8f-a857-023691251228")
+                                .experimentManifest("test manifest")
                         .tags(List.of("tag1", "tag2"))
                         .runExperiment(true)
+                        .experimentID("fbbd6d12-bd3e-4b8f-a857-023691251228")
+                        .isCustomExperiment(false)
                         .experimentDescription("test description")
-                        .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
-                        .experimentManifest("test manifest")
+                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
                         .build()
                 )
                 .build();
@@ -1059,7 +1058,6 @@ public class Example {
     @Test
     public void deleteChaosExperiment(){
         DeleteChaosExperimentGraphQLQuery query = new DeleteChaosExperimentGraphQLQuery.Builder()
-                .queryName("deleteChaosExperiment")
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .experimentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .experimentRunID("50703e0e-18de-4cc4-80fb-0784c100bb07")
@@ -1070,15 +1068,15 @@ public class Example {
     }
 
     @Test
-    public void updateCronExperimentState(){ // unknown
+    public void updateCronExperimentState(){
         UpdateCronExperimentStateGraphQLQuery query = new UpdateCronExperimentStateGraphQLQuery.Builder()
-                .queryName("updateCronExperimentState")
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
-                .disable(false)
                 .experimentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                .disable(true)
                 .build();
 
         UpdateCronExperimentStateResponse response = litmusClient.updateCronExperimentState(query);
+        System.out.println(response);
         assertThat(response).isInstanceOf(UpdateCronExperimentStateResponse.class);
     }
 
@@ -1086,10 +1084,8 @@ public class Example {
     @Test
     public void getExperimentRun(){
         GetExperimentRunGraphQLQuery query = new GetExperimentRunGraphQLQuery.Builder()
-                .queryName("getExperimentRun")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .notifyID("7502028c-1103-4c54-8ac3-e5b5ec9b49f5")
-                // .experimentRunID("43bc2abd-bb9f-431a-95d9-458b380b5e1a")
                 .build();
 
         GetExperimentRunProjectionRoot projectionRoot = new GetExperimentRunProjectionRoot<>()
@@ -1113,7 +1109,6 @@ public class Example {
     @Test
     public void getExperimentRunStats(){
         GetExperimentRunStatsGraphQLQuery query = new GetExperimentRunStatsGraphQLQuery.Builder()
-                .queryName("getExperimentRunStats")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
 
@@ -1133,21 +1128,20 @@ public class Example {
     @Test
     public void listExperimentRun(){
         ListExperimentRunGraphQLQuery query = new ListExperimentRunGraphQLQuery.Builder()
-                .queryName("listExperimentRun")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListExperimentRunRequest.Builder()
-//                        .experimentRunIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
-//                        .filter(ExperimentRunFilterInput.newBuilder()
-//                                .experimentRunID("50703e0e-18de-4cc4-80fb-0784c100bb07")
-//                                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
-//                                .experimentName("test")
-//                                .experimentRunStatus(List.of(ExperimentRunStatus.Running.name()))
-//                                .dateRange(DateRange.newBuilder()
-//                                        .startDate("2021-01-01")
-//                                        .endDate("2021-12-31")
-//                                        .build())
-//                                .build()
-//                        )
+                        .experimentRunIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
+                        .filter(ExperimentRunFilterInput.newBuilder()
+                                .experimentRunID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                                .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
+                                .experimentName("test")
+                                .experimentRunStatus(List.of(ExperimentRunStatus.Running.name()))
+                                .dateRange(DateRange.newBuilder()
+                                        .startDate("1737817199000")
+                                        .endDate("1737817199900")
+                                        .build())
+                                .build()
+                        )
                         .pagination(Pagination.newBuilder().page(0).limit(10).build())
                         .sort(ExperimentRunSortInput.newBuilder().ascending(true).field(ExperimentSortingField.NAME).build())
                         .build()
@@ -1164,10 +1158,10 @@ public class Example {
         assertThat(response).isInstanceOf(ListExperimentRunResponse.class);
     }
 
+    // is it work?
     @Test
-    public void chaosExperimentRun(){ // unknown
+    public void chaosExperimentRun(){
         ChaosExperimentRunGraphQLQuery query = new ChaosExperimentRunGraphQLQuery.Builder()
-                .queryName("chaosExperimentRun")
                 .request(ExperimentRunRequest.newBuilder()
                         .experimentID("1af067d5-fec7-4117-92df-036f5a571372")
                         .experimentRunID("43bc2abd-bb9f-431a-95d9-458b380b5e1a")
@@ -1184,11 +1178,8 @@ public class Example {
     @Test
     public void stopExperimentRuns(){
         StopExperimentRunsGraphQLQuery query = new StopExperimentRunsGraphQLQuery.Builder()
-                .queryName("stopExperimentRuns")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .experimentID("1af067d5-fec7-4117-92df-036f5a571372")
-         //       .experimentRunID("b6f3115b-8f96-434d-ac02-f815d64832b7") optional
-         //       .notifyID("b6f3115b-8f96-434d-ac02-f815d64832b7") optional
                 .build();
 
         StopExperimentRunsResponse response = litmusClient.stopExperimentRuns(query);
@@ -1200,7 +1191,6 @@ public class Example {
     @Test
     public void getGitOpsDetails(){
         GetGitOpsDetailsGraphQLQuery query = new GetGitOpsDetailsGraphQLQuery.Builder()
-                .queryName("getGitOpsDetails")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
 
@@ -1217,7 +1207,6 @@ public class Example {
     @Test
     public void disableGitOps(){
         DisableGitOpsGraphQLQuery query = new DisableGitOpsGraphQLQuery.Builder()
-                .queryName("disableGitOps")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
 
@@ -1229,7 +1218,6 @@ public class Example {
     @Test
     public void enableGitOps(){
         EnableGitOpsGraphQLQuery query = new EnableGitOpsGraphQLQuery.Builder()
-                .queryName("enableGitOps")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .configurations(GitConfig.newBuilder()
                         .authType(AuthType.TOKEN) // BASIC, NONE, SSH, TOKEN
@@ -1246,9 +1234,8 @@ public class Example {
     }
 
     @Test
-    public void gitopsNotifier(){ // unknown
+    public void gitopsNotifier(){
         GitopsNotifierGraphQLQuery query = new GitopsNotifierGraphQLQuery.Builder()
-                .queryName("gitopsNotifier")
                 .experimentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .clusterInfo(InfraIdentity.newBuilder()
                         .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
@@ -1263,9 +1250,8 @@ public class Example {
     }
 
     @Test
-    public void updateGitOps(){ // unknown
+    public void updateGitOps(){
         UpdateGitOpsGraphQLQuery query = new UpdateGitOpsGraphQLQuery.Builder()
-                .queryName("updateGitOps")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .configurations(GitConfig.newBuilder()
                         .authType(AuthType.NONE)
@@ -1285,7 +1271,6 @@ public class Example {
     @Test
     public void getImageRegistry(){
         GetImageRegistryGraphQLQuery query = new GetImageRegistryGraphQLQuery.Builder()
-                .queryName("getImageRegistry")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
 
@@ -1302,7 +1287,6 @@ public class Example {
     @Test
     public void listImageRegistry(){
         ListImageRegistryGraphQLQuery query = new ListImageRegistryGraphQLQuery.Builder()
-                .queryName("listImageRegistry")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
 
@@ -1318,7 +1302,6 @@ public class Example {
     @Test
     public void createImageRegistry(){
         CreateImageRegistryGraphQLQuery query = new CreateImageRegistryGraphQLQuery.Builder()
-                .queryName("createImageRegistry")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .imageRegistryInfo(ImageRegistryInput.newBuilder()
                         .enableRegistry(true)
@@ -1341,7 +1324,6 @@ public class Example {
     @Test
     public void deleteImageRegistry(){
         DeleteImageRegistryGraphQLQuery query = new DeleteImageRegistryGraphQLQuery.Builder()
-                .queryName("deleteImageRegistry")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .imageRegistryID("c4f670bd-8b23-4ef0-a21f-f3a098b5b878")
                 .build();
@@ -1354,7 +1336,6 @@ public class Example {
     @Test
     public void updateImageRegistry(){
         UpdateImageRegistryGraphQLQuery query = new UpdateImageRegistryGraphQLQuery.Builder()
-                .queryName("updateImageRegistry")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .imageRegistryID("c4f670bd-8b23-4ef0-a21f-f3a098b5b878")
                 .imageRegistryInfo(ImageRegistryInput.newBuilder()
@@ -1379,17 +1360,14 @@ public class Example {
     @Test
     public void listProbes(){
         ListProbesGraphQLQuery query = new ListProbesGraphQLQuery.Builder()
-                .queryName("listProbes")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .infrastructureType(InfrastructureType.Kubernetes) // type is Kubernetes
-                // .probeNames(List.of("test"))
                 .filter(ProbeFilterInput.newBuilder()
                         .dateRange(DateRange.newBuilder()
                                 .startDate("1737039599000") // timestamp
                                 .endDate("1734361200000") // timestamp
                                 .build())
                         .type(List.of(ProbeType.cmdProbe)) // httpProbe, cmdProbe, promProbe, k8sProbe
-                //        .name("test")
                         .build())
                 .build();
 
@@ -1407,7 +1385,6 @@ public class Example {
     @Test
     public void getProbe(){
         GetProbeGraphQLQuery query = new GetProbeGraphQLQuery.Builder()
-                .queryName("getProbe")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .probeName("test-probe")
                 .build();
@@ -1428,7 +1405,6 @@ public class Example {
     @Test
     public void validateUniqueProbe(){
         ValidateUniqueProbeGraphQLQuery query = new ValidateUniqueProbeGraphQLQuery.Builder()
-                .queryName("validateUniqueProbe")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .probeName("test-probe")
                 .build();
@@ -1441,7 +1417,6 @@ public class Example {
     @Test
     public void getProbeReference(){ // we need create long type to graphql for updatedAt timestamp field
         GetProbeReferenceGraphQLQuery query = new GetProbeReferenceGraphQLQuery.Builder()
-                .queryName("getProbeReference")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .probeName("test-probe")
                 .build();
@@ -1464,7 +1439,6 @@ public class Example {
     @Test
     public void getProbeYAML(){
         GetProbeYAMLGraphQLQuery query = new GetProbeYAMLGraphQLQuery.Builder()
-                .queryName("getProbeYAML")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(GetProbeYAMLRequest.newBuilder()
                         .probeName("test-probe")
@@ -1480,7 +1454,6 @@ public class Example {
     @Test
     public void getProbesInExperimentRun(){
         GetProbesInExperimentRunGraphQLQuery query = new GetProbesInExperimentRunGraphQLQuery.Builder()
-                .queryName("getProbesInExperimentRun")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .experimentRunID("cd368e9b-1ac1-4606-8f62-65af6a5d838b")
                 .faultName("pod-delete-yqr")
@@ -1497,7 +1470,6 @@ public class Example {
     @Test
     public void addProbe(){
         AddProbeGraphQLQuery query = new AddProbeGraphQLQuery.Builder()
-                .queryName("addProbe")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(ProbeRequest.newBuilder()
                         .description("test description")
@@ -1533,7 +1505,6 @@ public class Example {
     @Test
     public void deleteProbe(){
         DeleteProbeGraphQLQuery query = new DeleteProbeGraphQLQuery.Builder()
-                .queryName("deleteProbe")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .probeName("test name")
                 .build();
@@ -1546,7 +1517,6 @@ public class Example {
     @Test
     public void updateProbe(){
         UpdateProbeGraphQLQuery query = new UpdateProbeGraphQLQuery.Builder()
-                .queryName("updateProbe")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(ProbeRequest.newBuilder()
                         .description("test description")
@@ -1578,7 +1548,6 @@ public class Example {
     @Test
     public void getChaosFault(){
         GetChaosFaultGraphQLQuery query = new GetChaosFaultGraphQLQuery.Builder()
-                .queryName("getChaosFault")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(ExperimentRequest.newBuilder()
                         .category("aws")
@@ -1600,7 +1569,6 @@ public class Example {
     @Test
     public void listChaosFaults(){
         ListChaosFaultsGraphQLQuery query = new ListChaosFaultsGraphQLQuery.Builder()
-                .queryName("listChaosFaults")
                 .hubID("6f39cea9-6264-4951-83a8-29976b614289")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
@@ -1620,7 +1588,6 @@ public class Example {
     @Test
     public void getServerVersion(){
         GetServerVersionGraphQLQuery query = new GetServerVersionGraphQLQuery.Builder()
-                .queryName("getServerVersion")
                 .build();
 
         GetServerVersionProjectionRoot projectionRoot = new GetServerVersionProjectionRoot<>()
@@ -1635,7 +1602,6 @@ public class Example {
     @Test
     public void getVersionDetails(){
         GetVersionDetailsGraphQLQuery query = new GetVersionDetailsGraphQLQuery.Builder()
-                .queryName("getVersionDetails")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
 
@@ -1651,7 +1617,6 @@ public class Example {
     @Test
     public void generateSSHKey(){
         GenerateSSHKeyGraphQLQuery query = new GenerateSSHKeyGraphQLQuery.Builder()
-                .queryName("generateSSHKey")
                 .build();
 
         GenerateSSHKeyProjectionRoot projectionRoot = new GenerateSSHKeyProjectionRoot<>()
@@ -1663,10 +1628,10 @@ public class Example {
         assertThat(response).isInstanceOf(SSHKey.class);
     }
 
+    // is it work?
     @Test
-    public void getManifestWithInfraID(){ // unknown
+    public void getManifestWithInfraID(){
         GetManifestWithInfraIDGraphQLQuery query = new GetManifestWithInfraIDGraphQLQuery.Builder()
-                .queryName("getManifestWithInfraID")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
                 .accessKey("test access key")
@@ -1677,10 +1642,10 @@ public class Example {
     }
 
     // subscription
+    // is it work?
     @Test
-    public void getInfraEvents(){ // unknown
+    public void getInfraEvents(){
         GetInfraEventsGraphQLQuery query = new GetInfraEventsGraphQLQuery.Builder()
-                .queryName("getInfraEvents")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
 
@@ -1698,7 +1663,6 @@ public class Example {
     @Test
     public void getKubeNamespace(){
         GetKubeNamespaceGraphQLQuery query = new GetKubeNamespaceGraphQLQuery.Builder()
-                .queryName("getKubeNamespace")
                 .request(KubeNamespaceRequest.newBuilder()
                         .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
                         .build())
@@ -1716,7 +1680,6 @@ public class Example {
     @Test
     public void getKubeObject(){
         GetKubeObjectGraphQLQuery query = new GetKubeObjectGraphQLQuery.Builder()
-                .queryName("getKubeObject")
                 .request(KubeObjectRequest.newBuilder()
                         .namespace("default")
                         .objectType("kubeobject")
@@ -1741,7 +1704,6 @@ public class Example {
     @Test
     public void getPodLog(){
         GetPodLogGraphQLQuery query = new GetPodLogGraphQLQuery.Builder()
-                .queryName("getPodLog")
                 .request(PodLogRequest.newBuilder()
                         .infraID("4357805a-c932-4f9d-a3c5-cc1e3b3693a4")
                         .experimentRunID("2be2bcdf-0d1e-4b9a-9ec8-03068272e1bc")
@@ -1760,10 +1722,10 @@ public class Example {
         assertThat(response).isInstanceOf(PodLogResponse.class);
     }
 
+    // is it work?
     @Test
-    public void infraConnect(){ // unknown
+    public void infraConnect(){
         InfraConnectGraphQLQuery query = new InfraConnectGraphQLQuery.Builder()
-                .queryName("infraConnect")
                 .request(InfraIdentity.newBuilder()
                         .version("test")
                         .accessKey("test")
