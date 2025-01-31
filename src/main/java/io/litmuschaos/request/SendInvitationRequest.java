@@ -14,11 +14,11 @@ public class SendInvitationRequest {
         this.role = builder.role;
     }
 
-    public String getProjectID() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public String getUserID() {
+    public String getUserId() {
         return userId;
     }
 
