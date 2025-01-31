@@ -41,7 +41,7 @@ public class UserDetailsUpdateRequest {
             return this;
         }
 
-        public UserDetailsUpdateRequestBuilder userID(String userID){
+        public UserDetailsUpdateRequestBuilder userID(String userID) {
             this.userID = userID;
             return this;
         }
