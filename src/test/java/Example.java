@@ -372,7 +372,6 @@ public class Example {
                 .totalNoOfEnvironments();
 
         ListEnvironmentResponse response = litmusClient.listEnvironments(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ListEnvironmentResponse.class);
     }
 
@@ -407,7 +406,6 @@ public class Example {
 
 
         Environment response = litmusClient.createEnvironment(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(Environment.class);
     }
 
@@ -427,7 +425,6 @@ public class Example {
                 .build();
 
         UpdateEnvironmentResponse response = litmusClient.updateEnvironment(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(UpdateEnvironmentResponse.class);
     }
 
@@ -440,7 +437,6 @@ public class Example {
                 .build();
 
         DeleteEnvironmentResponse response = litmusClient.deleteEnvironment(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(DeleteEnvironmentResponse.class);
     }
 
@@ -460,7 +456,6 @@ public class Example {
                 .infraNsExists();
 
         Infra response = litmusClient.getInfra(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(Infra.class);
     }
 
@@ -512,7 +507,6 @@ public class Example {
                 .updatedBy().userID().email().username().root();
 
         ListInfraResponse response = litmusClient.listInfras(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ListInfraResponse.class);
     }
 
@@ -551,7 +545,6 @@ public class Example {
                 .updatedBy().userID().email().username().root();
 
         Infra response = litmusClient.getInfraDetails(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(Infra.class);
     }
 
@@ -571,7 +564,6 @@ public class Example {
 
 
         GetInfraStatsResponse response = litmusClient.getInfraStats(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GetInfraStatsResponse.class);
     }
 
@@ -586,7 +578,6 @@ public class Example {
                 .build();
 
         GetInfraManifestResponse response = litmusClient.getInfraManifest(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GetInfraManifestResponse.class);
 
     }
@@ -621,7 +612,6 @@ public class Example {
                 .build();
 
         DeleteInfraResponse response = litmusClient.deleteInfra(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(DeleteInfraResponse.class);
     }
 
@@ -653,7 +643,6 @@ public class Example {
                 .manifest();
 
         RegisterInfraResponse response = litmusClient.registerInfra(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(RegisterInfraResponse.class);
     }
 
@@ -683,7 +672,6 @@ public class Example {
                 .isPrivate();
 
         List<ChaosHubStatus> response = litmusClient.listChaosHub(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(List.class);
     }
 
@@ -705,7 +693,6 @@ public class Example {
                 .isPrivate();
 
         ChaosHubStatus response = litmusClient.getChaosHub(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ChaosHubStatus.class);
     }
 
@@ -720,7 +707,6 @@ public class Example {
                 .totalChaosHubs();
 
         GetChaosHubStatsResponse response = litmusClient.getChaosHubStats(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GetChaosHubStatsResponse.class);
     }
 
@@ -775,7 +761,6 @@ public class Example {
                 .isDefault();
 
         ChaosHub response = litmusClient.addRemoteChaosHub(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ChaosHub.class);
     }
 
@@ -788,7 +773,6 @@ public class Example {
                 .build();
 
         DeleteChaosHubResponse response = litmusClient.deleteChaosHub(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(DeleteChaosHubResponse.class);
     }
 
@@ -826,7 +810,6 @@ public class Example {
                 .build();
 
         SyncChaosHubResponse response = litmusClient.syncChaosHub(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(SyncChaosHubResponse.class);
     }
 
@@ -873,7 +856,6 @@ public class Example {
                 .root();
 
         GetExperimentResponse response = litmusClient.getExperiment(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GetExperimentResponse.class);
     }
 
@@ -913,7 +895,6 @@ public class Example {
                 .totalNoOfExperiments();
 
         ListExperimentResponse response = litmusClient.listExperiment(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ListExperimentResponse.class);
     }
 
@@ -928,7 +909,6 @@ public class Example {
                 .totalExpCategorizedByResiliencyScore().count().root();
 
         GetExperimentStatsResponse response = litmusClient.getExperimentStats(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GetExperimentStatsResponse.class);
     }
 
@@ -946,7 +926,6 @@ public class Example {
                 .experimentManifest();
 
         List<PredefinedExperimentList> response = litmusClient.getPredefinedExperiment(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(List.class);
     }
 
@@ -963,7 +942,6 @@ public class Example {
                 .experimentManifest();
 
         List<PredefinedExperimentList> response = litmusClient.listPredefinedExperiments(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(List.class);
     }
 
@@ -978,7 +956,6 @@ public class Example {
                 .notifyID();
 
         RunChaosExperimentResponse response = litmusClient.runChaosExperiment(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(RunChaosExperimentResponse.class);
     }
 
@@ -998,7 +975,6 @@ public class Example {
 
 
         SaveChaosExperimentResponse response = litmusClient.saveChaosExperiment(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(SaveChaosExperimentResponse.class);
     }
 
@@ -1073,7 +1049,6 @@ public class Example {
                 .build();
 
         UpdateCronExperimentStateResponse response = litmusClient.updateCronExperimentState(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(UpdateCronExperimentStateResponse.class);
     }
 
@@ -1098,7 +1073,6 @@ public class Example {
                 .runSequence();
 
         ExperimentRun response = litmusClient.getExperimentRun(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ExperimentRun.class);
 
     }
@@ -1118,7 +1092,6 @@ public class Example {
                 .totalTerminatedExperimentRuns();
 
         GetExperimentRunStatsResponse response = litmusClient.getExperimentRunStats(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GetExperimentRunStatsResponse.class);
     }
 
@@ -1151,7 +1124,6 @@ public class Example {
                 .executionData().root();
 
         ListExperimentRunResponse response = litmusClient.listExperimentRun(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ListExperimentRunResponse.class);
     }
 
@@ -1168,7 +1140,6 @@ public class Example {
                 .build();
 
         ChaosExperimentRunResponse response = litmusClient.chaosExperimentRun(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ChaosExperimentRunResponse.class);
     }
 
@@ -1180,7 +1151,6 @@ public class Example {
                 .build();
 
         StopExperimentRunsResponse response = litmusClient.stopExperimentRuns(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(StopExperimentRunsResponse.class);
     }
 
@@ -1197,7 +1167,6 @@ public class Example {
                 .repoURL();
 
         GitConfigResponse response = litmusClient.getGitOpsDetails(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GitConfigResponse.class);
     }
 
@@ -1208,7 +1177,6 @@ public class Example {
                 .build();
 
         DisableGitOpsResponse response = litmusClient.disableGitOps(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(DisableGitOpsResponse.class);
     }
 
@@ -1226,7 +1194,6 @@ public class Example {
                 .build();
 
         EnableGitOpsResponse response = litmusClient.enableGitOps(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(EnableGitOpsResponse.class);
     }
 
@@ -1242,7 +1209,6 @@ public class Example {
                 .build();
 
         GitOpsNotifierResponse response = litmusClient.gitopsNotifier(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GitOpsNotifierResponse.class);
     }
 
@@ -1260,7 +1226,6 @@ public class Example {
                 .build();
 
         UpdateGitOpsResponse response = litmusClient.updateGitOps(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(UpdateGitOpsResponse.class);
     }
 
@@ -1277,7 +1242,6 @@ public class Example {
                 .isRemoved();
 
         ImageRegistryResponse response = litmusClient.getImageRegistry(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ImageRegistryResponse.class);
     }
 
@@ -1292,7 +1256,6 @@ public class Example {
                 .projectID();
 
         List<ImageRegistryResponse> response = litmusClient.listImageRegistry(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(List.class);
     }
 
@@ -1314,7 +1277,6 @@ public class Example {
                 .projectID();
 
         ImageRegistryResponse response = litmusClient.createImageRegistry(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ImageRegistryResponse.class);
     }
 
@@ -1326,7 +1288,6 @@ public class Example {
                 .build();
 
         DeleteImageRegistryResponse response = litmusClient.deleteImageRegistry(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(DeleteImageRegistryResponse.class);
     }
 
@@ -1349,7 +1310,6 @@ public class Example {
                 .projectID();
 
         ImageRegistryResponse response = litmusClient.updateImageRegistry(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ImageRegistryResponse.class);
     }
 
@@ -1375,7 +1335,6 @@ public class Example {
                 .description();
 
         List<Probe> response = litmusClient.listProbes(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(List.class);
     }
 
@@ -1395,7 +1354,6 @@ public class Example {
                 .updatedAt();
 
         Probe response = litmusClient.getProbe(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(Probe.class);
     }
 
@@ -1407,7 +1365,6 @@ public class Example {
                 .build();
 
         ValidateUniqueProbeResponse response = litmusClient.validateUniqueProbe(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ValidateUniqueProbeResponse.class);
     }
 
@@ -1429,7 +1386,6 @@ public class Example {
                 .totalRuns();
 
         GetProbeReferenceResponse response = litmusClient.getProbeReference(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GetProbeReferenceResponse.class);
     }
 
@@ -1444,7 +1400,6 @@ public class Example {
                 .build();
 
         GetProbeYAMLResponse response = litmusClient.getProbeYAML(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(GetProbeYAMLResponse.class);
     }
 
@@ -1460,7 +1415,6 @@ public class Example {
                 .probe().projectID().description().root();
 
         List<GetProbesInExperimentRunResponse> response = litmusClient.getProbesInExperimentRun(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(List.class);
     }
 
@@ -1495,7 +1449,6 @@ public class Example {
                 .tags();
 
         Probe response = litmusClient.addProbe(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(Probe.class);
     }
 
@@ -1507,7 +1460,6 @@ public class Example {
                 .build();
 
         DeleteProbeResponse response = litmusClient.deleteProbe(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(DeleteProbeResponse.class);
     }
 
@@ -1537,7 +1489,6 @@ public class Example {
                 .build();
 
         UpdateProbeResponse response = litmusClient.updateProbe(query);
-        System.out.println(response);
         assertThat(response).isInstanceOf(UpdateProbeResponse.class);
     }
 
@@ -1559,7 +1510,6 @@ public class Example {
                 .csv();
 
         FaultDetails response = litmusClient.getChaosFault(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(FaultDetails.class);
     }
 
@@ -1577,7 +1527,6 @@ public class Example {
                 .packageInfo().packageName().experiments().CSV().root();
 
         List<Chart> response = litmusClient.listChaosFaults(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(List.class);
     }
 
@@ -1592,7 +1541,6 @@ public class Example {
                 .value();
 
         ServerVersionResponse response = litmusClient.getServerVersion(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(ServerVersionResponse.class);
     }
 
@@ -1607,7 +1555,6 @@ public class Example {
                 .latestVersion();
 
         InfraVersionDetails response = litmusClient.getVersionDetails(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(InfraVersionDetails.class);
     }
 
@@ -1621,7 +1568,6 @@ public class Example {
                 .publicKey();
 
         SSHKey response = litmusClient.generateSSHKey(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(SSHKey.class);
     }
 
@@ -1653,7 +1599,6 @@ public class Example {
                 .eventType();
 
         InfraEventResponse response = litmusClient.getInfraEvents(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(InfraEventResponse.class);
     }
 
@@ -1670,7 +1615,6 @@ public class Example {
                 .kubeNamespace().name().root();
 
         KubeNamespaceResponse response = litmusClient.getKubeNamespace(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(KubeNamespaceResponse.class);
     }
 
@@ -1694,7 +1638,6 @@ public class Example {
                 .kubeObj().data().labels().root();
 
         KubeObjectResponse response = litmusClient.getKubeObject(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(KubeObjectResponse.class);
     }
 
@@ -1715,7 +1658,6 @@ public class Example {
                 .experimentRunID();
 
         PodLogResponse response = litmusClient.getPodLog(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(PodLogResponse.class);
     }
 
@@ -1735,7 +1677,6 @@ public class Example {
                 .action().externalData().root();
 
         InfraActionResponse response = litmusClient.infraConnect(query, projectionRoot);
-        System.out.println(response);
         assertThat(response).isInstanceOf(InfraActionResponse.class);
     }
 }
