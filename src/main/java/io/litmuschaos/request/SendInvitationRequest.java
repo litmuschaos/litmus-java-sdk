@@ -4,22 +4,22 @@ import io.litmuschaos.util.Builder;
 
 public class SendInvitationRequest {
 
-    private final String projectID;
-    private final String userID;
+    private final String projectId;
+    private final String userId;
     private final String role;
 
     private SendInvitationRequest(SendInvitationRequestBuilder builder) {
-        this.projectID = builder.projectID;
-        this.userID = builder.userID;
+        this.projectId = builder.projectId;
+        this.userId = builder.userId;
         this.role = builder.role;
     }
 
     public String getProjectID() {
-        return projectID;
+        return projectId;
     }
 
     public String getUserID() {
-        return userID;
+        return userId;
     }
 
     public String getRole() {
@@ -31,17 +31,17 @@ public class SendInvitationRequest {
     }
 
     public static class SendInvitationRequestBuilder implements Builder<SendInvitationRequest> {
-        private String projectID;
-        private String userID;
+        private String projectId;
+        private String userId;
         private String role;
 
-        public SendInvitationRequestBuilder projectId(String projectID) {
-            this.projectID = projectID;
+        public SendInvitationRequestBuilder projectId(String projectId) {
+            this.projectId = projectId;
             return this;
         }
 
-        public SendInvitationRequestBuilder userId(String userID) {
-            this.userID = userID;
+        public SendInvitationRequestBuilder userId(String userId) {
+            this.userId = userId;
             return this;
         }
 
