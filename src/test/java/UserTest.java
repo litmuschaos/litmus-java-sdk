@@ -186,6 +186,7 @@ public class UserTest {
 
         // When & Then
         UserDetailsUpdateRequest request = UserDetailsUpdateRequest.builder()
+                .userID(user.getUserID())
                 .name(newName)
                 .email(newEmail).build();
 
