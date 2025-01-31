@@ -4,8 +4,8 @@ public class InviteUsersResponse {
 
     private long updatedAt;
     private long createdAt;
-    private UserInfo createdBy;
-    private UserInfo updatedBy;
+    private CreatedBy createdBy;
+    private UpdatedBy updatedBy;
     private boolean isRemoved;
     private String userID;
     private String username;
@@ -15,19 +15,31 @@ public class InviteUsersResponse {
     private String role;
     private boolean isInitialLogin;
 
-    public class UserInfo {
+    public static class CreatedBy {
         private String userID;
         private String username;
         private String email;
 
-        public UserInfo(String userID, String username, String email) {
+        public CreatedBy(String userID, String username, String email) {
             this.userID = userID;
             this.username = username;
             this.email = email;
         }
     }
 
-    public InviteUsersResponse(long updatedAt, long createdAt, UserInfo createdBy, UserInfo updatedBy, boolean isRemoved, String userID, String username, String salt, String email, String name, String role, boolean isInitialLogin) {
+    public static class UpdatedBy {
+        private String userID;
+        private String username;
+        private String email;
+
+        public UpdatedBy(String userID, String username, String email) {
+            this.userID = userID;
+            this.username = username;
+            this.email = email;
+        }
+    }
+
+    public InviteUsersResponse(long updatedAt, long createdAt, CreatedBy createdBy, UpdatedBy updatedBy, boolean isRemoved, String userID, String username, String salt, String email, String name, String role, boolean isInitialLogin) {
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
@@ -50,11 +62,11 @@ public class InviteUsersResponse {
         return createdAt;
     }
 
-    public UserInfo getCreatedBy() {
+    public CreatedBy getCreatedBy() {
         return createdBy;
     }
 
-    public UserInfo getUpdatedBy() {
+    public UpdatedBy getUpdatedBy() {
         return updatedBy;
     }
 

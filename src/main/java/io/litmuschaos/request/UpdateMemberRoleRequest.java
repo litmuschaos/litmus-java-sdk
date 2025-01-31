@@ -5,19 +5,25 @@ import io.litmuschaos.util.Builder;
 public class UpdateMemberRoleRequest {
 
     private final String projectID;
-    private final String projectName;
+    private final String userID;
+    private final String role;
 
-    public UpdateMemberRoleRequest(String projectID, String projectName) {
+    public UpdateMemberRoleRequest(String projectID, String userID, String role) {
         this.projectID = projectID;
-        this.projectName = projectName;
+        this.userID = userID;
+        this.role = role;
     }
 
     public String getProjectID() {
         return projectID;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public static UpdateMemberRoleRequestBuilder builder() {
@@ -27,21 +33,27 @@ public class UpdateMemberRoleRequest {
     public static class UpdateMemberRoleRequestBuilder implements Builder<UpdateMemberRoleRequest> {
 
         private String projectID;
-        private String projectName;
+        private String userID;
+        private String role;
 
         public UpdateMemberRoleRequestBuilder projectID(String projectID) {
             this.projectID = projectID;
             return this;
         }
 
-        public UpdateMemberRoleRequestBuilder projectName(String projectName) {
-            this.projectName = projectName;
+        public UpdateMemberRoleRequestBuilder userID(String userID) {
+            this.userID = userID;
+            return this;
+        }
+
+        public UpdateMemberRoleRequestBuilder role(String role) {
+            this.role = role;
             return this;
         }
 
         @Override
         public UpdateMemberRoleRequest build() {
-            return new UpdateMemberRoleRequest(this.projectID, this.projectName);
+            return new UpdateMemberRoleRequest(projectID, userID, role);
         }
     }
 }

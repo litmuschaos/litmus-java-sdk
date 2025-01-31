@@ -31,7 +31,7 @@ public class LitmusClient implements AutoCloseable {
         String sanitizedHost = sanitizeURL(host);
         OkHttpClient okHttpClient = new OkHttpClient();
         this.token = token;
-        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost);
+        this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + AUTH);
         this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + API_QUERY, this.token);
     }
 
@@ -242,7 +242,7 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getInfraDetails", new TypeRef<Infra>(){});
     }
 
-    public GetInfraStatsResponse getInfraStats(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot){
+    public GetInfraStatsResponse getInfraStats(GetInfraStatsGraphQLQuery query, GetInfraStatsProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getInfraStats", new TypeRef<GetInfraStatsResponse>(){});
@@ -407,7 +407,7 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getExperimentRunStats", new TypeRef<GetExperimentRunStatsResponse>(){});
     }
 
-    public ListExperimentRunResponse listExperimentRun(ListExperimentGraphQLQuery query, ListExperimentProjectionRoot projectionRoot){
+    public ListExperimentRunResponse listExperimentRun(ListExperimentRunGraphQLQuery query, ListExperimentRunProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.listExperimentRun", new TypeRef<ListExperimentRunResponse>(){});
@@ -486,6 +486,7 @@ public class LitmusClient implements AutoCloseable {
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.updateImageRegistry", new TypeRef<ImageRegistryResponse>(){});
     }
+
     // Probe
     public List<Probe> listProbes(ListProbesGraphQLQuery query, ListProbesProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
@@ -517,10 +518,10 @@ public class LitmusClient implements AutoCloseable {
         return response.extractValueAsObject("data.getProbeYAML", new TypeRef<GetProbeYAMLResponse>(){});
     }
 
-    public GetProbesInExperimentRunResponse getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot){
+    public List<GetProbesInExperimentRunResponse> getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot){
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject("data.getProbesInExperimentRun", new TypeRef<GetProbesInExperimentRunResponse>(){});
+        return response.extractValueAsObject("data.getProbesInExperimentRun", new TypeRef<List<GetProbesInExperimentRunResponse>>(){});
     }
 
     public Probe addProbe(AddProbeGraphQLQuery query, AddProbeProjectionRoot projectionRoot){
@@ -578,24 +579,6 @@ public class LitmusClient implements AutoCloseable {
         GraphQLResponse response = graphQLClient.query(request);
         return response.extractValueAsObject("data.getManifestWithInfraID", new TypeRef<GetManifestWithInfraIDResponse>(){});
     }
-
-//    public String kubeNamespace(KubeNamespaceGraphQLQuery query){
-//        String request = new GraphQLQueryRequest(query).serialize();
-//        GraphQLResponse response = graphQLClient.query(request);
-//        return response.extractValue("data.kubeNamespace");
-//    }
-
-//    public String kubeObj(KubeObjGraphQLQuery query){
-//        String request = new GraphQLQueryRequest(query).serialize();
-//        GraphQLResponse response = graphQLClient.query(request);
-//        return response.extractValue("data.kubeObj");
-//    }
-//
-//    public String podLog(PodLogGraphQLQuery query){
-//        String request = new GraphQLQueryRequest(query).serialize();
-//        GraphQLResponse response = graphQLClient.query(request);
-//        return response.extractValue("data.podLog");
-//    }
 
     // subscription
     public InfraEventResponse getInfraEvents(GetInfraEventsGraphQLQuery query, GetInfraEventsProjectionRoot projectionRoot){

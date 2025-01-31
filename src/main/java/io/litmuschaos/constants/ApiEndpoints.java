@@ -5,6 +5,9 @@ public class ApiEndpoints {
     // Graphql
     public static final String API_QUERY = "/api/query";
 
+    // Auth
+    public static final String AUTH = "/auth";
+
     // Token
     public static final String GET_TOKENS = "/token";
     public static final String CREATE_TOKEN = "/create_token";
