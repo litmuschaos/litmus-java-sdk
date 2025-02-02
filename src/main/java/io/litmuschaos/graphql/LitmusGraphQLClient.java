@@ -24,7 +24,7 @@ public class LitmusGraphQLClient {
             Request request = new Request.Builder()
                 .url(url)
                 .addHeader(AUTHORIZATION, BEARER + " " + token)
-                .post(RequestBody.create(body, MediaType.parse(APPLICATION_JSON))
+                .post(RequestBody.create(body, MediaType.parse(APPLICATION_JSON + "; " + CHARSET_UTF_8))
             ).build();
 
             try (Response response = okHttpClient.newCall(request).execute()) {
