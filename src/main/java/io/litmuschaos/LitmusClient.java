@@ -31,20 +31,16 @@ import static io.litmuschaos.constants.RequestParams.*;
 public class LitmusClient implements AutoCloseable {
 
     private final String token;
+    private final OkHttpClient okHttpClient;
     private final LitmusHttpClient httpClient;
     private final LitmusGraphQLClient graphQLClient;
 
     public LitmusClient(String host, String token) {
         String sanitizedHost = sanitizeURL(host);
-        OkHttpClient okHttpClient = new OkHttpClient();
         this.token = token;
+        okHttpClient = new OkHttpClient(); // TODO : apply detail options
         this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + AUTH);
         this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + API_QUERY, this.token);
-    }
-
-    @Override
-    public void close() throws Exception {
-        this.httpClient.close();
     }
 
     /**
@@ -1286,5 +1282,14 @@ public class LitmusClient implements AutoCloseable {
         // TODO: need to add a validate URL without protocol
         // edge case: If you're calling a service from within Kubernetes, you don't need a protocol.
         return url.replaceAll("/$", "");
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.okHttpClient.dispatcher().executorService().shutdown();
+        this.okHttpClient.connectionPool().evictAll();
+        if (this.okHttpClient.cache() != null) {
+            this.okHttpClient.cache().close();
+        }
     }
 }

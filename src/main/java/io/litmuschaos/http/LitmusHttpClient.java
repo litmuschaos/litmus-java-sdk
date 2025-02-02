@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static io.litmuschaos.constants.RequestHeaders.*;
 
-public class LitmusHttpClient implements AutoCloseable{
+public class LitmusHttpClient {
 
     private final OkHttpClient okHttpClient;
     private final HttpResponseHandler httpResponseHandler;
@@ -107,14 +107,5 @@ public class LitmusHttpClient implements AutoCloseable{
     private String toJson(Object object) {
         Gson gson = new Gson();
         return gson.toJson(object);
-    }
-
-    @Override
-    public void close() throws Exception {
-        this.okHttpClient.dispatcher().executorService().shutdown();
-        this.okHttpClient.connectionPool().evictAll();
-        if (this.okHttpClient.cache() != null) {
-            this.okHttpClient.cache().close();
-        }
     }
 }
