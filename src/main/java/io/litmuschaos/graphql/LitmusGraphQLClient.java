@@ -20,7 +20,7 @@ public class LitmusGraphQLClient {
     public final GraphQLClient client;
 
     public LitmusGraphQLClient(OkHttpClient okHttpClient, String host, String token) {
-        client = GraphQLClient.createCustom(host, ((url, headers, body) -> {
+        client = GraphQLClient.createCustom(host, (url, headers, body) -> {
             Request request = new Request.Builder()
                 .url(url)
                 .addHeader(AUTHORIZATION, BEARER + " " + token)
@@ -30,13 +30,18 @@ public class LitmusGraphQLClient {
             try (Response response = okHttpClient.newCall(request).execute()) {
                 return new HttpResponse(HttpStatus.OK, response.body().string());
             }catch (IOException e) {
+                // requestExecutor cannot throw a checked exception, so wrapped it with unchecked exception.
                 throw new RuntimeException(e);
             }
-        }));
+        });
     }
 
     public <T> T query(String query, String operationName, TypeRef<T> type) throws LitmusApiException {
         GraphQLResponse response = client.executeQuery(query);
+        return handleResponse(response, operationName, type);
+    }
+
+    private <T> T handleResponse(GraphQLResponse response, String operationName, TypeRef<T> type) throws LitmusApiException{
         validateResponse(response);
         return response.extractValueAsObject(operationName, type);
     }
