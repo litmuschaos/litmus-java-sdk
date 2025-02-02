@@ -314,7 +314,7 @@ class LitmusClientTest {
      */
 
     @Test
-    void getEnvironment() throws LitmusApiException{
+    void getEnvironment() throws LitmusApiException, IOException {
         GetEnvironmentGraphQLQuery query = new GetEnvironmentGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .environmentID("test-environments")
@@ -338,7 +338,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void listEnvironments() throws LitmusApiException{
+    void listEnvironments() throws LitmusApiException, IOException {
         ListEnvironmentsGraphQLQuery query = new ListEnvironmentsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListEnvironmentRequest.Builder()
@@ -375,7 +375,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void createEnvironment() throws LitmusApiException{
+    void createEnvironment() throws LitmusApiException, IOException {
         CreateEnvironmentGraphQLQuery query = new CreateEnvironmentGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(CreateEnvironmentRequest.newBuilder()
@@ -408,7 +408,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void updateEnvironment() throws LitmusApiException{
+    void updateEnvironment() throws LitmusApiException, IOException {
         UpdateEnvironmentGraphQLQuery query = new UpdateEnvironmentGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(UpdateEnvironmentRequest.newBuilder()
@@ -426,7 +426,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void deleteEnvironment() throws LitmusApiException{
+    void deleteEnvironment() throws LitmusApiException, IOException {
         DeleteEnvironmentGraphQLQuery query = new DeleteEnvironmentGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .environmentID("test-environments")
@@ -437,7 +437,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getInfra() throws LitmusApiException {
+    void getInfra() throws LitmusApiException, IOException {
         GetInfraGraphQLQuery query = new GetInfraGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
@@ -455,7 +455,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void listInfras() throws LitmusApiException {
+    void listInfras() throws LitmusApiException, IOException {
         ListInfrasGraphQLQuery query = new ListInfrasGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListInfraRequest.Builder()
@@ -505,7 +505,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getInfraDetails() throws LitmusApiException {
+    void getInfraDetails() throws LitmusApiException, IOException {
         GetInfraDetailsGraphQLQuery query = new GetInfraDetailsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
@@ -542,7 +542,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getInfraStats() throws LitmusApiException {
+    void getInfraStats() throws LitmusApiException, IOException {
         GetInfraStatsGraphQLQuery query = new GetInfraStatsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
@@ -561,7 +561,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED, it is used in litmus but when i call API, result not exist
     @Test
-    void getInfraManifest() throws LitmusApiException {
+    void getInfraManifest() throws LitmusApiException, IOException {
         GetInfraManifestGraphQLQuery query = new GetInfraManifestGraphQLQuery.Builder()
                 .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
@@ -575,7 +575,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED
     @Test
-    void confirmInfraRegistration() throws LitmusApiException {
+    void confirmInfraRegistration() throws LitmusApiException, IOException {
         ConfirmInfraRegistrationGraphQLQuery query = new ConfirmInfraRegistrationGraphQLQuery.Builder()
                 .request(InfraIdentity.newBuilder()
                         .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
@@ -595,7 +595,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void deleteInfra() throws LitmusApiException {
+    void deleteInfra() throws LitmusApiException, IOException {
         DeleteInfraGraphQLQuery query = new DeleteInfraGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
@@ -606,7 +606,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void registerInfra() throws LitmusApiException {
+    void registerInfra() throws LitmusApiException, IOException {
         RegisterInfraGraphQLQuery query = new RegisterInfraGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(RegisterInfraRequest.newBuilder()
@@ -636,7 +636,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void listChaosHub() throws LitmusApiException {
+    void listChaosHub() throws LitmusApiException, IOException {
         ListChaosHubGraphQLQuery query = new ListChaosHubGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListChaosHubRequest.Builder()
@@ -664,7 +664,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getChaosHub() throws LitmusApiException {
+    void getChaosHub() throws LitmusApiException, IOException {
         GetChaosHubGraphQLQuery query = new GetChaosHubGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .chaosHubID("218fb866-8406-4397-996a-36b75416d683")
@@ -684,7 +684,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getChaosHubStats() throws LitmusApiException {
+    void getChaosHubStats() throws LitmusApiException, IOException {
         GetChaosHubStatsGraphQLQuery query = new GetChaosHubStatsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
@@ -697,7 +697,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void addChaosHub() throws LitmusApiException {
+    void addChaosHub() throws LitmusApiException, IOException {
         AddChaosHubGraphQLQuery query = new AddChaosHubGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(CreateChaosHubRequest.newBuilder()
@@ -725,7 +725,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED, may not used
     @Test
-    void addRemoteChaosHub() throws LitmusApiException {
+    void addRemoteChaosHub() throws LitmusApiException, IOException {
         AddRemoteChaosHubGraphQLQuery query = new AddRemoteChaosHubGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(CreateRemoteChaosHub.newBuilder()
@@ -749,7 +749,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void deleteChaosHub() throws LitmusApiException {
+    void deleteChaosHub() throws LitmusApiException, IOException {
         DeleteChaosHubGraphQLQuery query = new DeleteChaosHubGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .hubID("218fb866-8406-4397-996a-36b75416d683")
@@ -760,7 +760,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void saveChaosHub() throws LitmusApiException {
+    void saveChaosHub() throws LitmusApiException, IOException {
         SaveChaosHubGraphQLQuery query = new SaveChaosHubGraphQLQuery.Builder()
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .request(CreateChaosHubRequest.newBuilder()
@@ -784,7 +784,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void syncChaosHub() throws LitmusApiException {
+    void syncChaosHub() throws LitmusApiException, IOException {
         SyncChaosHubGraphQLQuery query = new SyncChaosHubGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .id("218fb866-8406-4397-996a-36b75416d683")
@@ -795,7 +795,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void updateChaosHub() throws LitmusApiException {
+    void updateChaosHub() throws LitmusApiException, IOException {
         UpdateChaosHubGraphQLQuery query = new UpdateChaosHubGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(UpdateChaosHubRequest.newBuilder()
@@ -820,7 +820,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getExperiment() throws LitmusApiException {
+    void getExperiment() throws LitmusApiException, IOException {
         GetExperimentGraphQLQuery query = new GetExperimentGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .experimentID("0eab377f-d8dc-491d-af40-dfebf110b4fe")
@@ -840,7 +840,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void listExperiment() throws LitmusApiException {
+    void listExperiment() throws LitmusApiException, IOException {
         ListExperimentGraphQLQuery query = new ListExperimentGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .request(new ListExperimentRequest.Builder()
@@ -879,7 +879,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getExperimentStats() throws LitmusApiException {
+    void getExperimentStats() throws LitmusApiException, IOException {
         GetExperimentStatsGraphQLQuery query = new GetExperimentStatsGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
@@ -893,7 +893,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getPredefinedExperiment() throws LitmusApiException {
+    void getPredefinedExperiment() throws LitmusApiException, IOException {
         GetPredefinedExperimentGraphQLQuery query = new GetPredefinedExperimentGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .experimentName(List.of("Node CPU Hog"))
@@ -910,7 +910,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void listPredefinedExperiments() throws LitmusApiException {
+    void listPredefinedExperiments() throws LitmusApiException, IOException {
         ListPredefinedExperimentsGraphQLQuery query = new ListPredefinedExperimentsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .hubID("6f39cea9-6264-4951-83a8-29976b614289")
@@ -926,7 +926,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void runChaosExperiment() throws LitmusApiException {
+    void runChaosExperiment() throws LitmusApiException, IOException {
         RunChaosExperimentGraphQLQuery query = new RunChaosExperimentGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .experimentID("1af067d5-fec7-4117-92df-036f5a571372")
@@ -940,7 +940,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void saveChaosExperiment() throws LitmusApiException {
+    void saveChaosExperiment() throws LitmusApiException, IOException {
         SaveChaosExperimentGraphQLQuery query = new SaveChaosExperimentGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .request(SaveChaosExperimentRequest.newBuilder()
@@ -959,7 +959,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void updateChaosExperiment() throws LitmusApiException {
+    void updateChaosExperiment() throws LitmusApiException, IOException {
         UpdateChaosExperimentGraphQLQuery query = new UpdateChaosExperimentGraphQLQuery.Builder()
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .request(ChaosExperimentRequest.newBuilder()
@@ -982,7 +982,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED, may be not used
     @Test
-    void createChaosExperiment() throws LitmusApiException {
+    void createChaosExperiment() throws LitmusApiException, IOException {
         CreateChaosExperimentGraphQLQuery query = new CreateChaosExperimentGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .request(
@@ -1010,7 +1010,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void deleteChaosExperiment() throws LitmusApiException {
+    void deleteChaosExperiment() throws LitmusApiException, IOException {
         DeleteChaosExperimentGraphQLQuery query = new DeleteChaosExperimentGraphQLQuery.Builder()
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .experimentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
@@ -1022,7 +1022,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void updateCronExperimentState() throws LitmusApiException {
+    void updateCronExperimentState() throws LitmusApiException, IOException {
         UpdateCronExperimentStateGraphQLQuery query = new UpdateCronExperimentStateGraphQLQuery.Builder()
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .experimentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
@@ -1035,7 +1035,7 @@ class LitmusClientTest {
 
     // Chaos Experiment Run
     @Test
-    void getExperimentRun() throws LitmusApiException {
+    void getExperimentRun() throws LitmusApiException, IOException {
         GetExperimentRunGraphQLQuery query = new GetExperimentRunGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .notifyID("7502028c-1103-4c54-8ac3-e5b5ec9b49f5")
@@ -1059,7 +1059,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getExperimentRunStats() throws LitmusApiException {
+    void getExperimentRunStats() throws LitmusApiException, IOException {
         GetExperimentRunStatsGraphQLQuery query = new GetExperimentRunStatsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
@@ -1077,7 +1077,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void listExperimentRun() throws LitmusApiException {
+    void listExperimentRun() throws LitmusApiException, IOException {
         ListExperimentRunGraphQLQuery query = new ListExperimentRunGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListExperimentRunRequest.Builder()
@@ -1110,7 +1110,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED, may be not used
     @Test
-    void chaosExperimentRun() throws LitmusApiException {
+    void chaosExperimentRun() throws LitmusApiException, IOException {
         ChaosExperimentRunGraphQLQuery query = new ChaosExperimentRunGraphQLQuery.Builder()
                 .request(ExperimentRunRequest.newBuilder()
                         .experimentID("1af067d5-fec7-4117-92df-036f5a571372")
@@ -1125,7 +1125,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void stopExperimentRuns() throws LitmusApiException {
+    void stopExperimentRuns() throws LitmusApiException, IOException {
         StopExperimentRunsGraphQLQuery query = new StopExperimentRunsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .experimentID("1af067d5-fec7-4117-92df-036f5a571372")
@@ -1137,7 +1137,7 @@ class LitmusClientTest {
 
     // GitOps
     @Test
-    void getGitOpsDetails() throws LitmusApiException {
+    void getGitOpsDetails() throws LitmusApiException, IOException {
         GetGitOpsDetailsGraphQLQuery query = new GetGitOpsDetailsGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
@@ -1152,7 +1152,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void disableGitOps() throws LitmusApiException {
+    void disableGitOps() throws LitmusApiException, IOException {
         DisableGitOpsGraphQLQuery query = new DisableGitOpsGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
@@ -1163,7 +1163,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED
     @Test
-    void enableGitOps() throws LitmusApiException {
+    void enableGitOps() throws LitmusApiException, IOException {
         EnableGitOpsGraphQLQuery query = new EnableGitOpsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .configurations(GitConfig.newBuilder()
@@ -1181,7 +1181,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED
     @Test
-    void gitopsNotifier() throws LitmusApiException {
+    void gitopsNotifier() throws LitmusApiException, IOException {
         GitopsNotifierGraphQLQuery query = new GitopsNotifierGraphQLQuery.Builder()
                 .experimentID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .clusterInfo(InfraIdentity.newBuilder()
@@ -1197,7 +1197,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED
     @Test
-    void updateGitOps() throws LitmusApiException {
+    void updateGitOps() throws LitmusApiException, IOException {
         UpdateGitOpsGraphQLQuery query = new UpdateGitOpsGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .configurations(GitConfig.newBuilder()
@@ -1215,7 +1215,7 @@ class LitmusClientTest {
 
     // Image Registry
     @Test
-    void getImageRegistry() throws LitmusApiException {
+    void getImageRegistry() throws LitmusApiException, IOException {
         GetImageRegistryGraphQLQuery query = new GetImageRegistryGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
@@ -1230,7 +1230,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void listImageRegistry() throws LitmusApiException {
+    void listImageRegistry() throws LitmusApiException, IOException {
         ListImageRegistryGraphQLQuery query = new ListImageRegistryGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
@@ -1245,7 +1245,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED
     @Test
-    void createImageRegistry() throws LitmusApiException {
+    void createImageRegistry() throws LitmusApiException, IOException {
         CreateImageRegistryGraphQLQuery query = new CreateImageRegistryGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .imageRegistryInfo(ImageRegistryInput.newBuilder()
@@ -1267,7 +1267,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED
     @Test
-    void deleteImageRegistry() throws LitmusApiException {
+    void deleteImageRegistry() throws LitmusApiException, IOException {
         DeleteImageRegistryGraphQLQuery query = new DeleteImageRegistryGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .imageRegistryID("c4f670bd-8b23-4ef0-a21f-f3a098b5b878")
@@ -1279,7 +1279,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED
     @Test
-    void updateImageRegistry() throws LitmusApiException {
+    void updateImageRegistry() throws LitmusApiException, IOException {
         UpdateImageRegistryGraphQLQuery query = new UpdateImageRegistryGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .imageRegistryID("c4f670bd-8b23-4ef0-a21f-f3a098b5b878")
@@ -1302,7 +1302,7 @@ class LitmusClientTest {
 
     // Probe
     @Test
-    void listProbes() throws LitmusApiException {
+    void listProbes() throws LitmusApiException, IOException {
         ListProbesGraphQLQuery query = new ListProbesGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .infrastructureType(InfrastructureType.Kubernetes) // type is Kubernetes
@@ -1326,7 +1326,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getProbe() throws LitmusApiException {
+    void getProbe() throws LitmusApiException, IOException {
         GetProbeGraphQLQuery query = new GetProbeGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .probeName("test-probe")
@@ -1345,7 +1345,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void validateUniqueProbe() throws LitmusApiException {
+    void validateUniqueProbe() throws LitmusApiException, IOException {
         ValidateUniqueProbeGraphQLQuery query = new ValidateUniqueProbeGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .probeName("test-probe")
@@ -1356,7 +1356,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getProbeReference() throws LitmusApiException { // we need create long type to graphql for updatedAt timestamp field
+    void getProbeReference() throws LitmusApiException, IOException { // we need create long type to graphql for updatedAt timestamp field
         GetProbeReferenceGraphQLQuery query = new GetProbeReferenceGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .probeName("test-probe")
@@ -1377,7 +1377,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getProbeYAML() throws LitmusApiException {
+    void getProbeYAML() throws LitmusApiException, IOException {
         GetProbeYAMLGraphQLQuery query = new GetProbeYAMLGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(GetProbeYAMLRequest.newBuilder()
@@ -1391,7 +1391,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getProbesInExperimentRun() throws LitmusApiException {
+    void getProbesInExperimentRun() throws LitmusApiException, IOException {
         GetProbesInExperimentRunGraphQLQuery query = new GetProbesInExperimentRunGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .experimentRunID("cd368e9b-1ac1-4606-8f62-65af6a5d838b")
@@ -1406,7 +1406,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void addProbe() throws LitmusApiException {
+    void addProbe() throws LitmusApiException, IOException {
         AddProbeGraphQLQuery query = new AddProbeGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(ProbeRequest.newBuilder()
@@ -1440,7 +1440,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void deleteProbe() throws LitmusApiException {
+    void deleteProbe() throws LitmusApiException, IOException {
         DeleteProbeGraphQLQuery query = new DeleteProbeGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .probeName("test name")
@@ -1451,7 +1451,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void updateProbe() throws LitmusApiException {
+    void updateProbe() throws LitmusApiException, IOException {
         UpdateProbeGraphQLQuery query = new UpdateProbeGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(ProbeRequest.newBuilder()
@@ -1481,7 +1481,7 @@ class LitmusClientTest {
 
     // chaos fault
     @Test
-    void getChaosFault() throws LitmusApiException {
+    void getChaosFault() throws LitmusApiException, IOException {
         GetChaosFaultGraphQLQuery query = new GetChaosFaultGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(ExperimentRequest.newBuilder()
@@ -1501,7 +1501,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void listChaosFaults() throws LitmusApiException {
+    void listChaosFaults() throws LitmusApiException, IOException {
         ListChaosFaultsGraphQLQuery query = new ListChaosFaultsGraphQLQuery.Builder()
                 .hubID("6f39cea9-6264-4951-83a8-29976b614289")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
@@ -1519,7 +1519,7 @@ class LitmusClientTest {
 
     // others
     @Test
-    void getServerVersion() throws LitmusApiException {
+    void getServerVersion() throws LitmusApiException, IOException {
         GetServerVersionGraphQLQuery query = new GetServerVersionGraphQLQuery.Builder()
                 .build();
 
@@ -1532,7 +1532,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void getVersionDetails() throws LitmusApiException {
+    void getVersionDetails() throws LitmusApiException, IOException {
         GetVersionDetailsGraphQLQuery query = new GetVersionDetailsGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
@@ -1546,7 +1546,7 @@ class LitmusClientTest {
     }
 
     @Test
-    void generateSSHKey() throws LitmusApiException {
+    void generateSSHKey() throws LitmusApiException, IOException {
         GenerateSSHKeyGraphQLQuery query = new GenerateSSHKeyGraphQLQuery.Builder()
                 .build();
 
@@ -1560,7 +1560,7 @@ class LitmusClientTest {
 
     // TODO: NOT TESTED
     @Test
-    void getManifestWithInfraID() throws LitmusApiException {
+    void getManifestWithInfraID() throws LitmusApiException, IOException {
         GetManifestWithInfraIDGraphQLQuery query = new GetManifestWithInfraIDGraphQLQuery.Builder()
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
