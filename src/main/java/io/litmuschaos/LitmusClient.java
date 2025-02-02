@@ -108,22 +108,62 @@ public class LitmusClient implements AutoCloseable {
         return httpClient.get(GET_USERS, token, typeToken);
     }
 
+    /**
+     * Update the user password.
+     *
+     * @param request
+     * @return Returns the projectID with message.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public PasswordUpdateResponse updatePassword(PasswordUpdateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(UPDATE_PASSWORD, token, request, PasswordUpdateResponse.class);
     }
 
+    /**
+     * Create a new user.
+     *
+     * @param request
+     * @return return the user details.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public UserResponse createUser(UserCreateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(CREATE_USER, token, request, UserResponse.class);
     }
 
+    /**
+     * Reset the user password.
+     *
+     * @param request
+     * @return return the response of the reset password request.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public CommonResponse resetPassword(PasswordResetRequest request) throws IOException, LitmusApiException {
         return httpClient.post(RESET_PASSWORD, token, request, CommonResponse.class);
     }
 
+    /**
+     * Update the user details.
+     *
+     * @param request
+     * @return return the response of the update user details request.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public CommonResponse updateUserDetails(UserDetailsUpdateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(UPDATE_USER_DETAILS, token, request, CommonResponse.class);
     }
 
+    /**
+     * Update the user state.
+     *
+     * @param request
+     * @return return the response of the update user state request.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public CommonResponse updateUserState(UserStateUpdateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(UPDATE_USER_STATE, token, request, CommonResponse.class);
     }
