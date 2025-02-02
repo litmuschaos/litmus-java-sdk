@@ -6,7 +6,6 @@
 
     <name>LitmusChaos Java SDK</name>
     <url>https://github.com/litmuschaos/litmus-java-sdk</url>
-
     <groupId>io.litmuschaos</groupId>
     <artifactId>litmus-sdk</artifactId>
     <version>0.0.1</version>
@@ -138,10 +137,6 @@
                         </configuration>
                     </plugin>
                     <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.4.0</version>
@@ -184,6 +179,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -197,6 +193,15 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.source}</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
