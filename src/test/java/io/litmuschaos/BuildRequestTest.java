@@ -1,4 +1,5 @@
-import io.litmuschaos.LitmusClient;
+package io.litmuschaos;
+
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.request.ListProjectRequest;
 import io.litmuschaos.response.ListProjectsResponse;

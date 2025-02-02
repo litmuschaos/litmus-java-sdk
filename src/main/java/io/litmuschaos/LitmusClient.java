@@ -26,7 +26,7 @@ import static io.litmuschaos.constants.RequestParams.*;
  * @author LitmusChaos Team
  * @version 1.0.0
  * @see <a href="https://litmuschaos.github.io/litmus/experiments/api/contents/">LitmusChaos API Docs</a>
- * , <a href="https://github.com/litmuschaos/litmus-java-sdk/blob/master/src/test/java/Example.java">Example</a>
+ * , <a href="https://github.com/litmuschaos/litmus-java-sdk/blob/master/src/test/java/LitmusClientTest.java">Example</a>
  */
 public class LitmusClient implements AutoCloseable {
 

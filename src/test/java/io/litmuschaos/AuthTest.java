@@ -1,4 +1,5 @@
-import io.litmuschaos.LitmusClient;
+package io.litmuschaos;
+
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.response.CapabilityResponse;
 import org.junit.jupiter.api.BeforeEach;
