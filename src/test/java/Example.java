@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Example {
 
-    private static final String HOST_URL = "http://localhost:62797"; // your frontend url here
+    private static final String HOST_URL = "http://localhost:54525"; // your frontend url here
     private static final String TEST_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4OTE1ODQwNzMsInJvbGUiOiJhZG1pbiIsInVpZCI6ImI1NWVlMzQwLWZiNzMtNDAyYy1hN2QwLWUxM2QzY2JiYTczOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.1bwzyAyAgW9ba7JgqaLXEomoEer-WtfyDaSqlwAdwLlKagt9lRjgaDcSm20YprsTqvM164eOSGu7FUhlOxZ81w"; // your API token here.
 
     private final LitmusClient litmusClient = new LitmusClient(HOST_URL,TEST_TOKEN);
@@ -567,7 +567,7 @@ public class Example {
         assertThat(response).isInstanceOf(GetInfraStatsResponse.class);
     }
 
-    // output not exist
+    // NOT TEST, it is used in litmus but when i call API, result not exist
     @Test
     public void getInfraManifest(){
         GetInfraManifestGraphQLQuery query = new GetInfraManifestGraphQLQuery.Builder()
@@ -582,8 +582,9 @@ public class Example {
 
     }
 
+    // NOT TEST
     @Test
-    public void confirmInfraRegistration(){ // unknown
+    public void confirmInfraRegistration(){
         ConfirmInfraRegistrationGraphQLQuery query = new ConfirmInfraRegistrationGraphQLQuery.Builder()
                 .queryName("confirmInfraRegistration")
                 .request(InfraIdentity.newBuilder()
@@ -738,7 +739,7 @@ public class Example {
         assertThat(response).isInstanceOf(ChaosHub.class);
     }
 
-    // is it work?
+    // NOT TEST, may not used
     @Test
     public void addRemoteChaosHub(){
         AddRemoteChaosHubGraphQLQuery query = new AddRemoteChaosHubGraphQLQuery.Builder()
@@ -1000,8 +1001,9 @@ public class Example {
         assertThat(response).isInstanceOf(ChaosExperimentResponse.class);
     }
 
+    // NOT TEST, may be not used
     @Test
-    public void createChaosExperiment(){ // is it work?
+    public void createChaosExperiment(){
         CreateChaosExperimentGraphQLQuery query = new CreateChaosExperimentGraphQLQuery.Builder()
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .request(
@@ -1127,7 +1129,7 @@ public class Example {
         assertThat(response).isInstanceOf(ListExperimentRunResponse.class);
     }
 
-    // is it work?
+    // NOT TEST, may be not used
     @Test
     public void chaosExperimentRun(){
         ChaosExperimentRunGraphQLQuery query = new ChaosExperimentRunGraphQLQuery.Builder()
@@ -1158,7 +1160,7 @@ public class Example {
     @Test
     public void getGitOpsDetails(){
         GetGitOpsDetailsGraphQLQuery query = new GetGitOpsDetailsGraphQLQuery.Builder()
-                .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
+                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
 
         GetGitOpsDetailsProjectionRoot projectionRoot = new GetGitOpsDetailsProjectionRoot<>()
@@ -1173,13 +1175,14 @@ public class Example {
     @Test
     public void disableGitOps(){
         DisableGitOpsGraphQLQuery query = new DisableGitOpsGraphQLQuery.Builder()
-                .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
+                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .build();
 
         DisableGitOpsResponse response = litmusClient.disableGitOps(query);
         assertThat(response).isInstanceOf(DisableGitOpsResponse.class);
     }
 
+    // NOT TEST
     @Test
     public void enableGitOps(){
         EnableGitOpsGraphQLQuery query = new EnableGitOpsGraphQLQuery.Builder()
@@ -1197,6 +1200,7 @@ public class Example {
         assertThat(response).isInstanceOf(EnableGitOpsResponse.class);
     }
 
+    // NOT TEST
     @Test
     public void gitopsNotifier(){
         GitopsNotifierGraphQLQuery query = new GitopsNotifierGraphQLQuery.Builder()
@@ -1212,6 +1216,7 @@ public class Example {
         assertThat(response).isInstanceOf(GitOpsNotifierResponse.class);
     }
 
+    // NOT TEST
     @Test
     public void updateGitOps(){
         UpdateGitOpsGraphQLQuery query = new UpdateGitOpsGraphQLQuery.Builder()
@@ -1259,6 +1264,7 @@ public class Example {
         assertThat(response).isInstanceOf(List.class);
     }
 
+    // NOT TEST
     @Test
     public void createImageRegistry(){
         CreateImageRegistryGraphQLQuery query = new CreateImageRegistryGraphQLQuery.Builder()
@@ -1280,6 +1286,7 @@ public class Example {
         assertThat(response).isInstanceOf(ImageRegistryResponse.class);
     }
 
+    // NOT TEST
     @Test
     public void deleteImageRegistry(){
         DeleteImageRegistryGraphQLQuery query = new DeleteImageRegistryGraphQLQuery.Builder()
@@ -1291,6 +1298,7 @@ public class Example {
         assertThat(response).isInstanceOf(DeleteImageRegistryResponse.class);
     }
 
+    // NOT TEST
     @Test
     public void updateImageRegistry(){
         UpdateImageRegistryGraphQLQuery query = new UpdateImageRegistryGraphQLQuery.Builder()
@@ -1571,7 +1579,7 @@ public class Example {
         assertThat(response).isInstanceOf(SSHKey.class);
     }
 
-    // is it work?
+    // NOT TEST
     @Test
     public void getManifestWithInfraID(){
         GetManifestWithInfraIDGraphQLQuery query = new GetManifestWithInfraIDGraphQLQuery.Builder()
@@ -1584,99 +1592,98 @@ public class Example {
         assertThat(response).isInstanceOf(GetManifestWithInfraIDResponse.class);
     }
 
-    // subscription
-    // is it work?
-    @Test
-    public void getInfraEvents(){
-        GetInfraEventsGraphQLQuery query = new GetInfraEventsGraphQLQuery.Builder()
-                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
-                .build();
-
-        GetInfraEventsProjectionRoot projectionRoot = new GetInfraEventsProjectionRoot<>()
-                .eventID()
-                .description()
-                .eventName()
-                .eventType();
-
-        InfraEventResponse response = litmusClient.getInfraEvents(query, projectionRoot);
-        assertThat(response).isInstanceOf(InfraEventResponse.class);
-    }
-
-    @Test
-    public void getKubeNamespace(){
-        GetKubeNamespaceGraphQLQuery query = new GetKubeNamespaceGraphQLQuery.Builder()
-                .request(KubeNamespaceRequest.newBuilder()
-                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
-                        .build())
-                .build();
-
-        GetKubeNamespaceProjectionRoot projectionRoot = new GetKubeNamespaceProjectionRoot<>()
-                .infraID()
-                .kubeNamespace().name().root();
-
-        KubeNamespaceResponse response = litmusClient.getKubeNamespace(query, projectionRoot);
-        assertThat(response).isInstanceOf(KubeNamespaceResponse.class);
-    }
-
-    @Test
-    public void getKubeObject(){
-        GetKubeObjectGraphQLQuery query = new GetKubeObjectGraphQLQuery.Builder()
-                .request(KubeObjectRequest.newBuilder()
-                        .namespace("default")
-                        .objectType("kubeobject")
-                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
-                        .kubeObjRequest(KubeGVRRequest.newBuilder()
-                                .group("apps")
-                                .resource("deployments")
-                                .version("v1")
-                                .build())
-                        .build())
-                .build();
-
-        GetKubeObjectProjectionRoot projectionRoot = new GetKubeObjectProjectionRoot<>()
-                .infraID()
-                .kubeObj().data().labels().root();
-
-        KubeObjectResponse response = litmusClient.getKubeObject(query, projectionRoot);
-        assertThat(response).isInstanceOf(KubeObjectResponse.class);
-    }
-
-    @Test
-    public void getPodLog(){
-        GetPodLogGraphQLQuery query = new GetPodLogGraphQLQuery.Builder()
-                .request(PodLogRequest.newBuilder()
-                        .infraID("4357805a-c932-4f9d-a3c5-cc1e3b3693a4")
-                        .experimentRunID("2be2bcdf-0d1e-4b9a-9ec8-03068272e1bc")
-                        .podName("test-experiment-1737970826261-2717703891")
-                        .podNamespace("litmus")
-                        .podType("Pod")
-                        .build())
-                .build();
-
-        GetPodLogProjectionRoot projectionRoot = new GetPodLogProjectionRoot<>()
-                .log()
-                .experimentRunID();
-
-        PodLogResponse response = litmusClient.getPodLog(query, projectionRoot);
-        assertThat(response).isInstanceOf(PodLogResponse.class);
-    }
-
-    // is it work?
-    @Test
-    public void infraConnect(){
-        InfraConnectGraphQLQuery query = new InfraConnectGraphQLQuery.Builder()
-                .request(InfraIdentity.newBuilder()
-                        .version("test")
-                        .accessKey("test")
-                        .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
-                        .build())
-                .build();
-
-        InfraConnectProjectionRoot projectionRoot = new InfraConnectProjectionRoot<>()
-                .projectID()
-                .action().externalData().root();
-
-        InfraActionResponse response = litmusClient.infraConnect(query, projectionRoot);
-        assertThat(response).isInstanceOf(InfraActionResponse.class);
-    }
+    // subscription is not supported in current version
+//    @Test
+//    public void getInfraEvents(){
+//        GetInfraEventsGraphQLQuery query = new GetInfraEventsGraphQLQuery.Builder()
+//                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
+//                .build();
+//
+//        GetInfraEventsProjectionRoot projectionRoot = new GetInfraEventsProjectionRoot<>()
+//                .eventID()
+//                .description()
+//                .eventName()
+//                .eventType();
+//
+//        InfraEventResponse response = litmusClient.getInfraEvents(query, projectionRoot);
+//        assertThat(response).isInstanceOf(InfraEventResponse.class);
+//    }
+//
+//    @Test
+//    public void getKubeNamespace(){
+//        GetKubeNamespaceGraphQLQuery query = new GetKubeNamespaceGraphQLQuery.Builder()
+//                .request(KubeNamespaceRequest.newBuilder()
+//                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
+//                        .build())
+//                .build();
+//
+//        GetKubeNamespaceProjectionRoot projectionRoot = new GetKubeNamespaceProjectionRoot<>()
+//                .infraID()
+//                .kubeNamespace().name().root();
+//
+//        KubeNamespaceResponse response = litmusClient.getKubeNamespace(query, projectionRoot);
+//        assertThat(response).isInstanceOf(KubeNamespaceResponse.class);
+//    }
+//
+//    @Test
+//    public void getKubeObject(){
+//        GetKubeObjectGraphQLQuery query = new GetKubeObjectGraphQLQuery.Builder()
+//                .request(KubeObjectRequest.newBuilder()
+//                        .namespace("default")
+//                        .objectType("kubeobject")
+//                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
+//                        .kubeObjRequest(KubeGVRRequest.newBuilder()
+//                                .group("apps")
+//                                .resource("deployments")
+//                                .version("v1")
+//                                .build())
+//                        .build())
+//                .build();
+//
+//        GetKubeObjectProjectionRoot projectionRoot = new GetKubeObjectProjectionRoot<>()
+//                .infraID()
+//                .kubeObj().data().labels().root();
+//
+//        KubeObjectResponse response = litmusClient.getKubeObject(query, projectionRoot);
+//        assertThat(response).isInstanceOf(KubeObjectResponse.class);
+//    }
+//
+//    @Test
+//    public void getPodLog(){
+//        GetPodLogGraphQLQuery query = new GetPodLogGraphQLQuery.Builder()
+//                .request(PodLogRequest.newBuilder()
+//                        .infraID("4357805a-c932-4f9d-a3c5-cc1e3b3693a4")
+//                        .experimentRunID("2be2bcdf-0d1e-4b9a-9ec8-03068272e1bc")
+//                        .podName("test-experiment-1737970826261-2717703891")
+//                        .podNamespace("litmus")
+//                        .podType("Pod")
+//                        .build())
+//                .build();
+//
+//        GetPodLogProjectionRoot projectionRoot = new GetPodLogProjectionRoot<>()
+//                .log()
+//                .experimentRunID();
+//
+//        PodLogResponse response = litmusClient.getPodLog(query, projectionRoot);
+//        assertThat(response).isInstanceOf(PodLogResponse.class);
+//    }
+//
+//    // is it work?
+//    @Test
+//    public void infraConnect(){
+//        InfraConnectGraphQLQuery query = new InfraConnectGraphQLQuery.Builder()
+//                .request(InfraIdentity.newBuilder()
+//                        .version("test")
+//                        .accessKey("test")
+//                        .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
+//                        .build())
+//                .build();
+//
+//        InfraConnectProjectionRoot projectionRoot = new InfraConnectProjectionRoot<>()
+//                .projectID()
+//                .action().externalData().root();
+//
+//        InfraActionResponse response = litmusClient.infraConnect(query, projectionRoot);
+//        assertThat(response).isInstanceOf(InfraActionResponse.class);
+//    }
 }
