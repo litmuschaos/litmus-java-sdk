@@ -1,3 +1,5 @@
+package io.litmuschaos;
+
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.generated.client.*;
 import io.litmuschaos.generated.types.*;
@@ -5,8 +7,8 @@ import io.litmuschaos.request.*;
 import io.litmuschaos.response.*;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MockLitmusClient {
 

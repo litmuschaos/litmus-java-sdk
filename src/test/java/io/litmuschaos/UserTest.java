@@ -1,8 +1,11 @@
-import io.litmuschaos.LitmusClient;
+package io.litmuschaos;
+
 import io.litmuschaos.exception.LitmusApiException;
-import io.litmuschaos.exception.detailed.UnauthorizedException;
-import io.litmuschaos.request.*;
-import io.litmuschaos.response.*;
+import io.litmuschaos.request.UserCreateRequest;
+import io.litmuschaos.request.UserDetailsUpdateRequest;
+import io.litmuschaos.request.UserStateUpdateRequest;
+import io.litmuschaos.response.CommonResponse;
+import io.litmuschaos.response.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

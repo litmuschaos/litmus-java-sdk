@@ -22,6 +22,12 @@ import static io.litmuschaos.constants.ApiEndpoints.*;
 import static io.litmuschaos.constants.OperationNames.*;
 import static io.litmuschaos.constants.RequestParams.*;
 
+/**
+ * @author LitmusChaos Team
+ * @version 1.0.0
+ * @see <a href="https://litmuschaos.github.io/litmus/experiments/api/contents/">LitmusChaos API Docs</a>
+ * , <a href="https://github.com/litmuschaos/litmus-java-sdk/blob/master/src/test/java/LitmusClientTest.java">Example</a>
+ */
 public class LitmusClient implements AutoCloseable {
 
     private String token;
@@ -41,43 +47,124 @@ public class LitmusClient implements AutoCloseable {
         this.httpClient.close();
     }
 
+    /**
+     * Returns all the api tokens for the user.
+     *
+     * @param userId
+     * @return Returns a list of tokens.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public ListTokensResponse getTokens(String userId) throws IOException, LitmusApiException {
         return httpClient.get(GET_TOKENS + "/" + userId, token, ListTokensResponse.class);
     }
 
+    /**
+     * Creates a new api token for the user.
+     *
+     * @param request
+     * @return Returns the created token.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public TokenCreateResponse createToken(TokenCreateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(CREATE_TOKEN, token, request, TokenCreateResponse.class);
     }
 
+    /**
+     * Delete api token for the user.
+     *
+     * @param request
+     * @return return the response of the delete request.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public CommonResponse deleteToken(TokenDeleteRequest request) throws IOException, LitmusApiException {
         return httpClient.post(REMOVE_TOKEN, token, request, CommonResponse.class);
     }
 
+    /**
+     * Get the user details.
+     *
+     * @param userId
+     * @return Returns the user details.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public UserResponse getUser(String userId) throws IOException, LitmusApiException {
         return httpClient.get(GET_USER + "/" + userId, token, UserResponse.class);
     }
 
+    /**
+     * Get
+     * Fetch users.
+     *
+     * @return Returns the list of users.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public List<UserResponse> getUsers() throws IOException, LitmusApiException {
-        TypeToken<List<UserResponse>> typeToken = new TypeToken<>() {};
+        TypeToken<List<UserResponse>> typeToken = new TypeToken<>() {
+        };
         return httpClient.get(GET_USERS, token, typeToken);
     }
 
+    /**
+     * Update the user password.
+     *
+     * @param request
+     * @return Returns the projectID with message.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public PasswordUpdateResponse updatePassword(PasswordUpdateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(UPDATE_PASSWORD, token, request, PasswordUpdateResponse.class);
     }
 
+    /**
+     * Create a new user.
+     *
+     * @param request
+     * @return return the user details.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public UserResponse createUser(UserCreateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(CREATE_USER, token, request, UserResponse.class);
     }
 
+    /**
+     * Reset the user password.
+     *
+     * @param request
+     * @return return the response of the reset password request.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public CommonResponse resetPassword(PasswordResetRequest request) throws IOException, LitmusApiException {
         return httpClient.post(RESET_PASSWORD, token, request, CommonResponse.class);
     }
 
+    /**
+     * Update the user details.
+     *
+     * @param request
+     * @return return the response of the update user details request.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public CommonResponse updateUserDetails(UserDetailsUpdateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(UPDATE_USER_DETAILS, token, request, CommonResponse.class);
     }
 
+    /**
+     * Update the user state.
+     *
+     * @param request
+     * @return return the response of the update user state request.
+     * @throws IOException
+     * @throws LitmusApiException
+     */
     public CommonResponse updateUserState(UserStateUpdateRequest request) throws IOException, LitmusApiException {
         return httpClient.post(UPDATE_USER_STATE, token, request, CommonResponse.class);
     }
