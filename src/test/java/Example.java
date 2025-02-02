@@ -315,7 +315,6 @@ public class Example {
     @Test
     public void getEnvironment() {
         GetEnvironmentGraphQLQuery query = new GetEnvironmentGraphQLQuery.Builder()
-                .queryName("getEnvironment")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .environmentID("test-environments")
                 .build();
@@ -340,7 +339,6 @@ public class Example {
     @Test
     public void listEnvironments() {
         ListEnvironmentsGraphQLQuery query = new ListEnvironmentsGraphQLQuery.Builder()
-                .queryName("listEnvironments")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListEnvironmentRequest.Builder()
                       .environmentIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
@@ -378,7 +376,6 @@ public class Example {
     @Test
     public void createEnvironment() {
         CreateEnvironmentGraphQLQuery query = new CreateEnvironmentGraphQLQuery.Builder()
-                .queryName("createEnvironment")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(CreateEnvironmentRequest.newBuilder()
                         .environmentID("test-environments")
@@ -412,7 +409,6 @@ public class Example {
     @Test
     public void updateEnvironment() {
         UpdateEnvironmentGraphQLQuery query = new UpdateEnvironmentGraphQLQuery.Builder()
-                .queryName("updateEnvironment")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(UpdateEnvironmentRequest.newBuilder()
                         .environmentID("test-environments")
@@ -431,7 +427,6 @@ public class Example {
     @Test
     public void deleteEnvironment() {
         DeleteEnvironmentGraphQLQuery query = new DeleteEnvironmentGraphQLQuery.Builder()
-                .queryName("deleteEnvironment")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .environmentID("test-environments")
                 .build();
@@ -443,7 +438,6 @@ public class Example {
     @Test
     public void getInfra() {
         GetInfraGraphQLQuery query = new GetInfraGraphQLQuery.Builder()
-                .queryName("getInfra")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
                 .build();
@@ -462,7 +456,6 @@ public class Example {
     @Test
     public void listInfras() {
         ListInfrasGraphQLQuery query = new ListInfrasGraphQLQuery.Builder()
-                .queryName("listInfras")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListInfraRequest.Builder()
                         .environmentIDs(List.of("testing"))
@@ -513,7 +506,6 @@ public class Example {
     @Test
     public void getInfraDetails(){
         GetInfraDetailsGraphQLQuery query = new GetInfraDetailsGraphQLQuery.Builder()
-                .queryName("getInfraDetails")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
                 .build();
@@ -551,7 +543,6 @@ public class Example {
     @Test
     public void getInfraStats(){
         GetInfraStatsGraphQLQuery query = new GetInfraStatsGraphQLQuery.Builder()
-                .queryName("getInfraStats")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
 
@@ -571,7 +562,6 @@ public class Example {
     @Test
     public void getInfraManifest(){
         GetInfraManifestGraphQLQuery query = new GetInfraManifestGraphQLQuery.Builder()
-                .queryName("getInfraManifest")
                 .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
                 .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
                 .upgrade(true)
@@ -586,7 +576,6 @@ public class Example {
     @Test
     public void confirmInfraRegistration(){
         ConfirmInfraRegistrationGraphQLQuery query = new ConfirmInfraRegistrationGraphQLQuery.Builder()
-                .queryName("confirmInfraRegistration")
                 .request(InfraIdentity.newBuilder()
                         .infraID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                         .accessKey("test access key")
@@ -607,7 +596,6 @@ public class Example {
     @Test
     public void deleteInfra(){
         DeleteInfraGraphQLQuery query = new DeleteInfraGraphQLQuery.Builder()
-                .queryName("deleteInfra")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
                 .build();
@@ -619,7 +607,6 @@ public class Example {
     @Test
     public void registerInfra(){
         RegisterInfraGraphQLQuery query = new RegisterInfraGraphQLQuery.Builder()
-                .queryName("registerInfra")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(RegisterInfraRequest.newBuilder()
                         .description("test description")
@@ -650,7 +637,6 @@ public class Example {
     @Test
     public void listChaosHub(){
         ListChaosHubGraphQLQuery query = new ListChaosHubGraphQLQuery.Builder()
-                .queryName("listChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(new ListChaosHubRequest.Builder()
                         .chaosHubIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
@@ -679,7 +665,6 @@ public class Example {
     @Test
     public void getChaosHub(){
         GetChaosHubGraphQLQuery query = new GetChaosHubGraphQLQuery.Builder()
-                .queryName("getChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .chaosHubID("218fb866-8406-4397-996a-36b75416d683")
                 .build();
@@ -700,7 +685,6 @@ public class Example {
     @Test
     public void getChaosHubStats(){
         GetChaosHubStatsGraphQLQuery query = new GetChaosHubStatsGraphQLQuery.Builder()
-                .queryName("getChaosHubStats")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .build();
 
@@ -714,7 +698,6 @@ public class Example {
     @Test
     public void addChaosHub(){
         AddChaosHubGraphQLQuery query = new AddChaosHubGraphQLQuery.Builder()
-                .queryName("addChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(CreateChaosHubRequest.newBuilder()
                         .remoteHub("GitHub")
@@ -743,7 +726,6 @@ public class Example {
     @Test
     public void addRemoteChaosHub(){
         AddRemoteChaosHubGraphQLQuery query = new AddRemoteChaosHubGraphQLQuery.Builder()
-                .queryName("addRemoteChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(CreateRemoteChaosHub.newBuilder()
                         .remoteHub("test remote hub")
@@ -768,7 +750,6 @@ public class Example {
     @Test
     public void deleteChaosHub(){
         DeleteChaosHubGraphQLQuery query = new DeleteChaosHubGraphQLQuery.Builder()
-                .queryName("deleteChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .hubID("218fb866-8406-4397-996a-36b75416d683")
                 .build();
@@ -780,7 +761,6 @@ public class Example {
     @Test
     public void saveChaosHub(){
         SaveChaosHubGraphQLQuery query = new SaveChaosHubGraphQLQuery.Builder()
-                .queryName("saveChaosHub")
                 .projectID("50703e0e-18de-4cc4-80fb-0784c100bb07")
                 .request(CreateChaosHubRequest.newBuilder()
                         .repoBranch("test repo branch")
@@ -805,7 +785,6 @@ public class Example {
     @Test
     public void syncChaosHub(){
         SyncChaosHubGraphQLQuery query = new SyncChaosHubGraphQLQuery.Builder()
-                .queryName("syncChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .id("218fb866-8406-4397-996a-36b75416d683")
                 .build();
@@ -817,7 +796,6 @@ public class Example {
     @Test
     public void updateChaosHub(){
         UpdateChaosHubGraphQLQuery query = new UpdateChaosHubGraphQLQuery.Builder()
-                .queryName("updateChaosHub")
                 .projectID("567ccf04-7195-4311-a215-0803fe5e93f6")
                 .request(UpdateChaosHubRequest.newBuilder()
                         .id("218fb866-8406-4397-996a-36b75416d683") // chaos hub ID
