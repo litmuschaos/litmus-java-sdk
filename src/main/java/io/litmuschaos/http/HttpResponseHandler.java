@@ -1,6 +1,7 @@
 package io.litmuschaos.http;
 
 import com.google.gson.*;
+import io.litmuschaos.constants.HttpStatus;
 import io.litmuschaos.constants.ResponseBodyFields;
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.exception.detailed.*;
@@ -37,13 +38,13 @@ public class HttpResponseHandler {
             }
         }
         switch (response.code()) {
-            case 400:
+            case HttpStatus.BAD_REQUEST:
                 throw new BadRequestException(errorMessage);
-            case 401:
+            case HttpStatus.UNAUTHORIZED:
                 throw new UnauthorizedException(errorMessage);
-            case 403:
+            case HttpStatus.FORBIDDEN:
                 throw new ForbiddenException(errorMessage);
-            case 404:
+            case HttpStatus.NOT_FOUND:
                 throw new NotFoundException(errorMessage);
             default:
                 throw new InternalServerErrorException(errorMessage);

@@ -31,20 +31,16 @@ import static io.litmuschaos.constants.RequestParams.*;
 public class LitmusClient implements AutoCloseable {
 
     private final String token;
+    private final OkHttpClient okHttpClient;
     private final LitmusHttpClient httpClient;
     private final LitmusGraphQLClient graphQLClient;
 
     public LitmusClient(String host, String token) {
         String sanitizedHost = sanitizeURL(host);
-        OkHttpClient okHttpClient = new OkHttpClient();
         this.token = token;
+        okHttpClient = new OkHttpClient(); // TODO : apply detail options
         this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + AUTH);
         this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + API_QUERY, this.token);
-    }
-
-    @Override
-    public void close() throws Exception {
-        this.httpClient.close();
     }
 
     /**
@@ -457,11 +453,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the environment.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public Environment getEnvironment(GetEnvironmentGraphQLQuery query, GetEnvironmentProjectionRoot projectionRoot){
+    public Environment getEnvironment(GetEnvironmentGraphQLQuery query, GetEnvironmentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_ENVIRONMENT, new TypeRef<Environment>(){});
+        return graphQLClient.query(request, GET_ENVIRONMENT, new TypeRef<Environment>(){});
     }
 
     /**
@@ -470,11 +467,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of environments.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ListEnvironmentResponse listEnvironments(ListEnvironmentsGraphQLQuery query, ListEnvironmentsProjectionRoot projectionRoot){
+    public ListEnvironmentResponse listEnvironments(ListEnvironmentsGraphQLQuery query, ListEnvironmentsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_ENVIRONMENTS, new TypeRef<ListEnvironmentResponse>(){});
+        return graphQLClient.query(request, LIST_ENVIRONMENTS, new TypeRef<ListEnvironmentResponse>(){});
     }
 
     /**
@@ -483,11 +481,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the created environment.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public Environment createEnvironment(CreateEnvironmentGraphQLQuery query, CreateEnvironmentProjectionRoot projectionRoot){
+    public Environment createEnvironment(CreateEnvironmentGraphQLQuery query, CreateEnvironmentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(CREATE_ENVIRONMENT, new TypeRef<Environment>(){});
+        return graphQLClient.query(request, CREATE_ENVIRONMENT, new TypeRef<Environment>(){});
     }
 
     /**
@@ -495,23 +494,26 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the delete environment request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public DeleteEnvironmentResponse deleteEnvironment(DeleteEnvironmentGraphQLQuery query){
+    public DeleteEnvironmentResponse deleteEnvironment(DeleteEnvironmentGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(DELETE_ENVIRONMENT, new TypeRef<DeleteEnvironmentResponse>(){});
+        return graphQLClient.query(request, DELETE_ENVIRONMENT, new TypeRef<DeleteEnvironmentResponse>(){});
     }
+
 
     /**
      * Update the environment.
      *
      * @param query
      * @return Returns the updated environment.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public UpdateEnvironmentResponse updateEnvironment(UpdateEnvironmentGraphQLQuery query){
+    public UpdateEnvironmentResponse updateEnvironment(UpdateEnvironmentGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(UPDATE_ENVIRONMENT, new TypeRef<UpdateEnvironmentResponse>(){});
+        return graphQLClient.query(request, UPDATE_ENVIRONMENT, new TypeRef<UpdateEnvironmentResponse>(){});
     }
 
     /**
@@ -520,11 +522,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the infra.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public Infra getInfra(GetInfraGraphQLQuery query, GetInfraProjectionRoot projectionRoot){
+    public Infra getInfra(GetInfraGraphQLQuery query, GetInfraProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_INFRA, new TypeRef<Infra>(){});
+        return graphQLClient.query(request, GET_INFRA, new TypeRef<Infra>(){});
     }
 
     /**
@@ -533,11 +536,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of infras.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ListInfraResponse listInfras(ListInfrasGraphQLQuery query, ListInfrasProjectionRoot projectionRoot) {
+    public ListInfraResponse listInfras(ListInfrasGraphQLQuery query, ListInfrasProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_INFRAS, new TypeRef<ListInfraResponse>() {});
+        return graphQLClient.query(request, LIST_INFRAS, new TypeRef<ListInfraResponse>(){});
     }
 
     /**
@@ -546,11 +550,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the infra details.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public Infra getInfraDetails(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot){
+    public Infra getInfraDetails(GetInfraDetailsGraphQLQuery query, GetInfraDetailsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_INFRA_DETAILS, new TypeRef<Infra>(){});
+        return graphQLClient.query(request, GET_INFRA_DETAILS, new TypeRef<Infra>(){});
     }
 
     /**
@@ -559,11 +564,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the infra stats.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetInfraStatsResponse getInfraStats(GetInfraStatsGraphQLQuery query, GetInfraStatsProjectionRoot projectionRoot){
+    public GetInfraStatsResponse getInfraStats(GetInfraStatsGraphQLQuery query, GetInfraStatsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_INFRA_STATS, new TypeRef<GetInfraStatsResponse>(){});
+        return graphQLClient.query(request, GET_INFRA_STATS, new TypeRef<GetInfraStatsResponse>(){});
     }
 
     /**
@@ -571,11 +577,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the infra manifest.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetInfraManifestResponse getInfraManifest(GetInfraManifestGraphQLQuery query){
+    public GetInfraManifestResponse getInfraManifest(GetInfraManifestGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_INFRA_MANIFEST, new TypeRef<GetInfraManifestResponse>(){});
+        return graphQLClient.query(request, GET_INFRA_MANIFEST, new TypeRef<GetInfraManifestResponse>(){});
     }
 
     /**
@@ -584,11 +591,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the response of the confirm infra registration request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ConfirmInfraRegistrationResponse confirmInfraRegistration(ConfirmInfraRegistrationGraphQLQuery query, ConfirmInfraRegistrationProjectionRoot projectionRoot){
+    public ConfirmInfraRegistrationResponse confirmInfraRegistration(ConfirmInfraRegistrationGraphQLQuery query, ConfirmInfraRegistrationProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(CONFIRM_INFRA_REGISTRATION, new TypeRef<ConfirmInfraRegistrationResponse>(){});
+        return graphQLClient.query(request, CONFIRM_INFRA_REGISTRATION, new TypeRef<ConfirmInfraRegistrationResponse>(){});
     }
 
     /**
@@ -596,11 +604,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the delete infra request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public DeleteInfraResponse deleteInfra(DeleteInfraGraphQLQuery query){
+    public DeleteInfraResponse deleteInfra(DeleteInfraGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(DELETE_INFRA, new TypeRef<DeleteInfraResponse>(){});
+        return graphQLClient.query(request, DELETE_INFRA, new TypeRef<DeleteInfraResponse>(){});
     }
 
     /**
@@ -609,11 +618,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the response of the register infra request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public RegisterInfraResponse registerInfra(RegisterInfraGraphQLQuery query, RegisterInfraProjectionRoot projectionRoot){
+    public RegisterInfraResponse registerInfra(RegisterInfraGraphQLQuery query, RegisterInfraProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(REGISTER_INFRA, new TypeRef<RegisterInfraResponse>(){});
+        return graphQLClient.query(request, REGISTER_INFRA, new TypeRef<RegisterInfraResponse>(){});
     }
 
     /**
@@ -622,11 +632,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of chaos hubs.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public List<ChaosHubStatus> listChaosHub(ListChaosHubGraphQLQuery query, ListChaosHubProjectionRoot projectionRoot){
+    public List<ChaosHubStatus> listChaosHub(ListChaosHubGraphQLQuery query, ListChaosHubProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_CHAOS_HUB, new TypeRef<List<ChaosHubStatus>>(){});
+        return graphQLClient.query(request, LIST_CHAOS_HUB, new TypeRef<List<ChaosHubStatus>>(){});
     }
 
     /**
@@ -635,11 +646,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the chaos hub.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ChaosHubStatus getChaosHub(GetChaosHubGraphQLQuery query, GetChaosHubProjectionRoot projectionRoot){
+    public ChaosHubStatus getChaosHub(GetChaosHubGraphQLQuery query, GetChaosHubProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_CHAOS_HUB, new TypeRef<ChaosHubStatus>() {});
+        return graphQLClient.query(request, GET_CHAOS_HUB, new TypeRef<ChaosHubStatus>() {});
     }
 
     /**
@@ -648,11 +660,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the chaos hub stats.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetChaosHubStatsResponse getChaosHubStats(GetChaosHubStatsGraphQLQuery query, GetChaosHubStatsProjectionRoot projectionRoot){
+    public GetChaosHubStatsResponse getChaosHubStats(GetChaosHubStatsGraphQLQuery query, GetChaosHubStatsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_CHAOS_HUB_STATS, new TypeRef<GetChaosHubStatsResponse>() {});
+        return graphQLClient.query(request, GET_CHAOS_HUB_STATS, new TypeRef<GetChaosHubStatsResponse>() {});
     }
 
     /**
@@ -661,11 +674,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the added chaos hub.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ChaosHub addChaosHub(AddChaosHubGraphQLQuery query, AddChaosHubProjectionRoot projectionRoot){
+    public ChaosHub addChaosHub(AddChaosHubGraphQLQuery query, AddChaosHubProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(ADD_CHAOS_HUB, new TypeRef<ChaosHub>(){});
+        return graphQLClient.query(request, ADD_CHAOS_HUB, new TypeRef<ChaosHub>() {});
     }
 
     /**
@@ -674,11 +688,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the added remote chaos hub.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ChaosHub addRemoteChaosHub(AddRemoteChaosHubGraphQLQuery query, AddRemoteChaosHubProjectionRoot projectionRoot){
+    public ChaosHub addRemoteChaosHub(AddRemoteChaosHubGraphQLQuery query, AddRemoteChaosHubProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(ADD_REMOTE_CHAOS_HUB, new TypeRef<ChaosHub>() {});
+        return graphQLClient.query(request, ADD_REMOTE_CHAOS_HUB, new TypeRef<ChaosHub>() {});
     }
 
     /**
@@ -686,11 +701,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the delete chaos hub request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public DeleteChaosHubResponse deleteChaosHub(DeleteChaosHubGraphQLQuery query){
+    public DeleteChaosHubResponse deleteChaosHub(DeleteChaosHubGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(DELETE_CHAOS_HUB, new TypeRef<DeleteChaosHubResponse>(){});
+        return graphQLClient.query(request, DELETE_CHAOS_HUB, new TypeRef<DeleteChaosHubResponse>(){});
     }
 
     /**
@@ -699,11 +715,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the saved chaos hub.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ChaosHub saveChaosHub(SaveChaosHubGraphQLQuery query, SaveChaosHubProjectionRoot projectionRoot){
+    public ChaosHub saveChaosHub(SaveChaosHubGraphQLQuery query, SaveChaosHubProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(SAVE_CHAOS_HUB, new TypeRef<ChaosHub>() {});
+        return graphQLClient.query(request, SAVE_CHAOS_HUB, new TypeRef<ChaosHub>() {});
     }
 
     /**
@@ -711,11 +728,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the sync chaos hub request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public SyncChaosHubResponse syncChaosHub(SyncChaosHubGraphQLQuery query){
+    public SyncChaosHubResponse syncChaosHub(SyncChaosHubGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(SYNC_CHAOS_HUB, new TypeRef<SyncChaosHubResponse>() {});
+        return graphQLClient.query(request, SYNC_CHAOS_HUB, new TypeRef<SyncChaosHubResponse>() {});
     }
 
     /**
@@ -724,11 +742,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the updated chaos hub.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ChaosHub updateChaosHub(UpdateChaosHubGraphQLQuery query, UpdateChaosHubProjectionRoot projectionRoot){
+    public ChaosHub updateChaosHub(UpdateChaosHubGraphQLQuery query, UpdateChaosHubProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(UPDATE_CHAOS_HUB, new TypeRef<ChaosHub>() {});
+        return graphQLClient.query(request, UPDATE_CHAOS_HUB, new TypeRef<ChaosHub>() {});
     }
 
     /**
@@ -737,11 +756,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the chaos experiment.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetExperimentResponse getExperiment(GetExperimentGraphQLQuery query, GetExperimentProjectionRoot projectionRoot){
+    public GetExperimentResponse getExperiment(GetExperimentGraphQLQuery query, GetExperimentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_EXPERIMENT, new TypeRef<GetExperimentResponse>(){});
+        return graphQLClient.query(request, GET_EXPERIMENT, new TypeRef<GetExperimentResponse>(){});
     }
 
     /**
@@ -750,11 +770,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of chaos experiments.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ListExperimentResponse listExperiment(ListExperimentGraphQLQuery query, ListExperimentProjectionRoot projectionRoot){
+    public ListExperimentResponse listExperiment(ListExperimentGraphQLQuery query, ListExperimentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_EXPERIMENT, new TypeRef<ListExperimentResponse>(){});
+        return graphQLClient.query(request, LIST_EXPERIMENT, new TypeRef<ListExperimentResponse>(){});
     }
 
     /**
@@ -763,11 +784,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the chaos experiment stats.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetExperimentStatsResponse getExperimentStats(GetExperimentStatsGraphQLQuery query, GetExperimentStatsProjectionRoot projectionRoot){
+    public GetExperimentStatsResponse getExperimentStats(GetExperimentStatsGraphQLQuery query, GetExperimentStatsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_EXPERIMENT_STATS, new TypeRef<GetExperimentStatsResponse>(){});
+        return graphQLClient.query(request, GET_EXPERIMENT_STATS, new TypeRef<GetExperimentStatsResponse>(){});
     }
 
     /**
@@ -776,11 +798,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the predefined chaos experiment.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public List<PredefinedExperimentList> getPredefinedExperiment(GetPredefinedExperimentGraphQLQuery query, GetPredefinedExperimentProjectionRoot projectionRoot){
+    public List<PredefinedExperimentList> getPredefinedExperiment(GetPredefinedExperimentGraphQLQuery query, GetPredefinedExperimentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_PREDEFINED_EXPERIMENT, new TypeRef<List<PredefinedExperimentList>>(){});
+        return graphQLClient.query(request, GET_PREDEFINED_EXPERIMENT, new TypeRef<List<PredefinedExperimentList>>(){});
     }
 
     /**
@@ -789,11 +812,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of predefined chaos experiments.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public List<PredefinedExperimentList> listPredefinedExperiments(ListPredefinedExperimentsGraphQLQuery query, ListPredefinedExperimentsProjectionRoot projectionRoot){
+    public List<PredefinedExperimentList> listPredefinedExperiments(ListPredefinedExperimentsGraphQLQuery query, ListPredefinedExperimentsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_PREDEFINED_EXPERIMENTS, new TypeRef<List<PredefinedExperimentList>>(){});
+        return graphQLClient.query(request, LIST_PREDEFINED_EXPERIMENTS, new TypeRef<List<PredefinedExperimentList>>(){});
     }
 
     /**
@@ -801,23 +825,26 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the response of the run chaos experiment request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public RunChaosExperimentResponse runChaosExperiment(RunChaosExperimentGraphQLQuery query, RunChaosExperimentProjectionRoot projectionRoot){
+    public RunChaosExperimentResponse runChaosExperiment(RunChaosExperimentGraphQLQuery query, RunChaosExperimentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(RUN_CHAOS_EXPERIMENT, new TypeRef<RunChaosExperimentResponse>(){});
+        return graphQLClient.query(request, RUN_CHAOS_EXPERIMENT, new TypeRef<RunChaosExperimentResponse>(){});
     }
+
 
     /**
      * Save the chaos experiment.
      *
      * @param query
      * @return Returns the response of the save chaos experiment request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public SaveChaosExperimentResponse saveChaosExperiment(SaveChaosExperimentGraphQLQuery query){
+    public SaveChaosExperimentResponse saveChaosExperiment(SaveChaosExperimentGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(SAVE_CHAOS_EXPERIMENT, new TypeRef<SaveChaosExperimentResponse>(){});
+        return graphQLClient.query(request, SAVE_CHAOS_EXPERIMENT, new TypeRef<SaveChaosExperimentResponse>(){});
     }
 
     /**
@@ -826,11 +853,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the updated chaos experiment.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ChaosExperimentResponse updateChaosExperiment(UpdateChaosExperimentGraphQLQuery query, UpdateChaosExperimentProjectionRoot projectionRoot){
+    public ChaosExperimentResponse updateChaosExperiment(UpdateChaosExperimentGraphQLQuery query, UpdateChaosExperimentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(UPDATE_CHAOS_EXPERIMENT, new TypeRef<ChaosExperimentResponse>(){});
+        return graphQLClient.query(request, UPDATE_CHAOS_EXPERIMENT, new TypeRef<ChaosExperimentResponse>(){});
     }
 
     /**
@@ -839,11 +867,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the created chaos experiment.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ChaosExperimentResponse createChaosExperiment(CreateChaosExperimentGraphQLQuery query, CreateChaosExperimentProjectionRoot projectionRoot){
+    public ChaosExperimentResponse createChaosExperiment(CreateChaosExperimentGraphQLQuery query, CreateChaosExperimentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(CREATE_CHAOS_EXPERIMENT, new TypeRef<ChaosExperimentResponse>(){});
+        return graphQLClient.query(request, CREATE_CHAOS_EXPERIMENT, new TypeRef<ChaosExperimentResponse>(){});
     }
 
     /**
@@ -851,22 +880,24 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the delete chaos experiment request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public DeleteChaosExperimentResponse deleteChaosExperiment(DeleteChaosExperimentGraphQLQuery query){
+    public DeleteChaosExperimentResponse deleteChaosExperiment(DeleteChaosExperimentGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(DELETE_CHAOS_EXPERIMENT, new TypeRef<DeleteChaosExperimentResponse>(){});
+        return graphQLClient.query(request, DELETE_CHAOS_EXPERIMENT, new TypeRef<DeleteChaosExperimentResponse>(){});
     }
 
     /**
      * Update the cron chaos experiment state.
      * @param query
      * @return Returns the response of the update cron chaos experiment state request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public UpdateCronExperimentStateResponse updateCronExperimentState(UpdateCronExperimentStateGraphQLQuery query){
+    public UpdateCronExperimentStateResponse updateCronExperimentState(UpdateCronExperimentStateGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(UPDATE_CRON_EXPERIMENT_STATE, new TypeRef<UpdateCronExperimentStateResponse>(){});
+        return graphQLClient.query(request, UPDATE_CRON_EXPERIMENT_STATE, new TypeRef<UpdateCronExperimentStateResponse>(){});
     }
 
     /**
@@ -875,11 +906,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the chaos experiment run.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ExperimentRun getExperimentRun(GetExperimentRunGraphQLQuery query, GetExperimentRunProjectionRoot projectionRoot){
+    public ExperimentRun getExperimentRun(GetExperimentRunGraphQLQuery query, GetExperimentRunProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_EXPERIMENT_RUN, new TypeRef<ExperimentRun>(){});
+        return graphQLClient.query(request, GET_EXPERIMENT_RUN, new TypeRef<ExperimentRun>(){});
     }
 
     /**
@@ -888,11 +920,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the chaos experiment run stats.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetExperimentRunStatsResponse getExperimentRunStats(GetExperimentRunStatsGraphQLQuery query, GetExperimentRunStatsProjectionRoot projectionRoot){
+    public GetExperimentRunStatsResponse getExperimentRunStats(GetExperimentRunStatsGraphQLQuery query, GetExperimentRunStatsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_EXPERIMENT_RUN_STATS, new TypeRef<GetExperimentRunStatsResponse>(){});
+        return graphQLClient.query(request, GET_EXPERIMENT_RUN_STATS, new TypeRef<GetExperimentRunStatsResponse>(){});
     }
 
     /**
@@ -901,35 +934,40 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of chaos experiment runs.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ListExperimentRunResponse listExperimentRun(ListExperimentRunGraphQLQuery query, ListExperimentRunProjectionRoot projectionRoot){
+    public ListExperimentRunResponse listExperimentRun(ListExperimentRunGraphQLQuery query, ListExperimentRunProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_EXPERIMENT_RUN, new TypeRef<ListExperimentRunResponse>(){});
+        return graphQLClient.query(request, LIST_EXPERIMENT_RUN, new TypeRef<ListExperimentRunResponse>(){});
     }
+
 
     /**
      * Creates a new experiment run and sends it to subscriber
      *
      * @param query
      * @return Returns the response of the chaos experiment run request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ChaosExperimentRunResponse chaosExperimentRun(ChaosExperimentRunGraphQLQuery query){
+    public ChaosExperimentRunResponse chaosExperimentRun(ChaosExperimentRunGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(CHAOS_EXPERIMENT_RUN, new TypeRef<ChaosExperimentRunResponse>(){});
+        return graphQLClient.query(request, CHAOS_EXPERIMENT_RUN, new TypeRef<ChaosExperimentRunResponse>(){});
     }
+
 
     /**
      * Stop the chaos experiment run.
      *
      * @param query
      * @return Returns the response of the stop chaos experiment run request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public StopExperimentRunsResponse stopExperimentRuns(StopExperimentRunsGraphQLQuery query){
+    public StopExperimentRunsResponse stopExperimentRuns(StopExperimentRunsGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(STOP_EXPERIMENT_RUNS, new TypeRef<StopExperimentRunsResponse>(){});
+        return graphQLClient.query(request, STOP_EXPERIMENT_RUNS, new TypeRef<StopExperimentRunsResponse>(){});
     }
 
     /**
@@ -938,11 +976,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the git configuration for gitops
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GitConfigResponse getGitOpsDetails(GetGitOpsDetailsGraphQLQuery query, GetGitOpsDetailsProjectionRoot projectionRoot){
+    public GitConfigResponse getGitOpsDetails(GetGitOpsDetailsGraphQLQuery query, GetGitOpsDetailsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_GIT_OPS_DETAILS, new TypeRef<GitConfigResponse>(){});
+        return graphQLClient.query(request, GET_GIT_OPS_DETAILS, new TypeRef<GitConfigResponse>(){});
     }
 
     /**
@@ -950,23 +989,24 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the disable gitops request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public DisableGitOpsResponse disableGitOps(DisableGitOpsGraphQLQuery query){
+    public DisableGitOpsResponse disableGitOps(DisableGitOpsGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(DISABLE_GIT_OPS, new TypeRef<DisableGitOpsResponse>(){});
+        return graphQLClient.query(request, DISABLE_GIT_OPS, new TypeRef<DisableGitOpsResponse>(){});
     }
-
     /**
      * Enables gitops settings in the project
      *
      * @param query
      * @return Returns the response of the enable gitops request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public EnableGitOpsResponse enableGitOps(EnableGitOpsGraphQLQuery query){
+    public EnableGitOpsResponse enableGitOps(EnableGitOpsGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(ENABLE_GIT_OPS, new TypeRef<EnableGitOpsResponse>(){});
+        return graphQLClient.query(request, ENABLE_GIT_OPS, new TypeRef<EnableGitOpsResponse>(){});
     }
 
     /**
@@ -974,11 +1014,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the gitops notifier request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GitOpsNotifierResponse gitopsNotifier(GitopsNotifierGraphQLQuery query){
+    public GitOpsNotifierResponse gitopsNotifier(GitopsNotifierGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GITOPS_NOTIFIER, new TypeRef<GitOpsNotifierResponse>(){});
+        return graphQLClient.query(request, GITOPS_NOTIFIER, new TypeRef<GitOpsNotifierResponse>(){});
     }
 
     /**
@@ -986,12 +1027,14 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the update gitops request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public UpdateGitOpsResponse updateGitOps(UpdateGitOpsGraphQLQuery query){
+    public UpdateGitOpsResponse updateGitOps(UpdateGitOpsGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(UPDATE_GIT_OPS, new TypeRef<UpdateGitOpsResponse>(){});
+        return graphQLClient.query(request, UPDATE_GIT_OPS, new TypeRef<UpdateGitOpsResponse>(){});
     }
+
 
     /**
      * Get the image registry.
@@ -999,11 +1042,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the image registry.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ImageRegistryResponse getImageRegistry(GetImageRegistryGraphQLQuery query, GetImageRegistryProjectionRoot projectionRoot){
+    public ImageRegistryResponse getImageRegistry(GetImageRegistryGraphQLQuery query, GetImageRegistryProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_IMAGE_REGISTRY, new TypeRef<ImageRegistryResponse>(){});
+        return graphQLClient.query(request, GET_IMAGE_REGISTRY, new TypeRef<ImageRegistryResponse>(){});
     }
 
     /**
@@ -1012,11 +1056,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of image registries.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public List<ImageRegistryResponse> listImageRegistry(ListImageRegistryGraphQLQuery query, ListImageRegistryProjectionRoot projectionRoot){
+    public List<ImageRegistryResponse> listImageRegistry(ListImageRegistryGraphQLQuery query, ListImageRegistryProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_IMAGE_REGISTRY, new TypeRef<List<ImageRegistryResponse>>(){});
+        return graphQLClient.query(request, LIST_IMAGE_REGISTRY, new TypeRef<List<ImageRegistryResponse>>(){});
     }
 
     /**
@@ -1025,23 +1070,26 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the created image registry.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ImageRegistryResponse createImageRegistry(CreateImageRegistryGraphQLQuery query, CreateImageRegistryProjectionRoot projectionRoot){
+    public ImageRegistryResponse createImageRegistry(CreateImageRegistryGraphQLQuery query, CreateImageRegistryProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(CREATE_IMAGE_REGISTRY, new TypeRef<ImageRegistryResponse>(){});
+        return graphQLClient.query(request, CREATE_IMAGE_REGISTRY, new TypeRef<ImageRegistryResponse>(){});
     }
+
 
     /**
      * Delete the image registry.
      *
      * @param query
      * @return Returns the response of the delete image registry request.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public DeleteImageRegistryResponse deleteImageRegistry(DeleteImageRegistryGraphQLQuery query){
+    public DeleteImageRegistryResponse deleteImageRegistry(DeleteImageRegistryGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(DELETE_IMAGE_REGISTRY, new TypeRef<DeleteImageRegistryResponse>(){});
+        return graphQLClient.query(request, DELETE_IMAGE_REGISTRY, new TypeRef<DeleteImageRegistryResponse>(){});
     }
 
     /**
@@ -1050,11 +1098,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the updated image registry.
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ImageRegistryResponse updateImageRegistry(UpdateImageRegistryGraphQLQuery query, UpdateImageRegistryProjectionRoot projectionRoot){
+    public ImageRegistryResponse updateImageRegistry(UpdateImageRegistryGraphQLQuery query, UpdateImageRegistryProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(UPDATE_IMAGE_REGISTRY, new TypeRef<ImageRegistryResponse>(){});
+        return graphQLClient.query(request, UPDATE_IMAGE_REGISTRY, new TypeRef<ImageRegistryResponse>(){});
     }
 
     /**
@@ -1063,11 +1112,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of Probes
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public List<Probe> listProbes(ListProbesGraphQLQuery query, ListProbesProjectionRoot projectionRoot){
+    public List<Probe> listProbes(ListProbesGraphQLQuery query, ListProbesProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_PROBES, new TypeRef<List<Probe>>(){});
+        return graphQLClient.query(request, LIST_PROBES, new TypeRef<List<Probe>>(){});
     }
 
     /**
@@ -1076,11 +1126,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the Probe
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public Probe getProbe(GetProbeGraphQLQuery query, GetProbeProjectionRoot projectionRoot){
+    public Probe getProbe(GetProbeGraphQLQuery query, GetProbeProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_PROBE, new TypeRef<Probe>(){});
+        return graphQLClient.query(request, GET_PROBE, new TypeRef<Probe>(){});
     }
 
     /**
@@ -1088,11 +1139,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the validate unique probe request
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ValidateUniqueProbeResponse validateUniqueProbe(ValidateUniqueProbeGraphQLQuery query){
+    public ValidateUniqueProbeResponse validateUniqueProbe(ValidateUniqueProbeGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(VALIDATE_UNIQUE_PROBE, new TypeRef<ValidateUniqueProbeResponse>(){});
+        return graphQLClient.query(request, VALIDATE_UNIQUE_PROBE, new TypeRef<ValidateUniqueProbeResponse>(){});
     }
 
     /**
@@ -1101,11 +1153,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the response of the get probe reference request
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetProbeReferenceResponse getProbeReference(GetProbeReferenceGraphQLQuery query, GetProbeReferenceProjectionRoot projectionRoot){
+    public GetProbeReferenceResponse getProbeReference(GetProbeReferenceGraphQLQuery query, GetProbeReferenceProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_PROBE_REFERENCE, new TypeRef<GetProbeReferenceResponse>(){});
+        return graphQLClient.query(request, GET_PROBE_REFERENCE, new TypeRef<GetProbeReferenceResponse>(){});
     }
 
     /**
@@ -1113,11 +1166,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the YAML of the Probe
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetProbeYAMLResponse getProbeYAML(GetProbeYAMLGraphQLQuery query){
+    public GetProbeYAMLResponse getProbeYAML(GetProbeYAMLGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_PROBE_YAML, new TypeRef<GetProbeYAMLResponse>(){});
+        return graphQLClient.query(request, GET_PROBE_YAML, new TypeRef<GetProbeYAMLResponse>(){});
     }
 
     /**
@@ -1126,11 +1180,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of Probes
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public List<GetProbesInExperimentRunResponse> getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot){
+    public List<GetProbesInExperimentRunResponse> getProbesInExperimentRun(GetProbesInExperimentRunGraphQLQuery query, GetProbesInExperimentRunProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_PROBES_IN_EXPERIMENT_RUN, new TypeRef<List<GetProbesInExperimentRunResponse>>(){});
+        return graphQLClient.query(request, GET_PROBES_IN_EXPERIMENT_RUN, new TypeRef<List<GetProbesInExperimentRunResponse>>(){});
     }
 
     /**
@@ -1139,11 +1194,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the added Probe
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public Probe addProbe(AddProbeGraphQLQuery query, AddProbeProjectionRoot projectionRoot){
+    public Probe addProbe(AddProbeGraphQLQuery query, AddProbeProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(ADD_PROBE, new TypeRef<Probe>(){});
+        return graphQLClient.query(request, ADD_PROBE, new TypeRef<Probe>(){});
     }
 
     /**
@@ -1151,11 +1207,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the response of the delete probe request
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public DeleteProbeResponse deleteProbe(DeleteProbeGraphQLQuery query){
+    public DeleteProbeResponse deleteProbe(DeleteProbeGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(DELETE_PROBE, new TypeRef<DeleteProbeResponse>(){});
+        return graphQLClient.query(request, DELETE_PROBE, new TypeRef<DeleteProbeResponse>(){});
     }
 
     /**
@@ -1163,11 +1220,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the updated Probe
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public UpdateProbeResponse updateProbe(UpdateProbeGraphQLQuery query){
+    public UpdateProbeResponse updateProbe(UpdateProbeGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(UPDATE_PROBE, new TypeRef<UpdateProbeResponse>(){});
+        return graphQLClient.query(request, UPDATE_PROBE, new TypeRef<UpdateProbeResponse>(){});
     }
 
     /**
@@ -1176,11 +1234,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of faults
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public FaultDetails getChaosFault(GetChaosFaultGraphQLQuery query, GetChaosFaultProjectionRoot projectionRoot){
+    public FaultDetails getChaosFault(GetChaosFaultGraphQLQuery query, GetChaosFaultProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_CHAOS_FAULT, new TypeRef<FaultDetails>(){});
+        return graphQLClient.query(request, GET_CHAOS_FAULT, new TypeRef<FaultDetails>(){});
     }
 
     /**
@@ -1189,11 +1248,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the list of chaos faults
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public List<Chart> listChaosFaults(ListChaosFaultsGraphQLQuery query, ListChaosFaultsProjectionRoot projectionRoot){
+    public List<Chart> listChaosFaults(ListChaosFaultsGraphQLQuery query, ListChaosFaultsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(LIST_CHAOS_FAULTS, new TypeRef<List<Chart>>(){});
+        return graphQLClient.query(request, LIST_CHAOS_FAULTS, new TypeRef<List<Chart>>(){});
     }
 
     /**
@@ -1202,11 +1262,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the version of gql server
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public ServerVersionResponse getServerVersion(GetServerVersionGraphQLQuery query, GetServerVersionProjectionRoot projectionRoot){
+    public ServerVersionResponse getServerVersion(GetServerVersionGraphQLQuery query, GetServerVersionProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_SERVER_VERSION, new TypeRef<ServerVersionResponse>(){});
+        return graphQLClient.query(request, GET_SERVER_VERSION, new TypeRef<ServerVersionResponse>(){});
     }
 
     /**
@@ -1215,11 +1276,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the latest version of infra available
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public InfraVersionDetails getVersionDetails(GetVersionDetailsGraphQLQuery query, GetVersionDetailsProjectionRoot projectionRoot){
+    public InfraVersionDetails getVersionDetails(GetVersionDetailsGraphQLQuery query, GetVersionDetailsProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_VERSION_DETAILS, new TypeRef<InfraVersionDetails>(){});
+        return graphQLClient.query(request, GET_VERSION_DETAILS, new TypeRef<InfraVersionDetails>(){});
     }
 
     /**
@@ -1228,11 +1290,12 @@ public class LitmusClient implements AutoCloseable {
      * @param query
      * @param projectionRoot
      * @return Returns the generated SSH key
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public SSHKey generateSSHKey(GenerateSSHKeyGraphQLQuery query, GenerateSSHKeyProjectionRoot projectionRoot){
+    public SSHKey generateSSHKey(GenerateSSHKeyGraphQLQuery query, GenerateSSHKeyProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GENERATE_SSH_KEY, new TypeRef<SSHKey>(){});
+        return graphQLClient.query(request, GENERATE_SSH_KEY, new TypeRef<SSHKey>(){});
     }
 
     /**
@@ -1240,11 +1303,12 @@ public class LitmusClient implements AutoCloseable {
      *
      * @param query
      * @return Returns the manifest details
+     * @throws LitmusApiException
+     * @throws IOException
      */
-    public GetManifestWithInfraIDResponse getManifestWithInfraID(GetManifestWithInfraIDGraphQLQuery query){
+    public GetManifestWithInfraIDResponse getManifestWithInfraID(GetManifestWithInfraIDGraphQLQuery query) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query).serialize();
-        GraphQLResponse response = graphQLClient.query(request);
-        return response.extractValueAsObject(GET_MANIFEST_WITH_INFRA_ID, new TypeRef<GetManifestWithInfraIDResponse>(){});
+        return graphQLClient.query(request, GET_MANIFEST_WITH_INFRA_ID, new TypeRef<GetManifestWithInfraIDResponse>(){});
     }
 
     // TODO: subscription is not supported in current version
@@ -1283,5 +1347,14 @@ public class LitmusClient implements AutoCloseable {
         // TODO: need to add a validate URL without protocol
         // edge case: If you're calling a service from within Kubernetes, you don't need a protocol.
         return url.replaceAll("/$", "");
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.okHttpClient.dispatcher().executorService().shutdown();
+        this.okHttpClient.connectionPool().evictAll();
+        if (this.okHttpClient.cache() != null) {
+            this.okHttpClient.cache().close();
+        }
     }
 }
