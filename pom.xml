@@ -32,7 +32,19 @@
         <jackson.version>2.18.1</jackson.version>
         <dgs.cersion>9.2.2</dgs.cersion>
         <dgs-graphql-codegen-plugin.version>1.61.5</dgs-graphql-codegen-plugin.version>
+        <graphql-dgs-client.version>9.2.2</graphql-dgs-client.version>
         <graphql-dgs-codegen-shared-code.version>5.12.4</graphql-dgs-codegen-shared-code.version>
+        <okhttp.version>4.12.0</okhttp.version>
+        <gson.version>2.10.1</gson.version>
+        <slf4j.version>2.0.16</slf4j.version>
+        <junit.version>5.9.1</junit.version>
+        <assertj.version>3.24.2</assertj.version>
+        <commons-text.version>1.12.0</commons-text.version>
+        <commons-collections.version>4.4</commons-collections.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.4.0</maven-surefire-plugin.version>
+        <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
+        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -47,6 +59,7 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
+        <!-- DGS framework -->
         <dependency>
             <groupId>com.netflix.graphql.dgs.codegen</groupId>
             <artifactId>graphql-dgs-codegen-shared-core</artifactId>
@@ -54,68 +67,69 @@
         </dependency>
         <dependency>
             <groupId>com.netflix.graphql.dgs</groupId>
-            <artifactId>graphql-dgs-spring-boot-starter</artifactId>
+            <artifactId>graphql-dgs-client</artifactId>
+            <version>${graphql-dgs-client.version}</version>
         </dependency>
 
+        <!-- json -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.12.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <version>${gson.version}</version>
+        </dependency>
+
+        <!-- HttpClient -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
         </dependency>
 
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.16</version>
+            <version>${slf4j.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-simple</artifactId>-->
-<!--            <version>2.0.16</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
 
         <!-- Utils -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.12.0</version>
+            <version>${commons-text.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
+            <version>${commons-collections.version}</version>
         </dependency>
 
         <!-- Test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.1</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version>
+            <version>${assertj.version}</version>
         </dependency>
     </dependencies>
 
@@ -130,7 +144,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <version>3.13.0</version>
+                        <version>${maven-compiler-plugin.version}</version>
                         <configuration>
                             <source>${maven.compiler.source}</source>
                             <target>${maven.compiler.source}</target>
@@ -139,19 +153,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.4.0</version>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok-maven-plugin</artifactId>
-                        <version>1.18.20.0</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>delombok</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                        <version>${maven-surefire-plugin.version}</version>
                     </plugin>
                 </plugins>
             </build>
@@ -179,7 +181,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>${build-helper-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -197,7 +199,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.2</version>
+                <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                 </configuration>
