@@ -113,8 +113,6 @@ public class UserTest {
         assertNotNull(response);
     }
 
-
-    
     private UserResponse createTestUser(
             String username, String password, String role, String email, String name
     ) throws LitmusApiException, IOException {
