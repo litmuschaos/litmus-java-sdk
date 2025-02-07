@@ -114,7 +114,6 @@ public class UserTest {
         CommonResponse response = litmusClient.updateUserDetails(request);
         assertNotNull(response);
     }
-    
 
     private UserResponse createTestUser(
             String username, String password, String role, String email, String name
