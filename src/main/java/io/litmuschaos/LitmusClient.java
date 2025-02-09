@@ -2,7 +2,6 @@ package io.litmuschaos;
 
 import com.google.gson.reflect.TypeToken;
 import com.jayway.jsonpath.TypeRef;
-import com.netflix.graphql.dgs.client.GraphQLResponse;
 import com.netflix.graphql.dgs.client.codegen.GraphQLQueryRequest;
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.generated.client.*;
@@ -17,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static io.litmuschaos.constants.ApiEndpoints.*;
 import static io.litmuschaos.constants.OperationNames.*;
@@ -36,11 +36,35 @@ public class LitmusClient implements AutoCloseable {
     private final LitmusGraphQLClient graphQLClient;
 
     public LitmusClient(String host, String token) {
+        this(host, token, LitmusConfig.DEFAULT);
+    }
+
+    public LitmusClient(String host, String token, LitmusConfig config){
         String sanitizedHost = sanitizeURL(host);
         this.token = token;
-        okHttpClient = new OkHttpClient(); // TODO : apply detail options
+        okHttpClient = buildOkHttpClient(config);
         this.httpClient = new LitmusHttpClient(okHttpClient, sanitizedHost + AUTH);
         this.graphQLClient = new LitmusGraphQLClient(okHttpClient, sanitizedHost + API_QUERY, this.token);
+    }
+
+    public static OkHttpClient buildOkHttpClient(LitmusConfig config){
+
+        final OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
+
+        if(config.getHttpClientReadTimeoutMillis() != null){
+            okHttpClient.readTimeout(config.getHttpClientReadTimeoutMillis(), TimeUnit.MILLISECONDS);
+        }
+        if(config.getHttpClientWriteTimeoutMillis() != null){
+            okHttpClient.writeTimeout(config.getHttpClientWriteTimeoutMillis(), TimeUnit.MILLISECONDS);
+        }
+        if(config.getHttpClientCallTimeoutMillis() != null){
+            okHttpClient.callTimeout(config.getHttpClientCallTimeoutMillis(), TimeUnit.MILLISECONDS);
+        }
+        if(config.getHttpClientConnectTimeoutMillis() != null){
+            okHttpClient.connectTimeout(config.getHttpClientConnectTimeoutMillis(), TimeUnit.MILLISECONDS);
+        }
+
+        return okHttpClient.build();
     }
 
     /**
@@ -1314,33 +1338,8 @@ public class LitmusClient implements AutoCloseable {
     // TODO: subscription is not supported in current version
 
 //    public InfraEventResponse getInfraEvents(GetInfraEventsGraphQLQuery query, GetInfraEventsProjectionRoot projectionRoot){
-//        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-//        GraphQLResponse response = graphQLClient.query(request);
-//        return response.extractValueAsObject("getInfraEvents", new TypeRef<InfraEventResponse>(){});
-//    }
-//
-//    public KubeNamespaceResponse getKubeNamespace(GetKubeNamespaceGraphQLQuery query, GetKubeNamespaceProjectionRoot projectionRoot){
-//        String request = new GraphQLQueryRequest(query,projectionRoot).serialize();
-//        GraphQLResponse response = graphQLClient.query(request);
-//        return response.extractValueAsObject("getKubeNamespace", new TypeRef<KubeNamespaceResponse>(){});
-//    }
-//
-//    public KubeObjectResponse getKubeObject(GetKubeObjectGraphQLQuery query, GetKubeObjectProjectionRoot projectionRoot){
-//        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-//        GraphQLResponse response = graphQLClient.query(request);
-//        return response.extractValueAsObject("getKubeObject", new TypeRef<KubeObjectResponse>(){});
-//    }
-//
-//    public PodLogResponse getPodLog(GetPodLogGraphQLQuery query, GetPodLogProjectionRoot projectionRoot){
-//        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-//        GraphQLResponse response = graphQLClient.query(request);
-//        return response.extractValueAsObject("getPodLog", new TypeRef<PodLogResponse>(){});
-//    }
-//
-//    public InfraActionResponse infraConnect(InfraConnectGraphQLQuery query, InfraConnectProjectionRoot projectionRoot){
-//        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-//        GraphQLResponse response = graphQLClient.query(request);
-//        return response.extractValueAsObject("infraConnect", new TypeRef<InfraActionResponse>(){});
+//        String request = new GraphQLQueryRequest(query).serialize();
+//        return graphQLClient.query(request, "getInfraEvents", new TypeRef<InfraEventResponse>(){});
 //    }
 
     private String sanitizeURL(String url) {
