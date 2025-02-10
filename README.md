@@ -8,21 +8,15 @@
 
 ## **Introduction**
 
----
-
 The Litmus Java SDK makes it easy to communicate with Litmus’ internal servers.
 
 ## Requirements
-
----
 
 This library requires Java 17 or later.
 
 Litmus version 3.13.0 or later.
 
 ## Installation
-
----
 
 ### Gradle example
 
@@ -41,8 +35,6 @@ implementation 'io.litmuschaos:litmus-sdk:<VERSION>'
 ```
 
 ## LitmusClient
-
----
 
 LitmusClient contains simple, easy-to-use interface for making requests to litmus internal servers.
 
@@ -83,8 +75,6 @@ LitmusClient litmusClient = new LitmusClient("host", "token");
 ```
 
 ## How to use ProjectionRoot
-
----
 
 You need to understand `projectionRoot` for using Litmus Java SDK well. When you access to litmus graphQL backend server by SDK, you can filter response field by projectionRoot.
 
@@ -140,13 +130,9 @@ ProjectionRoot is tree data structure, so you can explore object graph by `paren
 
 ## **Sample code**
 
----
-
 This project contains the following [sample code](https://github.com/litmuschaos/litmus-java-sdk/blob/master/src/test/java/io/litmuschaos/LitmusClientTest.java)
 
 ## **Contributing**
-
----
 
 We'd love to have you contribute! Please refer to [CONTRIBUTING](./CONTRIBUTING.md) for details.
 
