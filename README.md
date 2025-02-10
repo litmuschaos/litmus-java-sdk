@@ -90,7 +90,7 @@ GetEnvironmentProjectionRoot projectionRoot = new GetEnvironmentProjectionRoot<>
       .name()
       .updatedBy().userID().username().root();
 
- Environment response = litmusClient.getEnvironment(query, projectionRoot);
+Environment response = litmusClient.getEnvironment(query, projectionRoot);
 ``` 
 litmusClient only return fields that selected by projectionRoot.
 ```
@@ -113,7 +113,7 @@ ProjectionRoot is tree data structure, so you can explore object graph by `paren
 - parent() : move to upper position
 - root() : move to root position
 
-```json
+```
 {
   "name": "test",
   "faultName": "test fault",
