@@ -1,5 +1,6 @@
 package io.litmuschaos;
 
+import io.litmuschaos.enums.Role;
 import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.generated.client.*;
 import io.litmuschaos.generated.types.*;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class LitmusClientTest {
 
-    private static final String HOST_URL = "http://localhost:54525"; // your frontend url here
+    private static final String HOST_URL = "http://localhost:53042"; // your frontend url here
     private static final String TEST_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4OTE1ODQwNzMsInJvbGUiOiJhZG1pbiIsInVpZCI6ImI1NWVlMzQwLWZiNzMtNDAyYy1hN2QwLWUxM2QzY2JiYTczOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.1bwzyAyAgW9ba7JgqaLXEomoEer-WtfyDaSqlwAdwLlKagt9lRjgaDcSm20YprsTqvM164eOSGu7FUhlOxZ81w"; // your API token here.
 
     private final LitmusClient litmusClient = new LitmusClient(HOST_URL,TEST_TOKEN);
@@ -78,7 +79,7 @@ class LitmusClientTest {
         UserCreateRequest request = UserCreateRequest.builder()
                 .username("test_username")
                 .password("test password")
-                .role("admin") // Role can be admin, user
+                .role(Role.user) // Role can be admin, user
                 .email("test@litmus.com")
                 .build();
         UserResponse response = litmusClient.createUser(request);
