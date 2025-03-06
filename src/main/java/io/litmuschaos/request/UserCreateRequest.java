@@ -1,12 +1,13 @@
 package io.litmuschaos.request;
 
+import io.litmuschaos.enums.Role;
 import io.litmuschaos.util.Builder;
 
 public class UserCreateRequest {
 
     private final String username;
     private final String password;
-    private final String role;
+    private final Role role;
     private final String email;
     private final String name;
 
@@ -26,7 +27,7 @@ public class UserCreateRequest {
         return password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -45,7 +46,7 @@ public class UserCreateRequest {
     public static class UserCreateRequestBuilder implements Builder<UserCreateRequest> {
         private String username;
         private String password;
-        private String role;
+        private Role role;
         private String email;
         private String name;
 
@@ -59,7 +60,7 @@ public class UserCreateRequest {
             return this;
         }
 
-        public UserCreateRequestBuilder role(String role) {
+        public UserCreateRequestBuilder role(Role role) {
             this.role = role;
             return this;
         }

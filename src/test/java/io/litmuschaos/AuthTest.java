@@ -28,23 +28,4 @@ public class AuthTest {
                 .isInstanceOf(CapabilityResponse.class)
                 .hasFieldOrProperty("Dex");
     }
-
-//    @Test
-//    public void testAuthenticationAPI() throws IOException, LitmusApiException {
-//        LoginRequest request = LoginRequest.builder().username(username).password(password).build();
-//        assertThat(authClient.authenticate(request))
-//                .isNotNull()
-//                .isInstanceOf(LoginResponse.class);
-//    }
-//
-//    @Test
-//    public void testAuthenticationAPIFail() {
-//        // Given
-//        String wrongPassword = "litmus1234";
-//        LoginRequest request = LoginRequest.builder().username(username).password(wrongPassword).build();
-//
-//        // When & Then
-//        assertThatThrownBy(() -> authClient.authenticate(request))
-//                .isInstanceOf(UnauthorizedException.class);
-//    }
 }
