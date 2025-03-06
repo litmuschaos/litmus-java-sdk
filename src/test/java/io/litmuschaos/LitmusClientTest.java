@@ -560,7 +560,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(GetInfraStatsResponse.class);
     }
 
-    // TODO: NOT TESTED, it is used in litmus but when i call API, result not exist
     @Test
     void getInfraManifest() throws LitmusApiException, IOException {
         GetInfraManifestGraphQLQuery query = new GetInfraManifestGraphQLQuery.Builder()
@@ -574,7 +573,6 @@ class LitmusClientTest {
 
     }
 
-    // TODO: NOT TESTED
     @Test
     void confirmInfraRegistration() throws LitmusApiException, IOException {
         ConfirmInfraRegistrationGraphQLQuery query = new ConfirmInfraRegistrationGraphQLQuery.Builder()
@@ -724,7 +722,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(ChaosHub.class);
     }
 
-    // TODO: NOT TESTED, may not used
     @Test
     void addRemoteChaosHub() throws LitmusApiException, IOException {
         AddRemoteChaosHubGraphQLQuery query = new AddRemoteChaosHubGraphQLQuery.Builder()
@@ -981,7 +978,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(ChaosExperimentResponse.class);
     }
 
-    // TODO: NOT TESTED, may be not used
     @Test
     void createChaosExperiment() throws LitmusApiException, IOException {
         CreateChaosExperimentGraphQLQuery query = new CreateChaosExperimentGraphQLQuery.Builder()
@@ -1109,7 +1105,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(ListExperimentRunResponse.class);
     }
 
-    // TODO: NOT TESTED, may be not used
     @Test
     void chaosExperimentRun() throws LitmusApiException, IOException {
         ChaosExperimentRunGraphQLQuery query = new ChaosExperimentRunGraphQLQuery.Builder()
@@ -1162,7 +1157,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(DisableGitOpsResponse.class);
     }
 
-    // TODO: NOT TESTED
     @Test
     void enableGitOps() throws LitmusApiException, IOException {
         EnableGitOpsGraphQLQuery query = new EnableGitOpsGraphQLQuery.Builder()
@@ -1180,7 +1174,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(EnableGitOpsResponse.class);
     }
 
-    // TODO: NOT TESTED
     @Test
     void gitopsNotifier() throws LitmusApiException, IOException {
         GitopsNotifierGraphQLQuery query = new GitopsNotifierGraphQLQuery.Builder()
@@ -1196,7 +1189,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(GitOpsNotifierResponse.class);
     }
 
-    // TODO: NOT TESTED
     @Test
     void updateGitOps() throws LitmusApiException, IOException {
         UpdateGitOpsGraphQLQuery query = new UpdateGitOpsGraphQLQuery.Builder()
@@ -1244,7 +1236,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(List.class);
     }
 
-    // TODO: NOT TESTED
     @Test
     void createImageRegistry() throws LitmusApiException, IOException {
         CreateImageRegistryGraphQLQuery query = new CreateImageRegistryGraphQLQuery.Builder()
@@ -1266,7 +1257,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(ImageRegistryResponse.class);
     }
 
-    // TODO: NOT TESTED
     @Test
     void deleteImageRegistry() throws LitmusApiException, IOException {
         DeleteImageRegistryGraphQLQuery query = new DeleteImageRegistryGraphQLQuery.Builder()
@@ -1278,7 +1268,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(DeleteImageRegistryResponse.class);
     }
 
-    // TODO: NOT TESTED
     @Test
     void updateImageRegistry() throws LitmusApiException, IOException {
         UpdateImageRegistryGraphQLQuery query = new UpdateImageRegistryGraphQLQuery.Builder()
@@ -1559,7 +1548,6 @@ class LitmusClientTest {
         assertThat(response).isInstanceOf(SSHKey.class);
     }
 
-    // TODO: NOT TESTED
     @Test
     void getManifestWithInfraID() throws LitmusApiException, IOException {
         GetManifestWithInfraIDGraphQLQuery query = new GetManifestWithInfraIDGraphQLQuery.Builder()
@@ -1571,99 +1559,4 @@ class LitmusClientTest {
         GetManifestWithInfraIDResponse response = litmusClient.getManifestWithInfraID(query);
         assertThat(response).isInstanceOf(GetManifestWithInfraIDResponse.class);
     }
-
-    // subscription is not supported in current version
-//    @Test
-//    void getInfraEvents(){
-//        GetInfraEventsGraphQLQuery query = new GetInfraEventsGraphQLQuery.Builder()
-//                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
-//                .build();
-//
-//        GetInfraEventsProjectionRoot projectionRoot = new GetInfraEventsProjectionRoot<>()
-//                .eventID()
-//                .description()
-//                .eventName()
-//                .eventType();
-//
-//        InfraEventResponse response = litmusClient.getInfraEvents(query, projectionRoot);
-//        assertThat(response).isInstanceOf(InfraEventResponse.class);
-//    }
-//
-//    @Test
-//    void getKubeNamespace(){
-//        GetKubeNamespaceGraphQLQuery query = new GetKubeNamespaceGraphQLQuery.Builder()
-//                .request(KubeNamespaceRequest.newBuilder()
-//                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
-//                        .build())
-//                .build();
-//
-//        GetKubeNamespaceProjectionRoot projectionRoot = new GetKubeNamespaceProjectionRoot<>()
-//                .infraID()
-//                .kubeNamespace().name().root();
-//
-//        KubeNamespaceResponse response = litmusClient.getKubeNamespace(query, projectionRoot);
-//        assertThat(response).isInstanceOf(KubeNamespaceResponse.class);
-//    }
-//
-//    @Test
-//    void getKubeObject(){
-//        GetKubeObjectGraphQLQuery query = new GetKubeObjectGraphQLQuery.Builder()
-//                .request(KubeObjectRequest.newBuilder()
-//                        .namespace("default")
-//                        .objectType("kubeobject")
-//                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
-//                        .kubeObjRequest(KubeGVRRequest.newBuilder()
-//                                .group("apps")
-//                                .resource("deployments")
-//                                .version("v1")
-//                                .build())
-//                        .build())
-//                .build();
-//
-//        GetKubeObjectProjectionRoot projectionRoot = new GetKubeObjectProjectionRoot<>()
-//                .infraID()
-//                .kubeObj().data().labels().root();
-//
-//        KubeObjectResponse response = litmusClient.getKubeObject(query, projectionRoot);
-//        assertThat(response).isInstanceOf(KubeObjectResponse.class);
-//    }
-//
-//    @Test
-//    void getPodLog(){
-//        GetPodLogGraphQLQuery query = new GetPodLogGraphQLQuery.Builder()
-//                .request(PodLogRequest.newBuilder()
-//                        .infraID("4357805a-c932-4f9d-a3c5-cc1e3b3693a4")
-//                        .experimentRunID("2be2bcdf-0d1e-4b9a-9ec8-03068272e1bc")
-//                        .podName("test-experiment-1737970826261-2717703891")
-//                        .podNamespace("litmus")
-//                        .podType("Pod")
-//                        .build())
-//                .build();
-//
-//        GetPodLogProjectionRoot projectionRoot = new GetPodLogProjectionRoot<>()
-//                .log()
-//                .experimentRunID();
-//
-//        PodLogResponse response = litmusClient.getPodLog(query, projectionRoot);
-//        assertThat(response).isInstanceOf(PodLogResponse.class);
-//    }
-//
-//    // is it work?
-//    @Test
-//    void infraConnect(){
-//        InfraConnectGraphQLQuery query = new InfraConnectGraphQLQuery.Builder()
-//                .request(InfraIdentity.newBuilder()
-//                        .version("test")
-//                        .accessKey("test")
-//                        .infraID("a53f0ffc-d8df-4963-8701-c1b6de179531")
-//                        .build())
-//                .build();
-//
-//        InfraConnectProjectionRoot projectionRoot = new InfraConnectProjectionRoot<>()
-//                .projectID()
-//                .action().externalData().root();
-//
-//        InfraActionResponse response = litmusClient.infraConnect(query, projectionRoot);
-//        assertThat(response).isInstanceOf(InfraActionResponse.class);
-//    }
 }
