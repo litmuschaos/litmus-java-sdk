@@ -839,22 +839,17 @@ class LitmusClientTest {
 
     @Test
     void listExperiment() throws LitmusApiException, IOException {
-        ListExperimentGraphQLQuery query = new ListExperimentGraphQLQuery.Builder()
-                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
-                .request(new ListExperimentRequest.Builder()
-                        .experimentIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
-                        .filter(ExperimentFilterInput.newBuilder()
-                                .dateRange(DateRange.newBuilder()
-                                        .startDate("1737817199000")
-                                        .endDate("1733929200000")
-                                        .build())
-                                .build()
-
-                        )
-                        .pagination(Pagination.newBuilder().page(0).limit(10).build())
-                        .sort(ExperimentSortInput.newBuilder().ascending(true).field(ExperimentSortingField.NAME).build())
+        ListExperimentRequest filter = new ListExperimentRequest.Builder()
+                .experimentIDs(List.of("50703e0e-18de-4cc4-80fb-0784c100bb07"))
+                .filter(ExperimentFilterInput.newBuilder()
+                        .dateRange(DateRange.newBuilder()
+                                .startDate("1737817199000")
+                                .endDate("1733929200000")
+                                .build())
                         .build()
                 )
+                .pagination(Pagination.newBuilder().page(0).limit(10).build())
+                .sort(ExperimentSortInput.newBuilder().ascending(true).field(ExperimentSortingField.NAME).build())
                 .build();
 
         ListExperimentProjectionRoot projectionRoot = new ListExperimentProjectionRoot<>()
@@ -872,7 +867,13 @@ class LitmusClientTest {
                 .root()
                 .totalNoOfExperiments();
 
-        ListExperimentResponse response = litmusClient.listExperiment(query, projectionRoot);
+        ChaosExperimentListRequest request = ChaosExperimentListRequest.builder()
+                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
+                .request(filter)
+                .projectionRoot(projectionRoot)
+                .build();
+
+        ListExperimentResponse response = litmusClient.listExperiment(request);
         assertThat(response).isInstanceOf(ListExperimentResponse.class);
     }
 
@@ -939,20 +940,21 @@ class LitmusClientTest {
 
     @Test
     void saveChaosExperiment() throws LitmusApiException, IOException {
-        SaveChaosExperimentGraphQLQuery query = new SaveChaosExperimentGraphQLQuery.Builder()
-                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
-                .request(SaveChaosExperimentRequest.newBuilder()
-                        .description("test description")
-                        .id("36048cb8-19db-40f1-8f09-20313b576c22")
-                        .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
-                        .manifest("manifest file")
-                        .tags(List.of("tag1", "tag2"))
-                        .name("test2-experiment")
-                        .build())
+        SaveChaosExperimentRequest payload = SaveChaosExperimentRequest.newBuilder()
+                .description("test description")
+                .id("36048cb8-19db-40f1-8f09-20313b576c22")
+                .infraID("6c54cea0-16e1-4d7b-bf96-ece11c82a7e4")
+                .manifest("manifest file")
+                .tags(List.of("tag1", "tag2"))
+                .name("test2-experiment")
                 .build();
 
+        ChaosExperimentSaveRequest request = ChaosExperimentSaveRequest.builder()
+                .projectID("d6f0b5cb-0088-4732-8c2f-4193419103de")
+                .request(payload)
+                .build();
 
-        SaveChaosExperimentResponse response = litmusClient.saveChaosExperiment(query);
+        SaveChaosExperimentResponse response = litmusClient.saveChaosExperiment(request);
         assertThat(response).isInstanceOf(SaveChaosExperimentResponse.class);
     }
 
