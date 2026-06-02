@@ -791,15 +791,19 @@ public class LitmusClient implements AutoCloseable {
     /**
      * List the chaos experiments.
      *
-     * @param query
-     * @param projectionRoot
+     * @param request the {@link ChaosExperimentListRequest} wrapping projectID, the
+     *                generated filter payload, and the projection root.
      * @return Returns the list of chaos experiments.
      * @throws LitmusApiException
      * @throws IOException
      */
-    public ListExperimentResponse listExperiment(ListExperimentGraphQLQuery query, ListExperimentProjectionRoot projectionRoot) throws LitmusApiException, IOException {
-        String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
-        return graphQLClient.query(request, LIST_EXPERIMENT, new TypeRef<ListExperimentResponse>(){});
+    public ListExperimentResponse listExperiment(ChaosExperimentListRequest request) throws LitmusApiException, IOException {
+        ListExperimentGraphQLQuery query = ListExperimentGraphQLQuery.newRequest()
+                .projectID(request.getProjectID())
+                .request(request.getRequest())
+                .build();
+        String body = new GraphQLQueryRequest(query, request.getProjectionRoot()).serialize();
+        return graphQLClient.query(body, LIST_EXPERIMENT, new TypeRef<ListExperimentResponse>(){});
     }
 
     /**
@@ -861,14 +865,19 @@ public class LitmusClient implements AutoCloseable {
     /**
      * Save the chaos experiment.
      *
-     * @param query
+     * @param request the {@link ChaosExperimentSaveRequest} wrapping projectID and the
+     *                generated save payload.
      * @return Returns the response of the save chaos experiment request.
      * @throws LitmusApiException
      * @throws IOException
      */
-    public SaveChaosExperimentResponse saveChaosExperiment(SaveChaosExperimentGraphQLQuery query) throws LitmusApiException, IOException {
-        String request = new GraphQLQueryRequest(query).serialize();
-        return graphQLClient.query(request, SAVE_CHAOS_EXPERIMENT, new TypeRef<SaveChaosExperimentResponse>(){});
+    public SaveChaosExperimentResponse saveChaosExperiment(ChaosExperimentSaveRequest request) throws LitmusApiException, IOException {
+        SaveChaosExperimentGraphQLQuery query = SaveChaosExperimentGraphQLQuery.newRequest()
+                .projectID(request.getProjectID())
+                .request(request.getRequest())
+                .build();
+        String body = new GraphQLQueryRequest(query).serialize();
+        return graphQLClient.query(body, SAVE_CHAOS_EXPERIMENT, new TypeRef<SaveChaosExperimentResponse>(){});
     }
 
     /**
