@@ -10,9 +10,11 @@ import io.litmuschaos.graphql.LitmusGraphQLClient;
 import io.litmuschaos.http.LitmusHttpClient;
 import io.litmuschaos.request.*;
 import io.litmuschaos.response.*;
+import io.litmuschaos.util.ExperimentRunPoller;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -936,6 +938,42 @@ public class LitmusClient implements AutoCloseable {
     public ExperimentRun getExperimentRun(GetExperimentRunGraphQLQuery query, GetExperimentRunProjectionRoot projectionRoot) throws LitmusApiException, IOException {
         String request = new GraphQLQueryRequest(query, projectionRoot).serialize();
         return graphQLClient.query(request, GET_EXPERIMENT_RUN, new TypeRef<ExperimentRun>(){});
+    }
+
+    /**
+     * Waits for a chaos experiment run to reach a terminal phase.
+     *
+     * @param projectId project ID that owns the experiment run
+     * @param experimentRunId experiment run ID to poll
+     * @param timeout maximum time to wait
+     * @param interval delay between state checks
+     * @return the latest experiment run once it reaches a terminal phase
+     * @throws LitmusApiException when fetching fails, waiting is interrupted, or the timeout expires
+     * @throws IOException when fetching the experiment run fails
+     */
+    public ExperimentRun waitForExperimentRun(String projectId, String experimentRunId, Duration timeout,
+                                              Duration interval) throws LitmusApiException, IOException {
+        GetExperimentRunGraphQLQuery query = new GetExperimentRunGraphQLQuery.Builder()
+                .projectID(projectId)
+                .experimentRunID(experimentRunId)
+                .build();
+
+        GetExperimentRunProjectionRoot projectionRoot = new GetExperimentRunProjectionRoot<>()
+                .projectID()
+                .experimentRunID()
+                .experimentID()
+                .experimentName()
+                .experimentType()
+                .notifyID()
+                .phase().root()
+                .resiliencyScore()
+                .runSequence();
+
+        return new ExperimentRunPoller().waitFor(
+                () -> getExperimentRun(query, projectionRoot),
+                timeout,
+                interval
+        );
     }
 
     /**

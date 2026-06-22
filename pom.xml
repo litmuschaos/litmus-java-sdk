@@ -45,6 +45,7 @@
         <maven-surefire-plugin.version>3.4.0</maven-surefire-plugin.version>
         <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
         <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+        <excludedGroups>integration</excludedGroups>
     </properties>
 
     <dependencyManagement>
@@ -154,6 +155,9 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${maven-surefire-plugin.version}</version>
+                        <configuration>
+                            <excludedGroups>${excludedGroups}</excludedGroups>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

@@ -8,6 +8,7 @@ import io.litmuschaos.request.UserStateUpdateRequest;
 import io.litmuschaos.response.CommonResponse;
 import io.litmuschaos.response.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,16 +17,15 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("integration")
 public class UserTest {
 
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final SecureRandom RANDOM = new SecureRandom();
-    private static final String HOST_URL = "http://localhost:3000";
     private static final String CLIENT_SETUP_USERNAME = "admin";
     private static final String CLIENT_SETUP_PASSWORD = "Litmus1234!";
     private static final String TEST_USER_PASSWORD = "testPassword";
     private static final Role TEST_USER_ROLE = Role.user;
-    private static final String TEST_TOKEN = "Bearer token"; // Put your token here
     private static final String TEST_USER_EMAIL = "test@test.com";
     private static final String TEST_USER_NAME = "testName";
 
@@ -41,7 +41,8 @@ public class UserTest {
 
     @BeforeEach
     void setup() {
-        litmusClient = new LitmusClient(HOST_URL, TEST_TOKEN);
+        IntegrationTestConfig.assumeConfigured();
+        litmusClient = new LitmusClient(IntegrationTestConfig.hostUrl(), IntegrationTestConfig.token());
     }
 
     @Test
