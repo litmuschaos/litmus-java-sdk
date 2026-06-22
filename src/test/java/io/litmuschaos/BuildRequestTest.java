@@ -4,21 +4,22 @@ import io.litmuschaos.exception.LitmusApiException;
 import io.litmuschaos.request.ListProjectRequest;
 import io.litmuschaos.response.ListProjectsResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("integration")
 public class BuildRequestTest {
 
-    private static final String HOST_URL = "http://localhost:3000";
-    private static final String TEST_TOKEN = "Bearer token"; // Put your token here
     private LitmusClient litmusClient;
 
     @BeforeEach
     public void setup() throws IOException, LitmusApiException {
-        this.litmusClient = new LitmusClient(HOST_URL, TEST_TOKEN);
+        IntegrationTestConfig.assumeConfigured();
+        this.litmusClient = new LitmusClient(IntegrationTestConfig.hostUrl(), IntegrationTestConfig.token());
     }
 
     @Test

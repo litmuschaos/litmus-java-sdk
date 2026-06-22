@@ -6,6 +6,8 @@ import io.litmuschaos.generated.client.*;
 import io.litmuschaos.generated.types.*;
 import io.litmuschaos.request.*;
 import io.litmuschaos.response.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -13,18 +15,22 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("integration")
 class LitmusClientTest {
 
-    private static final String HOST_URL = "http://localhost:53042"; // your frontend url here
-    private static final String TEST_TOKEN = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4OTE1ODQwNzMsInJvbGUiOiJhZG1pbiIsInVpZCI6ImI1NWVlMzQwLWZiNzMtNDAyYy1hN2QwLWUxM2QzY2JiYTczOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.1bwzyAyAgW9ba7JgqaLXEomoEer-WtfyDaSqlwAdwLlKagt9lRjgaDcSm20YprsTqvM164eOSGu7FUhlOxZ81w"; // your API token here.
+    private LitmusClient litmusClient;
 
-    private final LitmusClient litmusClient = new LitmusClient(HOST_URL,TEST_TOKEN);
+    @BeforeEach
+    void setup() {
+        IntegrationTestConfig.assumeConfigured();
+        litmusClient = new LitmusClient(IntegrationTestConfig.hostUrl(), IntegrationTestConfig.token());
+    }
 
     // authentication
 
     @Test
     void getTokens() throws IOException, LitmusApiException {
-        String userId = "b55ee340-fb73-402c-a7d0-e13d3cbba738";
+        String userId = IntegrationTestConfig.userId();
         ListTokensResponse response = litmusClient.getTokens(userId);
         assertThat(response).isInstanceOf(ListTokensResponse.class);
     }
@@ -32,7 +38,7 @@ class LitmusClientTest {
     @Test
     void createToken() throws IOException, LitmusApiException {
         TokenCreateRequest request = TokenCreateRequest.builder()
-                .userID("b55ee340-fb73-402c-a7d0-e13d3cbba738")
+                .userID(IntegrationTestConfig.userId())
                 .name("new token name")
                 .daysUntilExpiration(36500)
                 .build();
@@ -43,8 +49,8 @@ class LitmusClientTest {
     @Test
     void deleteToken() throws IOException, LitmusApiException {
         TokenDeleteRequest request = TokenDeleteRequest.builder()
-                .token("eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4OTE5Mzg2NTksInJvbGUiOiJhZG1pbiIsInVpZCI6ImI1NWVlMzQwLWZiNzMtNDAyYy1hN2QwLWUxM2QzY2JiYTczOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.5iio28gGfk9PVzvDmMGenwlKvm4VTCPgSXama5FfaG1-6fCPFMMbGCymq2_4kHYsVITYyZfLnYDw-ywAYEsP2Q")
-                .userID("b55ee340-fb73-402c-a7d0-e13d3cbba738")
+                .token(IntegrationTestConfig.deleteToken())
+                .userID(IntegrationTestConfig.userId())
                 .build();
         CommonResponse response = litmusClient.deleteToken(request);
         assertThat(response).isInstanceOf(CommonResponse.class);
@@ -52,7 +58,7 @@ class LitmusClientTest {
 
     @Test
     void getUser() throws IOException, LitmusApiException {
-        String userId = "b55ee340-fb73-402c-a7d0-e13d3cbba738";
+        String userId = IntegrationTestConfig.userId();
         UserResponse response = litmusClient.getUser(userId);
         assertThat(response).isInstanceOf(UserResponse.class);
     }

@@ -30,3 +30,38 @@ mvn generate-sources
 ```
 
 After generated sources, you can check out sources in the `/target/generated-sources`
+
+### **3. Run tests**
+
+The default test suite must be deterministic and should not require a running
+LitmusChaos server:
+
+```git
+./mvnw test
+./mvnw package
+./mvnw javadoc:javadoc
+```
+
+Tests that call a live LitmusChaos server are tagged as `integration` and are
+excluded from the default Maven test run. Run them only when you have a local or
+test LitmusChaos instance and a disposable test account/token:
+
+```git
+export LITMUS_TEST_HOST=http://localhost:9091
+export LITMUS_TEST_TOKEN=<api-token>
+export LITMUS_TEST_USER_ID=<test-user-id>
+./mvnw test -Dgroups=integration -DexcludedGroups=
+```
+
+Tests that delete an API token also require `LITMUS_TEST_DELETE_TOKEN`.
+
+To verify only the experiment-run polling helper against a live LitmusChaos
+server, provide a project ID and an existing experiment run ID:
+
+```git
+export LITMUS_TEST_HOST=http://localhost:9091
+export LITMUS_TEST_TOKEN=<api-token>
+export LITMUS_TEST_PROJECT_ID=<project-id>
+export LITMUS_TEST_EXPERIMENT_RUN_ID=<experiment-run-id>
+./mvnw test -Dgroups=integration -DexcludedGroups= -Dtest=ExperimentRunLiveTest
+```

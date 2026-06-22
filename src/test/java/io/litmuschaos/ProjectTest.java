@@ -8,6 +8,7 @@ import io.litmuschaos.request.ProjectNameRequest;
 import io.litmuschaos.response.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,16 +18,16 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("integration")
 public class ProjectTest {
 
-    private static final String HOST_URL = "http://localhost:3000";
-    private static final String TEST_TOKEN = "Bearer token"; // Put your token here
     private static LitmusClient litmusClient;
     private static String projectId;
 
     @BeforeAll
     public static void setupClient() {
-        litmusClient = new LitmusClient(HOST_URL, TEST_TOKEN);
+        IntegrationTestConfig.assumeConfigured();
+        litmusClient = new LitmusClient(IntegrationTestConfig.hostUrl(), IntegrationTestConfig.token());
     }
 
     @BeforeEach
