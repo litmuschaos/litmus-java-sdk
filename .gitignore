@@ -247,3 +247,7 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/jetbrains+all,maven,gradle,visualstudiocode,java,kotlin,intellij+all
+
+# OS
+.DS_Store
+Thumbs.db
